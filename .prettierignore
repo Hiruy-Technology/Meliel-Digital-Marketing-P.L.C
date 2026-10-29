@@ -1,0 +1,8 @@
+docs/reference/
+# Markdown docs (client content, CLAUDE.md) are hand-formatted: leave them alone.
+*.md
+pnpm-lock.yaml
+.next/
+node_modules/
+public/
+assets/

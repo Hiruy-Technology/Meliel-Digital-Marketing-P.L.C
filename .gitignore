@@ -1,22 +1,30 @@
 # Contracts, proposals and client source docs: never commit
 docs/reference/
 
-# Environment
+# Environment (.env.example is committed on purpose)
 .env
 .env*.local
+!.env.example
 
 # Dependencies and build output
 node_modules/
+.pnp
+.pnp.*
 .next/
 out/
 build/
 dist/
+coverage/
 
 # Local media uploads (dev)
 media/
 
+# Hosting
+.vercel
+
 # Misc
 .DS_Store
+*.pem
 *.log
 npm-debug.log*
 pnpm-debug.log*

@@ -1,6 +1,6 @@
 # Meliel website: design-phase plan
 
-Status: **approved by Jacob on 2026-10-29.** Next: step 1 (scaffold). Extra dependencies approved 2026-10-29: `clsx`, `prettier`, `prettier-plugin-tailwindcss`.
+Status: **approved by Jacob on 2026-10-29.** Step 1 done 2026-10-29. Next: step 2 (brand assets + design system). Extra dependencies approved 2026-10-29: `clsx`, `prettier`, `prettier-plugin-tailwindcss`.
 
 ## Context
 Hiruy Technologies is building the contracted website for Meliel Digital Marketing P.L.C. (agreement HT-2026-006). We are in the **design phase**: every page built in code (desktop and mobile) with visible placeholders for missing content, deployed to a preview URL for the client's design review. The client's design review counts as **revision round 1 of 2**.

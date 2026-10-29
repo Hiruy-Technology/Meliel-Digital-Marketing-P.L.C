@@ -13,8 +13,9 @@ This file is the project's standing context. Read it, and the docs it points to,
 - Use **plan mode** for anything that touches more than one area. Present the plan before writing code.
 - **Never run git commands that change history or remotes** (commit, push, pull, branch, merge, rebase, reset). Jacob handles git manually. Read-only git (status, diff, log) is fine.
 - Ask before adding any dependency not listed under Stack below.
-- Dev environment: WSL Ubuntu on Windows, Docker Desktop available. Use Docker for local Postgres.
-- Before using a library API, check its **current official docs**. Do not rely on memory for versions or APIs.
+- Dev environment: **Windows** (Git Bash or PowerShell), project at `C:\Users\Yakob\Desktop\Hiruy Technologies\Clients\Meliel Digital Marketing PLC\Project_1_Website`. Never put `#` in the path. Docker Desktop is available; Docker for local Postgres starts in phase 3.
+- Before using a library API, check its **current official docs**. Do not rely on memory for versions or APIs. For Next.js, read the bundled docs in `node_modules/next/dist/docs/` (see `AGENTS.md`).
+- Scripts: `pnpm dev`, `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm format` / `pnpm format:check`.
 - When something conflicts with the scope doc or is ambiguous, ask. Do not guess.
 
 ## Source of truth
@@ -47,6 +48,8 @@ This file is the project's standing context. Read it, and the docs it points to,
 - **Analytics**: Google Analytics 4 (+ Google Search Console verification)
 - **Forms & validation**: Server Actions + zod
 - **Package manager**: pnpm
+- **Approved extras** (2026-10-29): `clsx` (class names), `prettier` + `prettier-plugin-tailwindcss` (formatting, dev only)
+- **Design phase**: Payload, Postgres, Resend, GA4 and the AI writer are **deferred to phase 3**. Pages read from `src/content/seed.ts` through `src/lib/data.ts`; that data layer is the one file that switches to Payload later. Payload 3 supports Next.js ≥ 16.2.6 and needs Node ≥ 22.23.4 or ≥ 24.22.1. Next.js `cacheComponents` is **off** until Payload's support for it is confirmed.
 
 ## Hosting
 
@@ -63,7 +66,8 @@ The production host is **not decided yet** (Vercel, or Hiruy's VPS pattern: Host
 | `/services` | Services (one section per service, anchor per service) |
 | `/work` | Portfolio, filterable by service and industry |
 | `/work/[slug]` | Project detail |
-| `/contact` | Contact / Start a Project (smart inquiry form) |
+| `/contact` | Contact (general inquiry form + direct contact details, map, socials) |
+| `/quote` | Get a Quote: pick one or more services (and specific "includes" items), then budget, timeline, details. Part of the contracted Smart Inquiry Form. Prefill with `?service=<slug>` (repeatable). |
 | `/contact/thank-you` | Inquiry confirmation |
 | `/privacy` | Privacy Policy |
 | 404 | Friendly not-found page |
@@ -78,7 +82,7 @@ The production host is **not decided yet** (Vercel, or Hiruy's VPS pattern: Host
 - **Testimonials**: quote, name, jobTitle, company, photo (optional), featured
 - **ClientLogos**: name, logo, url (optional), sortOrder
 - **TeamMembers** (optional section): name, role, photo, bio, sortOrder
-- **Inquiries**: stores every form submission (backup to the email notification)
+- **Inquiries**: stores every form submission (backup to the email notification): type (`general` | `quote`), name, company, email, phone, services (→ Services, many), selectedIncludes (array of strings), budget, timeline, message, createdAt
 - **Global `SiteSettings`**: phone(s), email, WhatsApp number, Telegram username, address, office hours, map embed URL, social links, homepage stats (value + label)
 
 Do not build a general page builder. Page copy lives in code; only the items above are editable.
@@ -109,3 +113,4 @@ Client reviews on staging → pays the 70% delivery payment → launch and hando
 Append one line per completed step: `YYYY-MM-DD: what was done`.
 
 - 2026-10-26: Project kit created; design phase starting.
+- 2026-10-29: Step 1 done. Scaffolded Next.js 16.4.3 + React 19.3 + Tailwind 4 + TypeScript strict (pnpm, src/, `@/*`, standalone output, cacheComponents off). Added Prettier + Tailwind plugin, clsx, `.gitattributes` (LF), `.env.example`, `.nvmrc`, folder skeleton, `typecheck`/`format` scripts. Lint, typecheck, format check and build pass.

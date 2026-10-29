@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/* Brand theme tokens (colors, fonts, spacing) are added in step 2. */
+
+body {
+  background: #ffffff;
+  color: #1b3354;
+}
