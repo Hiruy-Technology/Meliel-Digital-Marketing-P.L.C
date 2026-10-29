@@ -96,7 +96,7 @@ export default async function DataPage() {
   const adjacent = await getAdjacentProjects(projects[0]?.slug ?? "");
 
   return (
-    <main>
+    <>
       <Section tone="paper" className="py-12!">
         <p className="font-mono text-xs tracking-widest text-navy-600 uppercase">
           Internal · step 3
@@ -290,6 +290,6 @@ export default async function DataPage() {
           </div>
         </Block>
       </Section>
-    </main>
+    </>
   );
 }

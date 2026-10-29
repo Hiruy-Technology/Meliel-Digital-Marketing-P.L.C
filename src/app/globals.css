@@ -56,6 +56,10 @@
   --color-ladder-6: #7aa3c1;
   --color-ladder-7: #99c3de;
 
+  /* Floating contact buttons. WhatsApp's teal (not its bright green, which fails 3:1 with a white icon). */
+  --color-whatsapp: #128c7e;
+  --color-telegram: #229ed9;
+
   /* Display type sizes scale smoothly from 360px to 1440px wide */
   --text-display-sm: clamp(1.875rem, 1.4rem + 2.1vw, 3rem);
   --text-display-sm--line-height: 1.1;

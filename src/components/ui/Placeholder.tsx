@@ -19,7 +19,10 @@ export function Placeholder({
     <Tag
       className={clsx(
         "rounded-sm border border-dashed border-orange-700 bg-orange-50 font-mono text-[0.85em] text-navy-900",
-        display === "inline" ? "px-1.5 py-0.5" : "block p-4",
+        // Inline: each wrapped line keeps its own box edges; long labels may break anywhere.
+        display === "inline"
+          ? "box-decoration-clone px-1.5 py-0.5 leading-loose break-words"
+          : "block p-4",
         className,
       )}
     >

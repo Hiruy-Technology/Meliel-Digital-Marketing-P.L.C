@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
-import { LadderProgress } from "@/components/ui/LadderProgress";
 import { Logo } from "@/components/ui/Logo";
 import { Placeholder } from "@/components/ui/Placeholder";
 import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
@@ -54,9 +53,7 @@ export default function DesignSystemPage() {
   if (process.env.NEXT_PUBLIC_SITE_ENV === "production") notFound();
 
   return (
-    <main>
-      <LadderProgress />
-
+    <>
       <Section tone="paper" className="py-12!">
         <p className="font-mono text-xs tracking-widest text-navy-600 uppercase">
           Internal · step 2
@@ -240,6 +237,6 @@ export default function DesignSystemPage() {
           </p>
         </Container>
       </Section>
-    </main>
+    </>
   );
 }
