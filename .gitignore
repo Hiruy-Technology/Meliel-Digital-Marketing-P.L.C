@@ -1,0 +1,24 @@
+# Contracts, proposals and client source docs: never commit
+docs/reference/
+
+# Environment
+.env
+.env*.local
+
+# Dependencies and build output
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Local media uploads (dev)
+media/
+
+# Misc
+.DS_Store
+*.log
+npm-debug.log*
+pnpm-debug.log*
+*.tsbuildinfo
+next-env.d.ts

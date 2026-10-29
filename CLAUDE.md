@@ -1,0 +1,111 @@
+# Meliel Digital Marketing Website
+
+Client website built by **Hiruy Technologies** for **Meliel Digital Marketing P.L.C.** (Addis Ababa, Ethiopia).
+Agreement ref: HT-2026-006, signed October 19, 2026. Project lead: Yakob (Jacob) Dereje, CEO, Hiruy Technologies.
+
+This file is the project's standing context. Read it, and the docs it points to, before doing any work.
+
+---
+
+## How to work with Jacob
+
+- Work in **small, reviewable steps**. After each step: stop, summarize what changed (files + why), list anything you are unsure about, and wait for approval before continuing.
+- Use **plan mode** for anything that touches more than one area. Present the plan before writing code.
+- **Never run git commands that change history or remotes** (commit, push, pull, branch, merge, rebase, reset). Jacob handles git manually. Read-only git (status, diff, log) is fine.
+- Ask before adding any dependency not listed under Stack below.
+- Dev environment: WSL Ubuntu on Windows, Docker Desktop available. Use Docker for local Postgres.
+- Before using a library API, check its **current official docs**. Do not rely on memory for versions or APIs.
+- When something conflicts with the scope doc or is ambiguous, ask. Do not guess.
+
+## Source of truth
+
+| File | What it is |
+|---|---|
+| `docs/00-design-phase-plan.md` | The approved step-by-step plan for the design phase, including decisions made while planning. Read this first to know where we are. |
+| `docs/01-scope.md` | The contracted scope. Anything not listed there is **out of scope**: flag it, do not build it. |
+| `docs/02-meliel-content.md` | Content provided by Meliel. Use it **verbatim** (see content rules). |
+| `docs/03-design-direction.md` | Design concept, brand tokens, typography, page structure. |
+| `docs/04-open-items.md` | What is still pending from the client. Check before assuming anything is final. |
+| `assets/brand/` | Logo files from Meliel (PNG for now; vector files pending). |
+| `docs/reference/` | Signed agreement, proposal, client's original requirements doc. **Gitignored. Never commit.** |
+
+## Content rules (strict)
+
+- **Never invent** clients, testimonials, statistics, team members, project results, or contact details.
+- Anything not yet provided uses a visible placeholder: `[PLACEHOLDER: what goes here]`. Keep all placeholder data in one seed file so it is easy to find and replace.
+- Client copy from `docs/02-meliel-content.md` is used as written. If a small grammar or consistency fix seems needed, make it **and list it** in your step summary so Jacob can confirm with the client.
+- Language: **English only**, American spelling (normalize the client's "enquiries" to "inquiries" and flag it). The Amharic name **መልዕል** and its Amharic meaning may appear as brand elements.
+
+## Stack
+
+- **Next.js** (App Router, latest stable) + **TypeScript** (strict) + **Tailwind CSS**
+- **Payload CMS 3**, embedded in the same Next.js app: this is the contracted **Portfolio Manager**, served at `/admin`
+- **PostgreSQL**: Docker locally (`docker-compose.yml`); Neon or self-hosted Postgres in production
+- **Media**: Payload S3-compatible storage adapter pointed at **Cloudflare R2** in production, local disk in dev. Videos are mainly **YouTube/Vimeo URLs**; short MP4 uploads are optional.
+- **AI Case Study Writer**: Anthropic API. Model from env `ANTHROPIC_MODEL` (default `claude-haiku-5-5`), key from `ANTHROPIC_API_KEY`.
+- **Email notifications**: Resend
+- **Analytics**: Google Analytics 4 (+ Google Search Console verification)
+- **Forms & validation**: Server Actions + zod
+- **Package manager**: pnpm
+
+## Hosting
+
+The production host is **not decided yet** (Vercel, or Hiruy's VPS pattern: Hostinger + PM2 + Nginx + Cloudflare). Keep the code portable:
+- No host-specific APIs (no Vercel-only features). `output: 'standalone'` is fine.
+- All config comes from environment variables. Keep `.env.example` complete and commented.
+
+## Site map
+
+| Route | Page |
+|---|---|
+| `/` | Home |
+| `/about` | About Us |
+| `/services` | Services (one section per service, anchor per service) |
+| `/work` | Portfolio, filterable by service and industry |
+| `/work/[slug]` | Project detail |
+| `/contact` | Contact / Start a Project (smart inquiry form) |
+| `/contact/thank-you` | Inquiry confirmation |
+| `/privacy` | Privacy Policy |
+| 404 | Friendly not-found page |
+| `/admin` | Portfolio Manager (Payload) |
+
+## Payload data model (initial)
+
+- **Users**: roles `admin`, `editor`
+- **Projects**: title, slug, clientName, industry (→ Industries), services (→ Services, many), featured (bool), sortOrder, status (draft/published), coverImage, gallery (images, alt text required), videos (array: YouTube/Vimeo URL or upload), challenge, delivered, results (rich text), resultHighlights (array of {value, label}, e.g. "+240%" / "Instagram reach"), **aiNotes** (admin-only short notes used by the AI writer), publishedAt
+- **Services**: name, slug, summary, includes (array), sortOrder, note (e.g. "Quoted separately")
+- **Industries**: name, slug
+- **Testimonials**: quote, name, jobTitle, company, photo (optional), featured
+- **ClientLogos**: name, logo, url (optional), sortOrder
+- **TeamMembers** (optional section): name, role, photo, bio, sortOrder
+- **Inquiries**: stores every form submission (backup to the email notification)
+- **Global `SiteSettings`**: phone(s), email, WhatsApp number, Telegram username, address, office hours, map embed URL, social links, homepage stats (value + label)
+
+Do not build a general page builder. Page copy lives in code; only the items above are editable.
+
+## AI Case Study Writer
+
+In the Project edit screen: the editor types a few short notes in `aiNotes`, clicks **"Draft with AI"**, and the AI drafts `challenge`, `delivered`, and `results` in Meliel's voice (credible, results-focused, no hype, no invented numbers). The draft fills the fields for **human review**: it never auto-publishes. The endpoint must require an authenticated admin/editor session and be rate-limited. The prompt must instruct the model to use only facts present in the notes.
+
+## Quality bar
+
+- **Mobile-first**, verified from 360px to 1440px+.
+- **Performance**: Lighthouse ≥ 90 (mobile) on public pages. Many visitors are on slow mobile connections: use `next/image` (AVIF/WebP), lazy-load below the fold, and use a **click-to-load facade** for video embeds (thumbnail until clicked).
+- **Accessibility**: WCAG 2.1 AA. Watch contrast: brand orange on white is **not** readable as body text; use it for accents and buttons (with navy text), not for small text. Visible focus states. Alt text is a required CMS field. Respect `prefers-reduced-motion`.
+- **SEO**: Metadata API per page, unique titles and descriptions, per-page Open Graph image, `sitemap.xml`, `robots.txt`, canonical URLs, JSON-LD (`Organization`/`LocalBusiness` on site, `CreativeWork` on project pages).
+- **Security**: `/admin` behind Payload auth; honeypot + rate limiting on the inquiry form and AI endpoint; secrets only in env; `docs/reference/` in `.gitignore`.
+
+## Project timeline (from the agreement, adjusted for content delays)
+
+1. Kickoff, content collection, design direction (in progress, content partly received Oct 26, 2026)
+2. **Visual design of all pages, desktop + mobile** (current phase, designed directly in code with placeholders)
+3. Full development: pages, Portfolio Manager, AI writer, analytics → staging for client review
+4. Client review (2 revision rounds **total**), testing, domain setup, launch
+
+Client reviews on staging → pays the 70% delivery payment → launch and handover.
+
+## Status log
+
+Append one line per completed step: `YYYY-MM-DD: what was done`.
+
+- 2026-10-26: Project kit created; design phase starting.
