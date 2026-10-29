@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 200" role="img" aria-label="Meliel">
+  <!-- Interim redraw of logo-full-v1-muted.png (Meliel's v1 logo). Replace with the client's vector file when it arrives. -->
+  <defs>
+    <linearGradient id="ladder" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0">
+      <stop offset="0" stop-color="#1D3959"/>
+      <stop offset="0.55" stop-color="#406B8F"/>
+      <stop offset="1" stop-color="#99C3DE"/>
+    </linearGradient>
+  </defs>
+  <g fill="#FAA91A" fill-rule="evenodd">
+    <path d="M0 0H50V20H110V180H60V40H50V200H0Z M20 20V180H30V20Z M80 40V160H90V40Z"/>
+    <path d="M120 20H170V0H190V200H170V40H140V120H160V200H120Z M140 130V190H150V130Z"/>
+    <path d="M260 20H310V0H330V200H310V40H280V120H300V200H260Z M280 130V190H290V130Z"/>
+  </g>
+  <g fill="url(#ladder)">
+    <rect x="215" y="0" width="20" height="20"/>
+    <rect x="200" y="30" width="50" height="20"/>
+    <rect x="200" y="60" width="50" height="20"/>
+    <rect x="200" y="90" width="50" height="20"/>
+    <rect x="200" y="120" width="50" height="20"/>
+    <rect x="200" y="150" width="50" height="20"/>
+    <rect x="200" y="180" width="50" height="20"/>
+  </g>
+</svg>

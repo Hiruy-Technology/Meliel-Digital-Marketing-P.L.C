@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 200" role="img" aria-label="Meliel ladder icon">
+  <!-- Interim redraw of icon-gradient.png (the ladder from Meliel's logo). -->
+  <defs>
+    <linearGradient id="ladder" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0">
+      <stop offset="0" stop-color="#1D3959"/>
+      <stop offset="0.55" stop-color="#406B8F"/>
+      <stop offset="1" stop-color="#99C3DE"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#ladder)">
+    <rect x="15" y="0" width="20" height="20"/>
+    <rect x="0" y="30" width="50" height="20"/>
+    <rect x="0" y="60" width="50" height="20"/>
+    <rect x="0" y="90" width="50" height="20"/>
+    <rect x="0" y="120" width="50" height="20"/>
+    <rect x="0" y="150" width="50" height="20"/>
+    <rect x="0" y="180" width="50" height="20"/>
+  </g>
+</svg>

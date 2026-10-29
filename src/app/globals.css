@@ -1,8 +1,195 @@
 @import "tailwindcss";
 
-/* Brand theme tokens (colors, fonts, spacing) are added in step 2. */
+/*
+ * Meliel design tokens.
+ * Anchors are sampled from logo-full-v1-muted.png (see docs/03-design-direction.md):
+ *   orange-500 #FAA91A, navy-900 #1B3354, navy-950 #122B4D, ice-300 #99C3DE.
+ * Other steps are generated in OKLCH from those anchors.
+ * Contrast rules: run `pnpm contrast`. Never use orange-500 for text on light backgrounds;
+ * use orange-800 for orange text on white, and navy-900 text on orange buttons.
+ */
+@theme static {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
 
-body {
-  background: #ffffff;
-  color: #1b3354;
+  /* Page backgrounds */
+  --color-paper: #f7f8fa;
+
+  /* Brand orange (primary accent) */
+  --color-orange-50: #fff9f2;
+  --color-orange-100: #fff0de;
+  --color-orange-200: #ffe1bc;
+  --color-orange-300: #fecc8b;
+  --color-orange-400: #feb853;
+  --color-orange-500: #faa91a;
+  --color-orange-600: #db890f;
+  --color-orange-700: #b36603;
+  --color-orange-800: #8e4d0e;
+  --color-orange-900: #723e14;
+  --color-orange-950: #452003;
+
+  /* Brand navy (text, dark sections) */
+  --color-navy-50: #f2f7ff;
+  --color-navy-100: #e4eefc;
+  --color-navy-200: #c9dbf4;
+  --color-navy-300: #a6c0e3;
+  --color-navy-400: #82a0cb;
+  --color-navy-500: #6182b0;
+  --color-navy-600: #476795;
+  --color-navy-700: #32517b;
+  --color-navy-800: #233f65;
+  --color-navy-900: #1b3354;
+  --color-navy-950: #122b4d;
+
+  /* Ice blue: light accents on dark backgrounds */
+  --color-ice-300: #99c3de;
+
+  /* The ladder: one color per step, bottom (1) to top (7), sampled from the logo */
+  --color-ladder-1: #1d3959;
+  --color-ladder-2: #2b4c6d;
+  --color-ladder-3: #355b7d;
+  --color-ladder-4: #406b8f;
+  --color-ladder-5: #5983a5;
+  --color-ladder-6: #7aa3c1;
+  --color-ladder-7: #99c3de;
+
+  /* Display type sizes scale smoothly from 360px to 1440px wide */
+  --text-display-sm: clamp(1.875rem, 1.4rem + 2.1vw, 3rem);
+  --text-display-sm--line-height: 1.1;
+  --text-display: clamp(2.25rem, 1.5rem + 3.4vw, 4rem);
+  --text-display--line-height: 1.05;
+  --text-display-lg: clamp(2.5rem, 1.5rem + 4.6vw, 5.25rem);
+  --text-display-lg--line-height: 1;
+}
+
+@theme inline {
+  /* Font CSS variables come from next/font in src/lib/fonts.ts */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    var(--font-sora), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-ethiopic:
+    var(--font-noto-ethiopic), "Nyala", "Abyssinica SIL", sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Keeps anchored sections (e.g. /services#branding) clear of the sticky header. */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background: var(--color-white);
+    color: var(--color-navy-900);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  /* Any Amharic text (lang="am") uses Noto Sans Ethiopic automatically. */
+  :lang(am) {
+    font-family: var(--font-ethiopic);
+  }
+
+  /* Visible focus everywhere: navy on light backgrounds, orange on dark sections. */
+  :focus-visible {
+    outline: 3px solid var(--color-navy-900);
+    outline-offset: 3px;
+  }
+
+  [data-tone="dark"] :focus-visible {
+    outline-color: var(--color-orange-500);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    /* Animations are opt-in per feature (see .rise); here we only switch off hover/transition motion. */
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/*
+ * Rise motif: elements fade and move up as they scroll into view.
+ * Pure CSS (scroll-driven animations): no JavaScript. Browsers without support,
+ * and visitors who prefer reduced motion, simply see the content without animation.
+ */
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 2rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .rise {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 80%;
+    }
+  }
+}
+
+/*
+ * Ladder progress indicator (src/components/ui/LadderProgress.tsx).
+ * Desktop: the logo's 7-step ladder at the left edge, filling bottom to top as the page scrolls.
+ * Mobile: a thin gradient bar at the top of the screen.
+ * Hidden in browsers without scroll-driven animation support.
+ */
+@keyframes ladder-fill {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+.ladder-step::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--step-color);
+  transform-origin: left;
+  scale: 0 1;
+}
+
+@supports (animation-timeline: scroll()) {
+  .ladder-step::after {
+    animation: ladder-fill linear both;
+    animation-timeline: scroll(root);
+    animation-range: calc(var(--step) * 100% / 7)
+      calc((var(--step) + 1) * 100% / 7);
+  }
+
+  .ladder-bar {
+    animation: ladder-fill linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+@supports not (animation-timeline: scroll()) {
+  .ladder-progress {
+    display: none !important;
+  }
 }
