@@ -10,7 +10,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "contrast": "node scripts/contrast-check.mjs"
+    "contrast": "node scripts/contrast-check.mjs",
+    "placeholders": "node scripts/list-placeholders.mjs"
   },
   "dependencies": {
     "clsx": "2.1.1",

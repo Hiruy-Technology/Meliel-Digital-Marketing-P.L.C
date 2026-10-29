@@ -15,7 +15,7 @@ This file is the project's standing context. Read it, and the docs it points to,
 - Ask before adding any dependency not listed under Stack below.
 - Dev environment: **Windows** (Git Bash or PowerShell), project at `C:\Users\Yakob\Desktop\Hiruy Technologies\Clients\Meliel Digital Marketing PLC\Project_1_Website`. Never put `#` in the path. Docker Desktop is available; Docker for local Postgres starts in phase 3.
 - Before using a library API, check its **current official docs**. Do not rely on memory for versions or APIs. For Next.js, read the bundled docs in `node_modules/next/dist/docs/` (see `AGENTS.md`).
-- Scripts: `pnpm dev`, `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm format` / `pnpm format:check`, `pnpm contrast` (WCAG check of the color pairs).
+- Scripts: `pnpm dev`, `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm format` / `pnpm format:check`, `pnpm contrast` (WCAG check of the color pairs), `pnpm placeholders` (lists every placeholder still waiting for the client).
 - When something conflicts with the scope doc or is ambiguous, ask. Do not guess.
 
 ## Source of truth
@@ -115,3 +115,4 @@ Append one line per completed step: `YYYY-MM-DD: what was done`.
 - 2026-10-26: Project kit created; design phase starting.
 - 2026-10-29: Step 1 done. Scaffolded Next.js 16.4.3 + React 19.3 + Tailwind 4 + TypeScript strict (pnpm, src/, `@/*`, standalone output, cacheComponents off). Added Prettier + Tailwind plugin, clsx, `.gitattributes` (LF), `.env.example`, `.nvmrc`, folder skeleton, `typecheck`/`format` scripts. Lint, typecheck, format check and build pass.
 - 2026-10-29: Step 2 done. Interim SVG logo redrawn from the v1 PNG on its 33×20 grid (public/brand/, Logo component with color / color-on-dark / white variants), favicon + apple icon from the ladder. Tailwind theme tokens (orange + navy 50–950 from logo anchors, ice, 7 ladder steps, paper, display type sizes; default palette removed). Fonts: Sora + Inter + Noto Sans Ethiopic (auto for lang="am"). UI components: Button, Container, Section, Card, Tag, Placeholder, PlaceholderImage, Rise, LadderProgress (scroll-driven CSS, no JS). `pnpm contrast`: all 28 pairs pass AA. Internal showcase at /dev/design-system (hidden when SITE_ENV=production).
+- 2026-10-29: Step 3 done. Types mirroring the Payload model (`src/lib/types.ts`), the client's verbatim page copy (`src/content/copy.ts`), the single placeholder file (`src/content/seed.ts`: 5 real services + 56 distinct placeholders), the data layer (`src/lib/data.ts`: async getters with service/industry/featured filters, drafts excluded, previous/next), `isPlaceholder` helper, `pnpm placeholders`, internal `/dev/data` page.
