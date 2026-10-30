@@ -36,13 +36,14 @@ This file is the project's standing context. Read it, and the docs it points to,
 - **Never invent** clients, testimonials, statistics, team members, project results, or contact details.
 - Anything not yet provided uses a visible placeholder: `[PLACEHOLDER: what goes here]`. Keep all placeholder data in one seed file so it is easy to find and replace.
 - Client copy from `docs/02-meliel-content.md` is used as written. If a small grammar or consistency fix seems needed, make it **and list it** in your step summary so Jacob can confirm with the client.
-- Language: **English only**, American spelling (normalize the client's "enquiries" to "inquiries" and flag it). The Amharic name **መልዕል** and its Amharic meaning may appear as brand elements.
+- Languages: **English and Amharic** (scope change, 2026-10-30; see `docs/01-scope.md`). English uses American spelling (normalize the client's "enquiries" to "inquiries" and flag it). Every piece of content switches with the language: no mixed-language pages. Hiruy translates the Amharic: Claude drafts it, Jacob reviews it, and Meliel signs it off. Translate only real content: never invent facts in either language. Meliel's own Amharic (the name's meaning) stays verbatim. Until a translation is reviewed, use a visible placeholder. English is the default language, at the current URLs; Amharic lives at `/am/...`. No language guessing from the browser. The `/admin` dashboard stays in English.
+- Theme: **light and dark**, with a toggle. Every color pair must pass WCAG AA in both themes.
 
 ## Stack
 
 - **Next.js** (App Router, latest stable) + **TypeScript** (strict) + **Tailwind CSS**
 - **Payload CMS 3**, embedded in the same Next.js app: this is the contracted **Portfolio Manager**, served at `/admin`
-- **PostgreSQL**: Docker locally (`docker-compose.yml`); Neon or self-hosted Postgres in production
+- **PostgreSQL**: Docker locally (`docker-compose.yml`); **Neon** in production (paid plan, for backups)
 - **Media**: Payload S3-compatible storage adapter pointed at **Cloudflare R2** in production, local disk in dev. Videos are mainly **YouTube/Vimeo URLs**; short MP4 uploads are optional.
 - **AI Case Study Writer**: Anthropic API. Model from env `ANTHROPIC_MODEL` (default `claude-haiku-5-5`), key from `ANTHROPIC_API_KEY`.
 - **Email notifications**: Resend
@@ -84,7 +85,7 @@ The production host is **not decided yet** (Vercel, or Hiruy's VPS pattern: Host
 - **ClientLogos**: name, logo, url (optional), sortOrder
 - **TeamMembers** (optional section): name, role, photo, bio, sortOrder
 - **Inquiries**: stores every form submission (backup to the email notification): type (`general` | `quote`), name, company, email, phone, services (→ Services, many), selectedIncludes (array of strings), budget, timeline, message, createdAt
-- **Global `SiteSettings`**: phone(s), email, WhatsApp number, Telegram username, address, office hours, map embed URL, social links, homepage stats (value + label)
+- **Global `SiteSettings`**: phone(s), email, WhatsApp number, Telegram username, address, office hours, map embed URL, social links, homepage stats (value + label), inquiry form options (budget ranges, timelines)
 
 Do not build a general page builder. Page copy lives in code; only the items above are editable.
 
@@ -98,7 +99,7 @@ In the Project edit screen: the editor types a few short notes in `aiNotes`, cli
 - **Performance**: Lighthouse ≥ 90 (mobile) on public pages. Many visitors are on slow mobile connections: use `next/image` (AVIF/WebP), lazy-load below the fold, and use a **click-to-load facade** for video embeds (thumbnail until clicked).
 - **Accessibility**: WCAG 2.1 AA. Watch contrast: brand orange on white is **not** readable as body text; use it for accents and buttons (with navy text), not for small text. Visible focus states. Alt text is a required CMS field. Respect `prefers-reduced-motion`.
 - **SEO**: Metadata API per page, unique titles and descriptions, per-page Open Graph image, `sitemap.xml`, `robots.txt`, canonical URLs, JSON-LD (`Organization`/`LocalBusiness` on site, `CreativeWork` on project pages).
-- **Security**: `/admin` behind Payload auth; honeypot + rate limiting on the inquiry form and AI endpoint; secrets only in env; `docs/reference/` in `.gitignore`.
+- **Security**: `/admin` behind Payload auth; honeypot + database-backed rate limiting on the inquiry forms and AI endpoint (no extra service; works on any host); secrets only in env; `docs/reference/` in `.gitignore`.
 
 ## Project timeline (from the agreement, adjusted for content delays)
 

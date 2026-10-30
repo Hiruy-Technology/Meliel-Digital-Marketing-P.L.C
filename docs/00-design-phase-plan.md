@@ -1,6 +1,6 @@
 # Meliel website: design-phase plan
 
-Status: **approved by Jacob on 2026-10-29.** Steps 1–3 done 2026-10-29, steps 4–10 done 2026-10-30. Design phase build complete. Next: deploy the preview (`docs/05-preview-checklist.md`). Extra dependencies approved 2026-10-29: `clsx`, `prettier`, `prettier-plugin-tailwindcss`.
+Status: **approved by Jacob on 2026-10-29.** Steps 1–3 done 2026-10-29, steps 4–10 done 2026-10-30. Design phase build complete. Preview deploy postponed by Jacob (see `docs/05-preview-checklist.md`). Phase 3 plan below. Extra dependencies approved 2026-10-29: `clsx`, `prettier`, `prettier-plugin-tailwindcss`.
 
 ## Context
 Hiruy Technologies is building the contracted website for Meliel Digital Marketing P.L.C. (agreement HT-2026-006). We are in the **design phase**: every page built in code (desktop and mobile) with visible placeholders for missing content, deployed to a preview URL for the client's design review. The client's design review counts as **revision round 1 of 2**.
@@ -139,3 +139,20 @@ All 8 sections from the design direction, in `src/components/sections/home/*`. E
 
 ## Verification (whole phase)
 `pnpm lint && pnpm typecheck && pnpm build` stays clean after every step. Manual check of every route at 360px and 1440px. `node scripts/contrast-check.mjs` passes. Lighthouse mobile ≥ 90 and zero axe violations on public pages before the preview goes out.
+
+---
+
+## Phase 3 plan (agreed 2026-10-30)
+
+Stop for review after each step, as before. Decisions: Neon in production, Docker locally; Amharic translated by Hiruy; English default; admin in English; budget options editable; database-backed rate limiting.
+
+11. **Light and dark theme**: theme-aware colors, header toggle, remembered choice, no flash of the wrong theme, contrast checked in both themes
+12. **Payload foundation** (needs Node 24 LTS): Payload at `/admin`, Postgres in Docker, login, route groups
+13. **Languages**: `/am/...` routes, language switcher, page text in English and Amharic files
+14. **Collections**: all content types, with two-language fields
+15. **Connect the site**: `src/lib/data.ts` reads Payload in the visitor's language
+16. **Real forms**: save to Inquiries, Resend email, honeypot, rate limiting, messages in both languages
+17. **AI Case Study Writer**: drafts for human review; test Amharic quality before promising it
+18. **Production storage**: Cloudflare R2
+19. **SEO and analytics**: social images, JSON-LD, hreflang, GA4, Search Console
+20. **Staging and handover**: full retest in both languages and both themes, handover guide

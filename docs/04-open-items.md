@@ -12,7 +12,8 @@ Per Article 6.2, the timeline extends for client content delays.
 ## Pending ⏳
 ### Blocking development
 - [ ] **Portfolio: 6 to 12 projects**, numbered by priority (client, industry, service, challenge, delivered, results with numbers, images, videos, client permission)
-- [ ] **Account setup**: dedicated Meliel email + login, domain (existing or preferred names), payment method for paid services
+- [x] **Meliel Google account** received by Jacob (2026-10-30). All external services and tools must be registered under this account. Credentials stay with Jacob: never put them in the repo, docs, or chat.
+- [ ] **Account setup (rest)**: domain (existing or preferred names), payment method for paid services
 - [ ] Email address(es) for inquiry notifications
 - [ ] Portfolio Manager users (names + emails)
 - [ ] Main point of contact for approvals
@@ -36,7 +37,13 @@ Per Article 6.2, the timeline extends for client content delays.
 - [ ] Privacy Policy details: legal entity name, address, data contact
 
 ## Decisions to confirm at kickoff
+- [x] Production database: Neon (decided by Jacob 2026-10-30)
 - [ ] Portfolio service filters = the 5 services in `02-meliel-content.md`
 - [ ] Event Production inquiries handled as "quote on request"
-- [ ] English only (Amharic name/meaning as brand elements)
+- [x] Languages: full Amharic and English site, decided by Jacob 2026-10-30 (replaces "English only")
+- [ ] Written agreement with Meliel for the Amharic site and dark theme: price and timeline
+- [x] Amharic text: Hiruy translates (Claude drafts, Jacob reviews), decided 2026-10-30
+- [ ] Meliel sign-off of the Amharic text
+- [x] Default language English; `/admin` stays in English
+- [x] Budget and timeline options editable in the admin (added to Site Settings)
 - [ ] Hosting choice (Vercel vs. VPS)

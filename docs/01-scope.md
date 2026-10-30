@@ -44,9 +44,17 @@ Next.js + TypeScript, Tailwind CSS, Vercel or equivalent hosting, AI case study 
 - **Support**: 2 to 3 months of free bug-fix support after launch. New features, redesigns, and content updates are not included.
 - **IP**: transfers to Meliel on full payment. Hiruy may show the site in its portfolio. Third-party components must have licenses permitting commercial use.
 
+## Changes to the original scope
+
+Decided by Jacob on 2026-10-30. Both go beyond Agreement HT-2026-006, which listed a multilingual site as out of scope. **Written agreement with Meliel (price and timeline): to be confirmed by Jacob.**
+
+| Added | Notes |
+|---|---|
+| Full Amharic and English site | Language switcher. All content switches together, with no mixed languages on a page. Includes the admin, forms, and SEO. |
+| Light and dark theme | Toggle in the site header. |
+
 ## Out of scope (do not build without written approval)
 
-- Amharic or multilingual version of the site
 - Blog or news section
 - General page builder or editable page copy beyond the collections in CLAUDE.md
 - Client login areas, payments, or e-commerce
