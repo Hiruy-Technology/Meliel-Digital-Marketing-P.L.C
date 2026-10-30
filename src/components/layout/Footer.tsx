@@ -6,21 +6,11 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { Placeholder } from "@/components/ui/Placeholder";
 import { brandLine } from "@/content/copy";
-import { emailHref, externalHref, phoneHref } from "@/lib/contact";
+import { emailHref, phoneHref } from "@/lib/contact";
 import { getServices, getSiteSettings } from "@/lib/data";
 import { footerNav, projectCta } from "@/lib/navigation";
 import { isPlaceholder, placeholderLabel } from "@/lib/placeholder";
-import type { SocialLink } from "@/lib/types";
-
-const SOCIAL_LABELS: Record<SocialLink["platform"], string> = {
-  facebook: "Facebook",
-  instagram: "Instagram",
-  linkedin: "LinkedIn",
-  tiktok: "TikTok",
-  x: "X",
-  youtube: "YouTube",
-  telegram: "Telegram",
-};
+import { SocialLinks } from "../sections/SocialLinks";
 
 /** Shows a settings value, or a clearly marked placeholder while it's missing. */
 function SettingText({ value }: { value: string }) {
@@ -142,38 +132,11 @@ export async function Footer() {
             </ContactRow>
           </ul>
 
-          <ul className="mt-6 flex flex-wrap gap-2" aria-label="Social media">
-            {settings.socialLinks.map((social) => {
-              const href = externalHref(social.url);
-              const label = SOCIAL_LABELS[social.platform];
-              const classes =
-                "inline-flex size-11 items-center justify-center rounded-sm border border-white/15 text-navy-100";
-              return (
-                <li key={social.platform}>
-                  {href ? (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Meliel on ${label} (opens in a new tab)`}
-                      className={`${classes} hover:border-white/40 hover:text-white`}
-                    >
-                      <Icon name={social.platform} className="size-5" />
-                    </a>
-                  ) : (
-                    // Link not provided yet: shown (so the design is complete) but marked and inert.
-                    <span
-                      title={social.url}
-                      aria-label={`${label} (link not provided yet)`}
-                      className={`${classes} border-dashed border-orange-500/70 opacity-70`}
-                    >
-                      <Icon name={social.platform} className="size-5" />
-                    </span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+          <SocialLinks
+            links={settings.socialLinks}
+            tone="dark"
+            className="mt-6"
+          />
         </div>
       </Container>
 

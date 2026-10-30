@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Our Work",
   description:
     "Browse Meliel Digital Marketing's portfolio of projects, filtered by service or industry.",
+  alternates: { canonical: "/work" },
 };
 
 /** A query value may be repeated in the URL; only the first counts. */

@@ -14,6 +14,7 @@ import { getTeamMembers } from "@/lib/data";
 export const metadata: Metadata = {
   title: "About Us",
   description: mission,
+  alternates: { canonical: "/about" },
 };
 
 export default async function AboutPage() {

@@ -67,6 +67,31 @@ export const quoteSchema = z
 
 export type QuoteInput = z.infer<typeof quoteSchema>;
 
+/** Service choice on the contact form for visitors who don't know yet. */
+export const SERVICE_NOT_SURE = "not-sure";
+
+export const contactSchema = z
+  .object({
+    ...contactDetails,
+    service: z
+      .string()
+      .min(1, { error: "Please choose a service, or “Not sure yet”." }),
+    budget: z.string(),
+    timeline: z.string(),
+    message: z
+      .string()
+      .trim()
+      .min(1, { error: "Please tell us a little about what you need." })
+      .max(2000, { error: "Please keep this under 2000 characters." }),
+  })
+  .refine((data) => isBudgetOptional([data.service]) || data.budget !== "", {
+    error: "Please choose a budget range.",
+    path: ["budget"],
+    when: () => true,
+  });
+
+export type ContactInput = z.infer<typeof contactSchema>;
+
 /** First error message per field, keyed by field name. */
 export function fieldErrors(error: z.ZodError): Record<string, string> {
   const errors: Record<string, string> = {};

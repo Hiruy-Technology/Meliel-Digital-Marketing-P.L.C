@@ -8,6 +8,7 @@ import { getProjects, getServices } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Services",
   description: pathwaysStatement,
+  alternates: { canonical: "/services" },
 };
 
 export default async function ServicesPage() {

@@ -34,6 +34,7 @@ export async function generateMetadata({
   return {
     title: project.title,
     description: project.challenge[0],
+    alternates: { canonical: `/work/${project.slug}` },
   };
 }
 

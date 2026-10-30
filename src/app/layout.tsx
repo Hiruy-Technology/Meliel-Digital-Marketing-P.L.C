@@ -6,14 +6,19 @@ import { Header } from "@/components/layout/Header";
 import { PreviewBanner } from "@/components/layout/PreviewBanner";
 import { LadderProgress } from "@/components/ui/LadderProgress";
 import { inter, notoEthiopic, sora } from "@/lib/fonts";
+import { isPreview, siteName, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
-    default: "Meliel Digital Marketing",
-    template: "%s | Meliel Digital Marketing",
+    default: siteName,
+    template: `%s | ${siteName}`,
   },
-  // Client copy (docs/02-meliel-content.md). Per-page descriptions come in step 9.
+  openGraph: { siteName, type: "website", locale: "en_US" },
+  // Extra safeguard on top of robots.txt: the design preview stays out of search results.
+  ...(isPreview ? { robots: { index: false, follow: false } } : {}),
+  // Fallback description (client copy); each page sets its own.
   description:
     "We help businesses and brands communicate their value, stand out in competitive markets, connect with the right audiences, and turn opportunities into measurable growth.",
 };

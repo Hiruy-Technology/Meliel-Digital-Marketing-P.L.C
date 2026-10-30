@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Get a Quote",
   description:
     "Choose the services you need from Meliel Digital Marketing, share your budget and timeline, and request a quote.",
+  alternates: { canonical: "/quote" },
 };
 
 export default async function QuotePage({ searchParams }: PageProps<"/quote">) {

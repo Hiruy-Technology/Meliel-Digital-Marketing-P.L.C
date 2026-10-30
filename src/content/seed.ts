@@ -322,4 +322,8 @@ export const pendingCopy = {
   legalEntityName: "[PLACEHOLDER: legal entity name, e.g. as registered]",
   legalAddress: "[PLACEHOLDER: registered address]",
   dataContactEmail: "[PLACEHOLDER: privacy/data contact email]",
+  retentionPeriod: "[PLACEHOLDER: how long inquiries are kept]",
+  policyDate: "[PLACEHOLDER: date this policy takes effect]",
+  /** Shown where the map goes until settings.mapEmbedUrl is set. */
+  officeMap: "[PLACEHOLDER: office location map]",
 };

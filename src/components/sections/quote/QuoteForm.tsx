@@ -12,6 +12,7 @@ import {
 } from "react";
 import clsx from "clsx";
 import { Button } from "@/components/ui/Button";
+import { ErrorSummary } from "@/components/ui/ErrorSummary";
 import {
   FieldError,
   SelectField,
@@ -102,8 +103,6 @@ export function QuoteForm({
 
   const chosen = services.filter((s) => selected.has(s.slug));
   const budgetOptional = isBudgetOptional(chosen.map((s) => s.slug));
-  // In page order, so the summary reads the way the form is filled in.
-  const errorKeys = Object.keys(FIELDS).filter((key) => errors[key]);
 
   // After a failed submit, move focus to the error summary so everyone finds it.
   useEffect(() => {
@@ -189,33 +188,7 @@ export function QuoteForm({
         className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12"
       >
         <div className="space-y-14 lg:col-span-8">
-          {errorKeys.length > 0 && (
-            <div
-              ref={summaryRef}
-              tabIndex={-1}
-              role="alert"
-              className="rounded-sm border-2 border-red bg-orange-50 p-5"
-            >
-              <p className="font-display font-semibold text-red">
-                Please check {errorKeys.length === 1 ? "this" : "these"}{" "}
-                {errorKeys.length === 1
-                  ? "field"
-                  : `${errorKeys.length} fields`}
-              </p>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-red">
-                {errorKeys.map((key) => (
-                  <li key={key}>
-                    <a
-                      href={`#${FIELDS[key]?.id ?? ""}`}
-                      className="underline underline-offset-2"
-                    >
-                      {errors[key]}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          <ErrorSummary ref={summaryRef} errors={errors} fields={FIELDS} />
 
           <fieldset
             id={FIELDS.services.id}
