@@ -57,6 +57,10 @@ const pairs = [
   // Small components
   ["navy-800", "navy-50", TEXT, "tag"],
   ["navy-900", "orange-50", TEXT, "placeholder text"],
+  ["red", "white", TEXT, "form error text"],
+  ["red", "paper", TEXT, "form error text on off-white"],
+  ["red", "orange-50", TEXT, "form error summary"],
+  ["navy-900", "navy-50", TEXT, "selected service card"],
   ["ice-300", "navy-900", TEXT, "placeholder image label"],
 
   // Non-text UI (WCAG 1.4.11)
