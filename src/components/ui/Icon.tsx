@@ -25,6 +25,24 @@ const ICONS = {
       <path d="m13 6 6 6" />
     </>
   ),
+  "arrow-left": (
+    <>
+      <path d="M5 12h14" />
+      <path d="m5 12 6 6" />
+      <path d="m5 12 6-6" />
+    </>
+  ),
+  "chevron-left": <path d="m15 6-6 6 6 6" />,
+  "chevron-right": <path d="m9 6 6 6-6 6" />,
+  play: <path d="M7 4v16l13-8z" />,
+  expand: (
+    <>
+      <path d="M4 8V6a2 2 0 0 1 2-2h2" />
+      <path d="M4 16v2a2 2 0 0 0 2 2h2" />
+      <path d="M16 4h2a2 2 0 0 1 2 2v2" />
+      <path d="M16 20h2a2 2 0 0 0 2-2v-2" />
+    </>
+  ),
   phone: (
     <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
   ),

@@ -85,6 +85,11 @@
     scroll-padding-top: 6rem;
   }
 
+  /* The page behind stays put while the full-screen image viewer is open. */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
   body {
     background: var(--color-white);
     color: var(--color-navy-900);
