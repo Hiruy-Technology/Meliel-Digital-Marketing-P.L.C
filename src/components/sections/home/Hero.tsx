@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { Logo } from "@/components/ui/Logo";
 import { heroHeadline, meaningShort, valueStatement } from "@/content/copy";
 import { projectCta } from "@/lib/navigation";
 
@@ -72,12 +73,8 @@ export function Hero() {
         <div className="flex items-end justify-between gap-8 border-t border-navy-100 pt-10 lg:col-span-4 lg:flex-col lg:items-center lg:justify-end lg:border-t-0 lg:pt-0">
           <HeroLadder />
           <p className="max-w-56 text-sm text-navy-700 lg:text-center">
-            <span
-              lang="am"
-              className="block font-ethiopic text-2xl font-bold text-navy-900"
-            >
-              መልዕል
-            </span>
+            {/* The logo spells መልዕል, so Home doesn't need to download the 194 KB Amharic font. */}
+            <Logo className="h-8 lg:mx-auto lg:flex lg:justify-center" />
             <span className="mt-1 block">{meaningShort}</span>
           </p>
         </div>

@@ -10,8 +10,9 @@ import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
 import { Rise } from "@/components/ui/Rise";
 import { Section } from "@/components/ui/Section";
 import { Tag } from "@/components/ui/Tag";
+import { notoEthiopic } from "@/lib/font-ethiopic";
 
-// Internal showcase of the design system. Never shown in production; removed before launch (step 10).
+// Internal showcase of the design system. Local development only: every real build returns 404 here.
 export const metadata: Metadata = {
   title: "Design system (internal)",
   robots: { index: false, follow: false },
@@ -50,7 +51,7 @@ function Heading({ children }: { children: ReactNode }) {
 }
 
 export default function DesignSystemPage() {
-  if (process.env.NEXT_PUBLIC_SITE_ENV === "production") notFound();
+  if (process.env.NODE_ENV === "production") notFound();
 
   return (
     <>
@@ -139,7 +140,7 @@ export default function DesignSystemPage() {
           <p className="text-sm text-navy-600">
             Muted caption text (navy-600).
           </p>
-          <p lang="am" className="text-2xl">
+          <p lang="am" className={`${notoEthiopic.variable} text-2xl`}>
             መልዕል — ወደ ከፍታ የሚያደርስ መወጣጫ
           </p>
         </div>

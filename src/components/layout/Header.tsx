@@ -9,12 +9,9 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-navy-100 bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/85">
       <Container className="flex h-18 items-center justify-between gap-6">
-        <Link
-          href="/"
-          aria-label="Meliel Digital Marketing, home"
-          className="rounded-sm"
-        >
+        <Link href="/" className="rounded-sm">
           <Logo withName className="h-9 text-lg lg:h-10 lg:text-xl" />
+          <span className="sr-only">, home</span>
         </Link>
 
         <div className="flex items-center gap-3 lg:gap-8">

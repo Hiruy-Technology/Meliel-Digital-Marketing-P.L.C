@@ -59,9 +59,9 @@
   /* Form errors */
   --color-red: #b3261e;
 
-  /* Floating contact buttons. WhatsApp's teal (not its bright green, which fails 3:1 with a white icon). */
-  --color-whatsapp: #128c7e;
-  --color-telegram: #229ed9;
+  /* Floating contact buttons: darkened from the brand colors so white labels pass 4.5:1. */
+  --color-whatsapp: #0f7d71;
+  --color-telegram: #1a78ae;
 
   /* Display type sizes scale smoothly from 360px to 1440px wide */
   --text-display-sm: clamp(1.875rem, 1.4rem + 2.1vw, 3rem);
@@ -109,7 +109,9 @@
 
   /* Any Amharic text (lang="am") uses Noto Sans Ethiopic automatically. */
   :lang(am) {
-    font-family: var(--font-ethiopic);
+    /* --font-noto-ethiopic only exists inside the wrapper that loads the font (see About). */
+    font-family:
+      var(--font-noto-ethiopic), "Nyala", "Abyssinica SIL", sans-serif;
   }
 
   /* Visible focus everywhere: navy on light backgrounds, orange on dark sections. */

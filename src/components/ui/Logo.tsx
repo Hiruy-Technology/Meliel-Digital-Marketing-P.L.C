@@ -84,7 +84,7 @@ export function Logo({
             : "border-navy-200 text-navy-900",
         )}
       >
-        <span className="text-[1.05em] font-bold tracking-tight">Meliel</span>
+        <span className="text-[1.05em] font-bold tracking-tight">Meliel</span>{" "}
         <span
           className={clsx(
             "mt-1 text-[0.55em] font-medium tracking-[0.14em] uppercase",

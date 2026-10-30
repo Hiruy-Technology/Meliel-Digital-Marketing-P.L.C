@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { PreviewBanner } from "@/components/layout/PreviewBanner";
 import { LadderProgress } from "@/components/ui/LadderProgress";
-import { inter, notoEthiopic, sora } from "@/lib/fonts";
+import { inter, sora } from "@/lib/fonts";
 import { isPreview, siteName, siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -27,12 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={clsx(
-        sora.variable,
-        inter.variable,
-        notoEthiopic.variable,
-        "h-full antialiased",
-      )}
+      className={clsx(sora.variable, inter.variable, "h-full antialiased")}
     >
       <body className="flex min-h-full flex-col">
         <a

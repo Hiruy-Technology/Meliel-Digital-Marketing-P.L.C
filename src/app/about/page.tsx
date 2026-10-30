@@ -10,6 +10,7 @@ import { Team } from "@/components/sections/about/Team";
 import { Values } from "@/components/sections/about/Values";
 import { meaningShort, mission, nameMeaning } from "@/content/copy";
 import { getTeamMembers } from "@/lib/data";
+import { notoEthiopic } from "@/lib/font-ethiopic";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -27,7 +28,9 @@ export default async function AboutPage() {
         title={nameMeaning.english.title}
         intro={meaningShort}
       />
-      <NameMeaning />
+      <div className={notoEthiopic.variable}>
+        <NameMeaning />
+      </div>
       <Story />
       <MissionVision />
       <Values />

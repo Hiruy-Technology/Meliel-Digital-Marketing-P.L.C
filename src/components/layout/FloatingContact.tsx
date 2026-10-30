@@ -32,6 +32,7 @@ function FloatingButton({ kind, label, href, pendingNote }: ButtonProps) {
     // Not provided yet: visible for the design review, marked with a dashed outline, inert.
     return (
       <span
+        role="img"
         title={pendingNote}
         aria-label={`${label} (not set up yet)`}
         className={clsx(
@@ -60,10 +61,9 @@ function FloatingButton({ kind, label, href, pendingNote }: ButtonProps) {
 export async function FloatingContact() {
   const settings = await getSiteSettings();
   return (
-    <div
+    <aside
       className="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 flex flex-col items-end gap-3 sm:right-6 sm:bottom-6"
       aria-label="Quick contact"
-      role="group"
     >
       <FloatingButton
         kind="whatsapp"
@@ -77,6 +77,6 @@ export async function FloatingContact() {
         href={telegramHref(settings.telegramUsername)}
         pendingNote={settings.telegramUsername}
       />
-    </div>
+    </aside>
   );
 }

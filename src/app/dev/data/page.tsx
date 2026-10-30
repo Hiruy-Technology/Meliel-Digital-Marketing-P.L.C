@@ -25,7 +25,7 @@ import {
 import { isPlaceholder } from "@/lib/placeholder";
 
 // Internal: every piece of content the pages will use, read through the data layer.
-// Placeholders are highlighted. Never shown in production; removed before launch (step 10).
+// Placeholders are highlighted. Local development only: every real build returns 404 here.
 export const metadata: Metadata = {
   title: "Content and data (internal)",
   robots: { index: false, follow: false },
@@ -66,7 +66,7 @@ function Block({
 }
 
 export default async function DataPage() {
-  if (process.env.NEXT_PUBLIC_SITE_ENV === "production") notFound();
+  if (process.env.NODE_ENV === "production") notFound();
 
   const [
     services,

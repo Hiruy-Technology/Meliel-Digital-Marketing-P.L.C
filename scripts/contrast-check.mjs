@@ -68,12 +68,11 @@ const pairs = [
   ["orange-500", "navy-900", UI, "focus ring on navy"],
   ["navy-500", "white", UI, "form field borders"],
   ["orange-500", "navy-900", LARGE, "large orange headings on navy"],
-  ["white", "whatsapp", UI, "WhatsApp button icon"],
+  ["white", "whatsapp", TEXT, "WhatsApp button label and icon"],
   ["whatsapp", "white", UI, "WhatsApp button on white page"],
-  ["whatsapp", "navy-900", UI, "WhatsApp button over navy section"],
-  ["white", "telegram", UI, "Telegram button icon"],
+  ["white", "telegram", TEXT, "Telegram button label and icon"],
   ["telegram", "white", UI, "Telegram button on white page"],
-  ["telegram", "navy-900", UI, "Telegram button over navy section"],
+  ["white", "navy-900", UI, "white ring around floating buttons on navy"],
 ];
 
 // Known-bad pairs, listed so nobody uses them by accident.

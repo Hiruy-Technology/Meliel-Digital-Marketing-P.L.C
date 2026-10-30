@@ -62,6 +62,7 @@ export function SocialLinks({
             ) : (
               // Link not provided yet: shown (so the design is complete) but marked and inert.
               <span
+                role="img"
                 title={social.url}
                 aria-label={`${label} (link not provided yet)`}
                 className={clsx(BASE, colors.idle, colors.pending)}
