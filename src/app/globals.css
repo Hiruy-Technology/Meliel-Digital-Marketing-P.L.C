@@ -144,6 +144,17 @@
   }
 }
 
+/*
+ * Ladder build: the hero's decorative ladder climbs in once on page load, bottom rung first.
+ * Each piece sets --i (0 = bottom). Text is never animated this way (it would delay LCP).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .ladder-build > * {
+    animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(150ms + var(--i, 0) * 90ms);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .rise {

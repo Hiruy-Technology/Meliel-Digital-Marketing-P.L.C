@@ -90,3 +90,30 @@ export const processSteps = [
 /** The brand line the hero is built on (last sentence of the English meaning). */
 export const brandLine =
   "To us, Meliel means helping brands rise from where they are to where they have the potential to be.";
+
+/**
+ * Home hero headline: the brand line without its lead-in "To us, Meliel means", capitalized.
+ * (Listed for client confirmation in the step 5 summary.) The word "rise" is highlighted.
+ */
+export const heroHeadline = {
+  before: "Helping brands ",
+  highlight: "rise",
+  after: " from where they are to where they have the potential to be.",
+};
+
+/** Second sentence of the English meaning's third paragraph. Used as the hero subline and site description. */
+export const valueStatement =
+  "We help businesses and brands communicate their value, stand out in competitive markets, connect with the right audiences, and turn opportunities into measurable growth.";
+
+/** First sentence of the English meaning. */
+export const meaningShort =
+  "Meliel means a way to rise, advance, and reach a higher level.";
+
+/** Fourth paragraph of the English meaning. Used as the services intro. */
+export const pathwaysStatement =
+  "Through strategy, creative production, and integrated digital marketing, we create pathways for brands to move beyond where they are today and toward where they aspire to be.";
+
+/** Client headings end with a period ("Strategy & Planning."); display them without it. */
+export function headingText(title: string): string {
+  return title.replace(/\.$/, "");
+}
