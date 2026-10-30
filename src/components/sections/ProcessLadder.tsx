@@ -9,7 +9,12 @@ import { differentiator, headingText, processSteps } from "@/content/copy";
 // Used on Home and About.
 const STEP_COLORS = [1, 2, 3, 4, 5, 6].map((n) => `var(--color-ladder-${n})`);
 
-export function ProcessLadder({ intro = differentiator }: { intro?: string }) {
+export function ProcessLadder({
+  intro = differentiator,
+}: {
+  /** Pass null where the differentiator already appears on the page (About). */
+  intro?: string | null;
+}) {
   return (
     <Section aria-labelledby="process-title">
       <Rise>

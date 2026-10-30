@@ -56,8 +56,12 @@ export const values = [
   },
 ] as const;
 
-export const differentiator =
-  "Meliel connects brand credibility to customer acquisition. It brings together the thinking behind the marketing, the creative work that communicates it, and the systems that help convert interest into action.";
+/** The two sentences of "What makes Meliel different", separated so About can set the first large. */
+export const differentiatorLead =
+  "Meliel connects brand credibility to customer acquisition.";
+export const differentiatorDetail =
+  "It brings together the thinking behind the marketing, the creative work that communicates it, and the systems that help convert interest into action.";
+export const differentiator = `${differentiatorLead} ${differentiatorDetail}`;
 
 /** "How Meliel works": shown as a rising ladder, step 1 at the bottom. */
 export const processSteps = [
