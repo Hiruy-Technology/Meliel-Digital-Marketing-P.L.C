@@ -41,12 +41,15 @@ export default async function ContactPage({
         intro="Send us a message or reach us directly, whichever is easiest for you."
       />
 
-      <section aria-label="Contact Meliel" className="bg-white py-12 lg:py-16">
+      <section
+        aria-label="Contact Meliel"
+        className="bg-surface py-12 lg:py-16"
+      >
         <Container className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <Link
               href="/quote"
-              className="group mb-8 flex items-center justify-between gap-4 rounded-sm border-2 border-navy-900 p-4 font-display font-semibold text-navy-900 hover:bg-navy-50"
+              className="group mb-8 flex items-center justify-between gap-4 rounded-sm border-2 border-ink p-4 font-display font-semibold text-ink hover:bg-tint"
             >
               Know which services you need? Get a quote
               <Icon
@@ -66,7 +69,10 @@ export default async function ContactPage({
         </Container>
       </section>
 
-      <section aria-label="Office location" className="bg-white pb-16 lg:pb-24">
+      <section
+        aria-label="Office location"
+        className="bg-surface pb-16 lg:pb-24"
+      >
         <Container>
           <MapFacade
             url={settings.mapEmbedUrl}

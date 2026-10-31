@@ -51,11 +51,11 @@ function Block({
   children: ReactNode;
 }) {
   return (
-    <div className="border-t border-navy-100 py-8">
+    <div className="border-t border-line py-8">
       <h2 className="mb-4 font-display text-xl font-bold">
         {title}
         {count !== undefined && (
-          <span className="ml-2 text-base font-normal text-navy-600">
+          <span className="ml-2 text-base font-normal text-ink-muted">
             ({count})
           </span>
         )}
@@ -98,13 +98,13 @@ export default async function DataPage() {
   return (
     <>
       <Section tone="paper" className="py-12!">
-        <p className="font-mono text-xs tracking-widest text-navy-600 uppercase">
+        <p className="font-mono text-xs tracking-widest text-ink-muted uppercase">
           Internal · step 3
         </p>
         <h1 className="mt-2 font-display text-display-sm font-bold">
           Content and data
         </h1>
-        <p className="mt-3 max-w-2xl text-navy-700">
+        <p className="mt-3 max-w-2xl text-ink-soft">
           Everything below comes through{" "}
           <code className="font-mono">src/lib/data.ts</code>. Orange text is a
           placeholder still waiting for the client. Full list:{" "}
@@ -119,20 +119,20 @@ export default async function DataPage() {
               <div key={s.id}>
                 <h3 className="font-display font-semibold">
                   {s.name}{" "}
-                  <span className="font-mono text-xs text-navy-600">
+                  <span className="font-mono text-xs text-ink-muted">
                     #{s.slug}
                   </span>
                 </h3>
-                <p className="mt-1 text-navy-700">{s.summary}</p>
+                <p className="mt-1 text-ink-soft">{s.summary}</p>
                 {s.includes.length > 0 && (
-                  <ul className="mt-2 list-disc pl-5 text-sm text-navy-700">
+                  <ul className="mt-2 list-disc pl-5 text-sm text-ink-soft">
                     {s.includes.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
                 )}
                 {s.note && (
-                  <p className="mt-2 text-sm font-medium text-orange-800">
+                  <p className="mt-2 text-sm font-medium text-accent">
                     {s.note}
                   </p>
                 )}
@@ -145,7 +145,7 @@ export default async function DataPage() {
           <ul className="space-y-3">
             {projects.map((p) => (
               <li key={p.id} className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-xs text-navy-600">
+                <span className="font-mono text-xs text-ink-muted">
                   /work/{p.slug}
                 </span>
                 <Value>{p.title}</Value>
@@ -158,13 +158,13 @@ export default async function DataPage() {
                     Featured
                   </Tag>
                 )}
-                <span className="text-xs text-navy-600">
+                <span className="text-xs text-ink-muted">
                   {p.gallery.length} images · {p.videos.length} videos
                 </span>
               </li>
             ))}
           </ul>
-          <div className="mt-6 grid gap-2 text-sm text-navy-700">
+          <div className="mt-6 grid gap-2 text-sm text-ink-soft">
             <p>
               Featured: {featured.map((p) => p.slug).join(", ")} (draft project
               7 is excluded)
@@ -189,41 +189,41 @@ export default async function DataPage() {
 
         <Block title="Site settings">
           <dl className="grid gap-x-6 gap-y-2 text-sm sm:grid-cols-[12rem_1fr]">
-            <dt className="text-navy-600">Phone(s)</dt>
+            <dt className="text-ink-muted">Phone(s)</dt>
             <dd>
               {settings.phones.map((p) => (
                 <Value key={p}>{p}</Value>
               ))}
             </dd>
-            <dt className="text-navy-600">Email</dt>
+            <dt className="text-ink-muted">Email</dt>
             <dd>
               <Value>{settings.email}</Value>
             </dd>
-            <dt className="text-navy-600">WhatsApp</dt>
+            <dt className="text-ink-muted">WhatsApp</dt>
             <dd>
               <Value>{settings.whatsappNumber}</Value>
             </dd>
-            <dt className="text-navy-600">Telegram</dt>
+            <dt className="text-ink-muted">Telegram</dt>
             <dd>
               <Value>{settings.telegramUsername}</Value>
             </dd>
-            <dt className="text-navy-600">Address</dt>
+            <dt className="text-ink-muted">Address</dt>
             <dd>
               <Value>{settings.address}</Value>
             </dd>
-            <dt className="text-navy-600">Office hours</dt>
+            <dt className="text-ink-muted">Office hours</dt>
             <dd>
               <Value>{settings.officeHours}</Value>
             </dd>
-            <dt className="text-navy-600">Map</dt>
+            <dt className="text-ink-muted">Map</dt>
             <dd>
               {settings.mapEmbedUrl ?? (
-                <span className="font-mono text-orange-800">
+                <span className="font-mono text-accent">
                   not provided yet (null)
                 </span>
               )}
             </dd>
-            <dt className="text-navy-600">Social links</dt>
+            <dt className="text-ink-muted">Social links</dt>
             <dd className="flex flex-col gap-1">
               {settings.socialLinks.map((l) => (
                 <span key={l.platform}>
@@ -231,7 +231,7 @@ export default async function DataPage() {
                 </span>
               ))}
             </dd>
-            <dt className="text-navy-600">Homepage numbers</dt>
+            <dt className="text-ink-muted">Homepage numbers</dt>
             <dd className="flex flex-col gap-1">
               {settings.homepageStats.map((s, i) => (
                 <span key={i}>
@@ -243,7 +243,7 @@ export default async function DataPage() {
         </Block>
 
         <Block title="Testimonials, client logos, team">
-          <p className="text-sm text-navy-700">
+          <p className="text-sm text-ink-soft">
             {testimonials.length} testimonials · {logos.length} client logos ·{" "}
             {team.length} team members (all placeholders)
           </p>
@@ -265,7 +265,7 @@ export default async function DataPage() {
         </Block>
 
         <Block title="Page copy (from Meliel)">
-          <div className="space-y-3 text-sm text-navy-700">
+          <div className="space-y-3 text-sm text-ink-soft">
             <p>
               <strong>Mission:</strong> {mission}
             </p>

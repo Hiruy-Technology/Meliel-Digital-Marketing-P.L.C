@@ -5,10 +5,10 @@ import { Container } from "./Container";
 type Tone = "white" | "paper" | "navy" | "navy-deep";
 
 const tones: Record<Tone, string> = {
-  white: "bg-white text-navy-900",
-  paper: "bg-paper text-navy-900",
-  navy: "bg-navy-900 text-white",
-  "navy-deep": "bg-navy-950 text-white",
+  white: "bg-surface text-ink",
+  paper: "bg-paper text-ink",
+  navy: "bg-band text-white",
+  "navy-deep": "bg-band-deep text-white",
 };
 
 type SectionProps = ComponentProps<"section"> & {

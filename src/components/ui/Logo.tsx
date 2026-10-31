@@ -79,16 +79,14 @@ export function Logo({
       <span
         className={clsx(
           "flex flex-col justify-center border-l pl-3 font-display leading-none",
-          onDark
-            ? "border-white/30 text-white"
-            : "border-navy-200 text-navy-900",
+          onDark ? "border-white/30 text-white" : "border-line-strong text-ink",
         )}
       >
         <span className="text-[1.05em] font-bold tracking-tight">Meliel</span>{" "}
         <span
           className={clsx(
             "mt-1 text-[0.55em] font-medium tracking-[0.14em] uppercase",
-            onDark ? "text-ice-300" : "text-navy-600",
+            onDark ? "text-ice-300" : "text-ink-muted",
           )}
         >
           Digital Marketing

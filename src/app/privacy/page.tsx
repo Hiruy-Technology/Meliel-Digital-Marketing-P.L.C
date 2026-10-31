@@ -16,7 +16,7 @@ function Block({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section>
       <h2 className="font-display text-2xl font-bold">{title}</h2>
-      <div className="mt-3 space-y-3 text-navy-800">{children}</div>
+      <div className="mt-3 space-y-3 text-ink-soft">{children}</div>
     </section>
   );
 }
@@ -35,7 +35,7 @@ export default function PrivacyPage() {
           </>
         }
       />
-      <div className="bg-white py-12 lg:py-16">
+      <div className="bg-surface py-12 lg:py-16">
         <Container>
           <div className="max-w-3xl space-y-10">
             <Block title="Who we are">

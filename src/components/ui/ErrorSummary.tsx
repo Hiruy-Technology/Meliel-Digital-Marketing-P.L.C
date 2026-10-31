@@ -18,7 +18,7 @@ export function ErrorSummary({ errors, fields, ref }: ErrorSummaryProps) {
       ref={ref}
       tabIndex={-1}
       role="alert"
-      className="rounded-sm border-2 border-red bg-orange-50 p-5"
+      className="rounded-sm border-2 border-red bg-raised p-5"
     >
       <p className="font-display font-semibold text-red">
         Please check{" "}

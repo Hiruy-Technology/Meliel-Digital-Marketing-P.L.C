@@ -31,15 +31,15 @@ export function MapFacade({ url, pendingLabel }: MapFacadeProps) {
         src={url}
         title="Meliel Digital Marketing office location on Google Maps"
         referrerPolicy="no-referrer-when-downgrade"
-        className={`${FRAME} border-0 bg-navy-50`}
+        className={`${FRAME} border-0 bg-tint`}
       />
     );
   }
 
   return (
-    <div className={`${FRAME} flex items-center justify-center bg-navy-50 p-6`}>
+    <div className={`${FRAME} flex items-center justify-center bg-tint p-6`}>
       <div className="text-center">
-        <Icon name="map-pin" className="mx-auto size-8 text-navy-700" />
+        <Icon name="map-pin" className="mx-auto size-8 text-ink-soft" />
         <Button
           variant="secondary"
           className="mt-4"

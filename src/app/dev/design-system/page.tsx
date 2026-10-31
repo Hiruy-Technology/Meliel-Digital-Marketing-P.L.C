@@ -36,10 +36,10 @@ function Swatch({ token }: { token: string }) {
   return (
     <div className="min-w-0">
       <div
-        className="h-12 rounded-sm border border-navy-100"
+        className="h-12 rounded-sm border border-line"
         style={{ background: `var(--color-${token})` }}
       />
-      <p className="mt-1 truncate font-mono text-[11px] text-navy-600">
+      <p className="mt-1 truncate font-mono text-[11px] text-ink-muted">
         {token}
       </p>
     </div>
@@ -56,13 +56,13 @@ export default function DesignSystemPage() {
   return (
     <>
       <Section tone="paper" className="py-12!">
-        <p className="font-mono text-xs tracking-widest text-navy-600 uppercase">
+        <p className="font-mono text-xs tracking-widest text-ink-muted uppercase">
           Internal · step 2
         </p>
         <h1 className="mt-2 font-display text-display-sm font-bold">
           Meliel design system
         </h1>
-        <p className="mt-3 max-w-2xl text-navy-700">
+        <p className="mt-3 max-w-2xl text-ink-soft">
           Tokens and base components for review. Scroll to see the rise
           animation and the ladder progress indicator (left edge on desktop, top
           bar on mobile).
@@ -79,7 +79,7 @@ export default function DesignSystemPage() {
           </Card>
           <div
             data-tone="dark"
-            className="flex flex-col items-start gap-6 rounded-sm bg-navy-900 p-6"
+            className="flex flex-col items-start gap-6 rounded-sm bg-band p-6"
           >
             <Logo className="h-16" />
             <Logo variant="color-on-dark" withName className="h-12 text-2xl" />
@@ -110,7 +110,7 @@ export default function DesignSystemPage() {
             <Swatch key={token} token={token} />
           ))}
         </div>
-        <p className="mt-6 text-sm text-navy-700">
+        <p className="mt-6 text-sm text-ink-soft">
           Contrast: run <code className="font-mono">pnpm contrast</code>.
           Orange-500 is for buttons and accents only, never for text on white.
         </p>
@@ -128,16 +128,16 @@ export default function DesignSystemPage() {
           <p className="font-display text-display-sm font-semibold">
             Section heading (Sora)
           </p>
-          <p className="max-w-prose text-lg text-navy-800">
+          <p className="max-w-prose text-lg text-ink-soft">
             Lead paragraph in Inter. Through strategy, creative production, and
             integrated digital marketing, we create pathways for brands to move
             beyond where they are today and toward where they aspire to be.
           </p>
-          <p className="max-w-prose text-navy-700">
+          <p className="max-w-prose text-ink-soft">
             Body text in Inter. To us, Meliel means helping brands rise from
             where they are to where they have the potential to be.
           </p>
-          <p className="text-sm text-navy-600">
+          <p className="text-sm text-ink-muted">
             Muted caption text (navy-600).
           </p>
           <p lang="am" className={`${notoEthiopic.variable} text-2xl`}>
@@ -159,14 +159,14 @@ export default function DesignSystemPage() {
         </div>
         <div
           data-tone="dark"
-          className="mt-6 flex flex-wrap gap-4 rounded-sm bg-navy-900 p-6"
+          className="mt-6 flex flex-wrap gap-4 rounded-sm bg-band p-6"
         >
           <Button href="#">Start a Project</Button>
           <Button href="#" variant="on-dark">
             See Our Work
           </Button>
         </div>
-        <p className="mt-4 text-sm text-navy-700">
+        <p className="mt-4 text-sm text-ink-soft">
           Press Tab to check the focus rings.
         </p>
       </Section>
@@ -188,7 +188,7 @@ export default function DesignSystemPage() {
           </Card>
           <Card>
             <h3 className="font-display text-lg font-semibold">Branding</h3>
-            <p className="mt-2 text-navy-700">
+            <p className="mt-2 text-ink-soft">
               Brand strategy, positioning, logo design, and identity guidelines
               that ensure consistency across all brand touchpoints.
             </p>
@@ -204,7 +204,7 @@ export default function DesignSystemPage() {
           <PlaceholderImage label="gallery image" aspect="aspect-square" />
           <div
             data-tone="dark"
-            className="flex flex-wrap content-start gap-2 rounded-sm bg-navy-900 p-6"
+            className="flex flex-wrap content-start gap-2 rounded-sm bg-band p-6"
           >
             <Tag tone="dark">Tag on navy</Tag>
             <Tag tone="dark">Event Production</Tag>
@@ -233,7 +233,7 @@ export default function DesignSystemPage() {
       {/* Extra height so the ladder indicator has room to fill */}
       <Section tone="paper">
         <Container className="px-0!">
-          <p className="py-48 text-center text-navy-600">
+          <p className="py-48 text-center text-ink-muted">
             End of design system.
           </p>
         </Container>

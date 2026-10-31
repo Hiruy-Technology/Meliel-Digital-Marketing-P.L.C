@@ -19,13 +19,13 @@ export function Values() {
           <li key={value.title}>
             <Rise className="h-full">
               <Card className="h-full p-7">
-                <span className="font-mono text-sm text-orange-800">
+                <span className="font-mono text-sm text-accent">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-4 font-display text-xl font-semibold">
                   {headingText(value.title)}
                 </h3>
-                <p className="mt-3 text-navy-700">{value.text}</p>
+                <p className="mt-3 text-ink-soft">{value.text}</p>
               </Card>
             </Rise>
           </li>

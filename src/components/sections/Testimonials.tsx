@@ -25,14 +25,14 @@ export function Testimonials({
         {testimonials.map((t) => (
           <li key={t.id}>
             <Rise className="h-full">
-              <figure className="flex h-full flex-col rounded-sm border border-navy-100 bg-white p-7">
+              <figure className="flex h-full flex-col rounded-sm border border-line bg-raised p-7">
                 <span
                   aria-hidden
                   className="font-display text-6xl leading-none text-orange-500"
                 >
                   “
                 </span>
-                <blockquote className="mt-2 text-lg text-navy-800">
+                <blockquote className="mt-2 text-lg text-ink-soft">
                   <Value value={t.quote} />
                 </blockquote>
                 <figcaption className="mt-auto flex items-center gap-4 pt-8">
@@ -45,10 +45,10 @@ export function Testimonials({
                     />
                   )}
                   <span className="min-w-0 text-sm">
-                    <span className="block font-semibold text-navy-900">
+                    <span className="block font-semibold text-ink">
                       <Value value={t.name} />
                     </span>
-                    <span className="mt-1 block text-navy-600">
+                    <span className="mt-1 block text-ink-muted">
                       <Value value={t.jobTitle} />, <Value value={t.company} />
                     </span>
                   </span>

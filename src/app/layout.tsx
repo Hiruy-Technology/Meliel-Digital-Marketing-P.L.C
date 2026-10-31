@@ -7,6 +7,7 @@ import { PreviewBanner } from "@/components/layout/PreviewBanner";
 import { LadderProgress } from "@/components/ui/LadderProgress";
 import { inter, sora } from "@/lib/fonts";
 import { isPreview, siteName, siteUrl } from "@/lib/site";
+import { themeScript } from "@/lib/theme";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -27,8 +28,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      // The theme script sets data-theme before React loads.
+      suppressHydrationWarning
       className={clsx(sora.variable, inter.variable, "h-full antialiased")}
     >
+      <head>
+        {/* Sets the theme before the first paint, so there's no flash of the wrong one. */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="flex min-h-full flex-col">
         <a
           href="#main"

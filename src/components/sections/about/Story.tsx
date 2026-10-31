@@ -16,11 +16,11 @@ export function Story() {
             eyebrow="Our story"
             title="How it started"
           />
-          <p className="mt-5 text-navy-700">
+          <p className="mt-5 text-ink-soft">
             Founded: <Value value={pendingCopy.foundingYear} />
           </p>
         </Rise>
-        <Rise className="space-y-5 text-lg text-navy-800 lg:col-span-8">
+        <Rise className="space-y-5 text-lg text-ink-soft lg:col-span-8">
           {pendingCopy.companyStory.map((paragraph) => (
             <p key={paragraph}>
               <Value value={paragraph} />

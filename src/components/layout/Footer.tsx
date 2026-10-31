@@ -53,7 +53,7 @@ export async function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer data-tone="dark" className="bg-navy-950 text-white">
+    <footer data-tone="dark" className="bg-band-deep text-white">
       <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 lg:py-20">
         <div className="sm:col-span-2 lg:col-span-4">
           <Logo variant="color-on-dark" withName className="h-10 text-xl" />

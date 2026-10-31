@@ -39,7 +39,7 @@ export function MediaImage({
   return (
     <div
       className={clsx(
-        "relative overflow-hidden rounded-sm bg-navy-50",
+        "relative overflow-hidden rounded-sm bg-tint",
         aspect,
         className,
       )}

@@ -49,7 +49,7 @@ function CaseBlock({
   return (
     <Rise className="grid gap-4 lg:grid-cols-12 lg:gap-10">
       <h2 className="font-display text-2xl font-bold lg:col-span-4">{title}</h2>
-      <div className="space-y-5 text-lg text-navy-800 lg:col-span-8">
+      <div className="space-y-5 text-lg text-ink-soft lg:col-span-8">
         {paragraphs.map((paragraph) => (
           <p key={paragraph}>
             <Value value={paragraph} />
@@ -72,19 +72,19 @@ function ProjectLink({
     <Link
       href={`/work/${project.slug}`}
       rel={direction === "next" ? "next" : "prev"}
-      className={`group flex flex-1 items-center gap-4 rounded-sm border border-navy-100 bg-white p-5 transition-colors hover:border-navy-900 ${
+      className={`group flex flex-1 items-center gap-4 rounded-sm border border-line bg-surface p-5 transition-colors hover:border-ink ${
         next ? "sm:flex-row-reverse sm:text-right" : ""
       }`}
     >
       <Icon
         name={next ? "arrow-right" : "arrow-left"}
-        className="size-5 text-navy-500 transition-colors group-hover:text-navy-900"
+        className="size-5 text-ink-muted transition-colors group-hover:text-ink"
       />
       <span className="min-w-0">
-        <span className="block text-sm text-navy-600">
+        <span className="block text-sm text-ink-muted">
           {next ? "Next project" : "Previous project"}
         </span>
-        <span className="mt-1 block font-display font-semibold text-navy-900">
+        <span className="mt-1 block font-display font-semibold text-ink">
           <Value value={project.title} />
         </span>
       </span>
@@ -106,14 +106,14 @@ export default async function ProjectPage({
         <Container>
           <Link
             href="/work"
-            className="inline-flex min-h-11 items-center gap-2 rounded-sm font-display text-sm font-semibold text-navy-700 hover:text-navy-900"
+            className="inline-flex min-h-11 items-center gap-2 rounded-sm font-display text-sm font-semibold text-ink-soft hover:text-ink"
           >
             <Icon name="arrow-left" className="size-4" />
             All work
           </Link>
 
           <div className="mt-6 max-w-4xl">
-            <p className="font-medium text-navy-700">
+            <p className="font-medium text-ink-soft">
               <Value value={project.clientName} />
             </p>
             <h1 className="mt-3 font-display text-display font-bold">
@@ -127,7 +127,7 @@ export default async function ProjectPage({
               aria-label="Project details"
             >
               <li>
-                <Tag className="bg-white! ring-1 ring-navy-100">
+                <Tag className="bg-surface! ring-1 ring-line">
                   <Value value={project.industry.name} />
                 </Tag>
               </li>
@@ -199,7 +199,7 @@ export default async function ProjectPage({
       </Section>
 
       {previous && next && (
-        <section aria-label="More projects" className="bg-white py-10">
+        <section aria-label="More projects" className="bg-surface py-10">
           <Container className="flex flex-col gap-4 sm:flex-row">
             <ProjectLink project={previous} direction="previous" />
             <ProjectLink project={next} direction="next" />

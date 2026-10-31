@@ -11,9 +11,7 @@ export function Tag({ tone = "light", className, ...props }: TagProps) {
     <span
       className={clsx(
         "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium",
-        tone === "light"
-          ? "bg-navy-50 text-navy-800"
-          : "bg-white/10 text-white",
+        tone === "light" ? "bg-tint text-ink-soft" : "bg-white/10 text-white",
         className,
       )}
       {...props}

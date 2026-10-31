@@ -4,7 +4,7 @@ import type { ComponentProps, ReactNode } from "react";
 // Labelled form fields with accessible error messages. 16px text stops iPhones zooming in on focus.
 
 const control =
-  "mt-2 block w-full rounded-sm border bg-white px-4 text-base text-navy-900 aria-invalid:border-red aria-invalid:border-2";
+  "mt-2 block w-full rounded-sm border bg-raised px-4 text-base text-ink aria-invalid:border-red aria-invalid:border-2";
 
 type FieldShellProps = {
   id: string;
@@ -44,14 +44,14 @@ function FieldShell({
 }: FieldShellProps) {
   return (
     <div>
-      <label htmlFor={id} className="font-medium text-navy-900">
+      <label htmlFor={id} className="font-medium text-ink">
         {label}
         {optional && (
-          <span className="font-normal text-navy-600"> (optional)</span>
+          <span className="font-normal text-ink-muted"> (optional)</span>
         )}
       </label>
       {hint && (
-        <p id={`${id}-hint`} className="mt-1 text-sm text-navy-600">
+        <p id={`${id}-hint`} className="mt-1 text-sm text-ink-muted">
           {hint}
         </p>
       )}
@@ -78,7 +78,7 @@ export function TextField({
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy(id, hint, error)}
         aria-required={optional ? undefined : true}
-        className={clsx(control, "h-12 border-navy-500")}
+        className={clsx(control, "h-12 border-control")}
         {...input}
       />
     </FieldShell>
@@ -101,7 +101,7 @@ export function TextAreaField({
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy(id, hint, error)}
         aria-required={optional ? undefined : true}
-        className={clsx(control, "border-navy-500 py-3")}
+        className={clsx(control, "border-control py-3")}
         {...input}
       />
     </FieldShell>
@@ -124,7 +124,7 @@ export function SelectField({
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy(id, hint, error)}
         aria-required={optional ? undefined : true}
-        className={clsx(control, "h-12 border-navy-500")}
+        className={clsx(control, "h-12 border-control")}
         {...input}
       >
         {children}

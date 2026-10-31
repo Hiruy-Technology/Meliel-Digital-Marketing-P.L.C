@@ -8,12 +8,12 @@ export function ClientLogos({ logos }: { logos: ClientLogo[] }) {
   return (
     <section
       aria-labelledby="clients-title"
-      className="border-y border-navy-100 bg-white py-10 sm:py-12"
+      className="border-y border-line bg-surface py-10 sm:py-12"
     >
       <Container>
         <h2
           id="clients-title"
-          className="text-center font-display text-xs font-semibold tracking-[0.16em] text-navy-600 uppercase"
+          className="text-center font-display text-xs font-semibold tracking-[0.16em] text-ink-muted uppercase"
         >
           Brands we’ve worked with
         </h2>

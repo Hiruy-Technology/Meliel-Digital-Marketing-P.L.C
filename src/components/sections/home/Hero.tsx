@@ -39,25 +39,28 @@ function HeroLadder() {
 
 export function Hero() {
   return (
-    <section aria-labelledby="hero-title" className="overflow-hidden bg-white">
+    <section
+      aria-labelledby="hero-title"
+      className="overflow-hidden bg-surface"
+    >
       <Container className="grid items-center gap-12 py-14 sm:py-20 lg:grid-cols-12 lg:gap-10 lg:py-28">
         <div className="lg:col-span-8">
-          <p className="flex items-center gap-3 font-display text-xs font-semibold tracking-[0.16em] text-orange-800 uppercase">
+          <p className="flex items-center gap-3 font-display text-xs font-semibold tracking-[0.16em] text-accent uppercase">
             <span aria-hidden className="h-1 w-6 rounded-[1px] bg-orange-500" />
             Digital marketing · Addis Ababa
           </p>
           <h1
             id="hero-title"
-            className="mt-5 font-display text-display font-bold text-navy-900"
+            className="mt-5 font-display text-display font-bold text-ink"
           >
             {heroHeadline.before}
             {/* Orange "rung" behind the key word: navy text on orange keeps full contrast */}
-            <span className="relative z-0 whitespace-nowrap after:absolute after:inset-x-[-0.08em] after:bottom-[0.06em] after:-z-10 after:h-[0.32em] after:rounded-[2px] after:bg-orange-500">
+            <span className="relative z-0 whitespace-nowrap after:absolute after:inset-x-[-0.08em] after:bottom-[0.06em] after:-z-10 after:h-[0.32em] after:rounded-[2px] after:bg-orange-500 dark:after:bottom-[-0.04em] dark:after:h-[0.1em]">
               {heroHeadline.highlight}
             </span>
             {heroHeadline.after}
           </h1>
-          <p className="mt-6 max-w-2xl text-lg text-navy-700 sm:text-xl">
+          <p className="mt-6 max-w-2xl text-lg text-ink-soft sm:text-xl">
             {valueStatement}
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
@@ -70,9 +73,9 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="flex items-end justify-between gap-8 border-t border-navy-100 pt-10 lg:col-span-4 lg:flex-col lg:items-center lg:justify-end lg:border-t-0 lg:pt-0">
+        <div className="flex items-end justify-between gap-8 border-t border-line pt-10 lg:col-span-4 lg:flex-col lg:items-center lg:justify-end lg:border-t-0 lg:pt-0">
           <HeroLadder />
-          <p className="max-w-56 text-sm text-navy-700 lg:text-center">
+          <p className="max-w-56 text-sm text-ink-soft lg:text-center">
             {/* The logo spells መልዕል, so Home doesn't need to download the 194 KB Amharic font. */}
             <Logo className="h-8 lg:mx-auto lg:flex lg:justify-center" />
             <span className="mt-1 block">{meaningShort}</span>

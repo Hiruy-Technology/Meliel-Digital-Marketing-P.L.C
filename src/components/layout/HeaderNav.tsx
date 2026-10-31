@@ -25,8 +25,8 @@ export function DesktopNav({ links }: { links: NavLink[] }) {
                   // Active page: an orange rung under the link
                   "after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-left after:bg-orange-500 after:transition-transform",
                   active
-                    ? "text-navy-900 after:scale-x-100"
-                    : "text-navy-700 after:scale-x-0 hover:text-navy-900 hover:after:scale-x-100",
+                    ? "text-ink after:scale-x-100"
+                    : "text-ink-soft after:scale-x-0 hover:text-ink hover:after:scale-x-100",
                 )}
               >
                 {link.label}
@@ -74,7 +74,7 @@ export function MobileMenu({ links, cta }: { links: NavLink[]; cta: NavLink }) {
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((v) => !v)}
-        className="-mr-2 inline-flex size-11 items-center justify-center rounded-sm text-navy-900 hover:bg-navy-50"
+        className="-mr-2 inline-flex size-11 items-center justify-center rounded-sm text-ink hover:bg-tint"
       >
         <Icon name={open ? "close" : "menu"} />
         <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
@@ -84,10 +84,10 @@ export function MobileMenu({ links, cta }: { links: NavLink[]; cta: NavLink }) {
         ref={panelRef}
         id={panelId}
         hidden={!open}
-        className="absolute inset-x-0 top-full h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-navy-100 bg-white"
+        className="absolute inset-x-0 top-full h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-line bg-surface"
       >
         <nav aria-label="Main" className="px-4 pt-4 pb-10 sm:px-6">
-          <ul className="divide-y divide-navy-100">
+          <ul className="divide-y divide-line">
             {links.map((link) => {
               const active = isActive(pathname, link.href);
               return (
@@ -98,7 +98,7 @@ export function MobileMenu({ links, cta }: { links: NavLink[]; cta: NavLink }) {
                     onClick={() => setOpen(false)}
                     className={clsx(
                       "flex items-center justify-between py-4 font-display text-2xl font-semibold",
-                      active ? "text-navy-900" : "text-navy-700",
+                      active ? "text-ink" : "text-ink-soft",
                     )}
                   >
                     <span className="flex items-center gap-3">
@@ -110,7 +110,10 @@ export function MobileMenu({ links, cta }: { links: NavLink[]; cta: NavLink }) {
                       )}
                       {link.label}
                     </span>
-                    <Icon name="arrow-right" className="size-5 text-navy-400" />
+                    <Icon
+                      name="arrow-right"
+                      className="size-5 text-ink-muted"
+                    />
                   </Link>
                 </li>
               );

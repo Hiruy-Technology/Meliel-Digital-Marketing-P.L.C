@@ -21,12 +21,12 @@ function Row({
 }) {
   return (
     <li className="flex gap-4">
-      <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-sm bg-white text-navy-800 ring-1 ring-navy-100">
+      <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-sm bg-surface text-ink-soft ring-1 ring-line">
         <Icon name={icon} className="size-5" />
       </span>
       <span className="min-w-0">
-        <span className="block text-sm text-navy-600">{label}</span>
-        <span className="block font-medium break-words text-navy-900">
+        <span className="block text-sm text-ink-muted">{label}</span>
+        <span className="block font-medium break-words text-ink">
           {children}
         </span>
       </span>
@@ -90,7 +90,7 @@ export function ContactMethods({ settings }: { settings: SiteSettings }) {
           <Value value={settings.officeHours} />
         </Row>
       </ul>
-      <h3 className="mt-8 font-display text-sm font-semibold text-navy-900">
+      <h3 className="mt-8 font-display text-sm font-semibold text-ink">
         Follow us
       </h3>
       <SocialLinks links={settings.socialLinks} className="mt-3" />

@@ -21,7 +21,7 @@ export function MissionVision() {
             <h2 className="mt-6 font-display text-display-sm font-bold">
               {item.title}
             </h2>
-            <p className="mt-4 text-lg text-navy-800">{item.text}</p>
+            <p className="mt-4 text-lg text-ink-soft">{item.text}</p>
           </Rise>
         ))}
       </div>

@@ -23,8 +23,8 @@ const TONES = {
     pending: "border-dashed border-orange-500/70 opacity-70",
   },
   light: {
-    idle: "border-navy-200 text-navy-800",
-    live: "hover:border-navy-900 hover:text-navy-900",
+    idle: "border-line-strong text-ink-soft",
+    live: "hover:border-ink hover:text-ink",
     pending: "border-dashed border-orange-700",
   },
 };

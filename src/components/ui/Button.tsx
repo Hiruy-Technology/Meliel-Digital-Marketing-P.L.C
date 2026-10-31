@@ -11,9 +11,8 @@ const base =
 const variants: Record<Variant, string> = {
   // Orange with navy text: the main call to action. Never white text on orange (fails contrast).
   primary: "bg-orange-500 text-navy-900 hover:bg-orange-400",
-  secondary: "bg-navy-900 text-white hover:bg-navy-950",
-  outline:
-    "border-2 border-navy-900 text-navy-900 hover:bg-navy-900 hover:text-white",
+  secondary: "bg-ink text-surface hover:bg-ink-soft",
+  outline: "border-2 border-ink text-ink hover:bg-ink hover:text-surface",
   // Secondary action on navy sections.
   "on-dark":
     "border-2 border-white/80 text-white hover:bg-white hover:text-navy-900",

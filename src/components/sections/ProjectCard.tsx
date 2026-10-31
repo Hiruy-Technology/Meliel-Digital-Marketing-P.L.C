@@ -27,13 +27,13 @@ export function ProjectCard({
       </div>
 
       <div className="flex flex-1 flex-col pt-5">
-        <p className="text-sm font-medium text-navy-600">
+        <p className="text-sm font-medium text-ink-muted">
           <Value value={project.clientName} />
         </p>
         <h3 className="mt-2 font-display text-xl font-semibold">
           <Link
             href={`/work/${project.slug}`}
-            className="rounded-sm group-hover:text-navy-700 after:absolute after:inset-0"
+            className="rounded-sm group-hover:text-ink-soft after:absolute after:inset-0"
           >
             <Value value={project.title} />
           </Link>
@@ -50,16 +50,16 @@ export function ProjectCard({
         {highlight && (
           // mt-auto pins the result to the bottom so cards in a row line up.
           <div className="mt-auto pt-6">
-            <div className="flex items-end justify-between gap-4 border-t border-navy-100 pt-4">
-              <p className="text-sm text-navy-700">
-                <span className="block font-display text-lg font-bold text-navy-900">
+            <div className="flex items-end justify-between gap-4 border-t border-line pt-4">
+              <p className="text-sm text-ink-soft">
+                <span className="block font-display text-lg font-bold text-ink">
                   <Value value={highlight.value} />
                 </span>
                 <Value value={highlight.label} />
               </p>
               <Icon
                 name="arrow-right"
-                className="size-5 text-navy-400 transition-transform group-hover:translate-x-1 group-hover:text-navy-900"
+                className="size-5 text-ink-muted transition-transform group-hover:translate-x-1 group-hover:text-ink"
               />
             </div>
           </div>

@@ -40,7 +40,7 @@ export function ServicesOverview({ services }: { services: Service[] }) {
           >
             <Rise className="h-full">
               <Card interactive className="group flex h-full flex-col p-7">
-                <span className="font-mono text-sm text-orange-800">
+                <span className="font-mono text-sm text-accent">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-4 font-display text-xl font-semibold">
@@ -51,13 +51,13 @@ export function ServicesOverview({ services }: { services: Service[] }) {
                     {service.name}
                   </Link>
                 </h3>
-                <p className="mt-3 text-navy-700">{service.summary}</p>
+                <p className="mt-3 text-ink-soft">{service.summary}</p>
                 {service.note && (
-                  <p className="mt-4 text-sm font-medium text-orange-800">
+                  <p className="mt-4 text-sm font-medium text-accent">
                     {service.note}
                   </p>
                 )}
-                <span className="mt-auto flex items-center gap-2 pt-6 font-display text-sm font-semibold text-navy-900">
+                <span className="mt-auto flex items-center gap-2 pt-6 font-display text-sm font-semibold text-ink">
                   Learn more
                   <Icon
                     name="arrow-right"

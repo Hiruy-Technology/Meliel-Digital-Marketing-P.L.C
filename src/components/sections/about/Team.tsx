@@ -31,10 +31,10 @@ export function Team({ members }: { members: TeamMember[] }) {
               <h3 className="mt-4 font-display text-lg font-semibold">
                 <Value value={member.name} />
               </h3>
-              <p className="mt-1 text-sm font-medium text-navy-600">
+              <p className="mt-1 text-sm font-medium text-ink-muted">
                 <Value value={member.role} />
               </p>
-              <p className="mt-3 text-navy-700">
+              <p className="mt-3 text-ink-soft">
                 <Value value={member.bio} />
               </p>
             </Rise>

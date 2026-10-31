@@ -39,8 +39,8 @@ function Chip({
         className={clsx(
           "inline-flex min-h-11 items-center rounded-sm border px-4 py-1.5 font-display text-sm font-semibold whitespace-nowrap transition-colors",
           active
-            ? "border-navy-900 bg-navy-900 text-white"
-            : "border-navy-200 bg-white text-navy-800 hover:border-navy-900",
+            ? "border-ink bg-ink text-surface"
+            : "border-line-strong bg-surface text-ink-soft hover:border-ink",
         )}
       >
         {children}
@@ -58,7 +58,7 @@ function FilterGroup({
 }) {
   return (
     <div className="lg:flex lg:items-start lg:gap-6">
-      <h2 className="font-display text-xs font-semibold tracking-[0.16em] text-navy-600 uppercase lg:w-24 lg:shrink-0 lg:pt-3.5">
+      <h2 className="font-display text-xs font-semibold tracking-[0.16em] text-ink-muted uppercase lg:w-24 lg:shrink-0 lg:pt-3.5">
         {label}
       </h2>
       {/* Phones: one row that swipes sideways, so projects stay near the top. */}

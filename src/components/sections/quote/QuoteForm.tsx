@@ -58,13 +58,13 @@ function StepLegend({
 }) {
   return (
     <legend className="w-full">
-      <span className="block font-mono text-sm text-orange-800">
+      <span className="block font-mono text-sm text-accent">
         Step {step} of 3
       </span>
-      <span className="mt-1 block font-display text-2xl font-bold text-navy-900">
+      <span className="mt-1 block font-display text-2xl font-bold text-ink">
         {title}
       </span>
-      {hint && <span className="mt-1 block text-navy-700">{hint}</span>}
+      {hint && <span className="mt-1 block text-ink-soft">{hint}</span>}
     </legend>
   );
 }
@@ -74,10 +74,10 @@ function Checkbox({
   ...input
 }: { label: ReactNode } & ComponentProps<"input">) {
   return (
-    <label className="flex cursor-pointer gap-3 py-1.5 text-navy-800">
+    <label className="flex cursor-pointer gap-3 py-1.5 text-ink-soft">
       <input
         type="checkbox"
-        className="mt-0.5 size-5 shrink-0 accent-navy-900"
+        className="mt-0.5 size-5 shrink-0 accent-ink"
         {...input}
       />
       <span>{label}</span>
@@ -212,8 +212,8 @@ export function QuoteForm({
                     className={clsx(
                       "rounded-sm border-2 transition-colors",
                       isOn
-                        ? "border-navy-900 bg-navy-50"
-                        : "border-navy-200 bg-white hover:border-navy-500",
+                        ? "border-ink bg-tint"
+                        : "border-line-strong bg-surface hover:border-control",
                     )}
                   >
                     <label className="flex cursor-pointer gap-4 p-5">
@@ -221,17 +221,17 @@ export function QuoteForm({
                         type="checkbox"
                         checked={isOn}
                         onChange={() => toggleService(service)}
-                        className="mt-1 size-5 shrink-0 accent-navy-900"
+                        className="mt-1 size-5 shrink-0 accent-ink"
                       />
                       <span className="min-w-0">
-                        <span className="block font-display text-lg font-semibold text-navy-900">
+                        <span className="block font-display text-lg font-semibold text-ink">
                           {service.name}
                         </span>
-                        <span className="mt-1 block text-navy-700">
+                        <span className="mt-1 block text-ink-soft">
                           {service.summary}
                         </span>
                         {service.note && (
-                          <span className="mt-2 block text-sm font-medium text-orange-800">
+                          <span className="mt-2 block text-sm font-medium text-accent">
                             {service.note}
                           </span>
                         )}
@@ -239,10 +239,10 @@ export function QuoteForm({
                     </label>
 
                     {isOn && service.includes.length > 0 && (
-                      <fieldset className="border-t border-navy-200 px-5 py-4 sm:pl-14">
-                        <legend className="float-left w-full font-medium text-navy-900">
+                      <fieldset className="border-t border-line-strong px-5 py-4 sm:pl-14">
+                        <legend className="float-left w-full font-medium text-ink">
                           Anything specific?{" "}
-                          <span className="font-normal text-navy-600">
+                          <span className="font-normal text-ink-muted">
                             (optional)
                           </span>
                         </legend>
@@ -372,7 +372,7 @@ export function QuoteForm({
               <Button type="submit" size="lg" className="w-full sm:w-auto">
                 Request a quote
               </Button>
-              <p className="mt-4 text-sm text-navy-600">
+              <p className="mt-4 text-sm text-ink-muted">
                 We’ll only use your details to reply to this request. See our{" "}
                 <Link href="/privacy" className="rounded-sm underline">
                   Privacy Policy
@@ -386,11 +386,11 @@ export function QuoteForm({
         {/* Desktop: selection stays in view */}
         <aside
           aria-label="Your selection"
-          className="sticky top-24 hidden rounded-sm border border-navy-100 bg-paper p-6 lg:col-span-4 lg:block"
+          className="sticky top-24 hidden rounded-sm border border-line bg-paper p-6 lg:col-span-4 lg:block"
         >
           <h2 className="font-display text-lg font-semibold">Your selection</h2>
           {chosen.length === 0 ? (
-            <p className="mt-3 text-navy-700">No services selected yet.</p>
+            <p className="mt-3 text-ink-soft">No services selected yet.</p>
           ) : (
             <ul className="mt-4 space-y-3">
               {chosen.map((service) => {
@@ -403,10 +403,10 @@ export function QuoteForm({
                       aria-hidden
                       className="mt-2.5 h-1 w-4 shrink-0 rounded-[1px] bg-orange-500"
                     />
-                    <span className="text-navy-800">
+                    <span className="text-ink-soft">
                       {service.name}
                       {count > 0 && (
-                        <span className="block text-sm text-navy-600">
+                        <span className="block text-sm text-ink-muted">
                           {count} specific {count === 1 ? "item" : "items"}
                         </span>
                       )}
@@ -416,7 +416,7 @@ export function QuoteForm({
               })}
             </ul>
           )}
-          <p className="mt-6 border-t border-navy-100 pt-4 text-sm text-navy-700">
+          <p className="mt-6 border-t border-line pt-4 text-sm text-ink-soft">
             Prefer to talk first?{" "}
             <Link
               href="/contact"
@@ -432,10 +432,10 @@ export function QuoteForm({
       {/* Phones: keeps the selection visible during step 1. Right padding leaves the floating
           WhatsApp/Telegram buttons clear. */}
       {chosen.length > 0 && !detailsReached && (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-navy-100 bg-white py-3 pr-22 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pl-4 shadow-[0_-4px_16px_rgb(18_43_77/0.08)] lg:hidden">
+        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface py-3 pr-22 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pl-4 shadow-[0_-4px_16px_rgb(18_43_77/0.08)] lg:hidden">
           <a
             href="#quote-details"
-            className="flex min-h-11 items-center gap-2 rounded-sm font-display text-sm font-semibold text-navy-900"
+            className="flex min-h-11 items-center gap-2 rounded-sm font-display text-sm font-semibold text-ink"
           >
             {chosen.length} {chosen.length === 1 ? "service" : "services"}{" "}
             selected · Continue

@@ -39,13 +39,13 @@ export function ProcessLadder({
                 className="block h-3 rounded-[2px]"
                 style={{ background: STEP_COLORS[i] }}
               />
-              <p className="mt-5 font-mono text-sm text-navy-600">
+              <p className="mt-5 font-mono text-sm text-ink-muted">
                 Step {String(i + 1).padStart(2, "0")}
               </p>
               <h3 className="mt-2 font-display text-lg font-semibold">
                 {headingText(step.title)}
               </h3>
-              <p className="mt-2 text-navy-700">{step.text}</p>
+              <p className="mt-2 text-ink-soft">{step.text}</p>
             </Rise>
           </li>
         ))}

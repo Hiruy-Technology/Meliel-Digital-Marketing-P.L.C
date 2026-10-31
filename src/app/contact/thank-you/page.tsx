@@ -18,12 +18,12 @@ export default async function ThankYouPage({
   return (
     <Section tone="paper" className="flex min-h-[70vh] items-center">
       <div className="max-w-2xl">
-        <p className="flex items-center gap-3 font-display text-xs font-semibold tracking-[0.16em] text-orange-800 uppercase">
+        <p className="flex items-center gap-3 font-display text-xs font-semibold tracking-[0.16em] text-accent uppercase">
           <span aria-hidden className="h-1 w-6 rounded-[1px] bg-orange-500" />
           {isQuote ? "Quote request received" : "Message received"}
         </p>
         <h1 className="mt-5 font-display text-display font-bold">Thank you.</h1>
-        <p className="mt-6 text-lg text-navy-700">
+        <p className="mt-6 text-lg text-ink-soft">
           {isQuote
             ? "We’ve received your request and will get back to you with a quote."
             : "We’ve received your message and will get back to you."}

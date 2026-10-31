@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* dark: follows the toggle (data-theme on <html>), not only the device setting. */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 /*
  * Meliel design tokens.
  * Anchors are sampled from logo-full-v1-muted.png (see docs/03-design-direction.md):
@@ -15,8 +18,24 @@
   --color-transparent: transparent;
   --color-current: currentColor;
 
-  /* Page backgrounds */
-  --color-paper: #f7f8fa;
+  /*
+   * Theme tokens: use these for anything that changes between light and dark. Dark values are
+   * in the :root[data-theme="dark"] block below. Raw orange-*, navy-* and white are for things
+   * that stay the same in both themes (orange buttons, placeholder boxes).
+   */
+  --color-surface: #ffffff; /* page background */
+  --color-paper: #f7f8fa; /* alternate section background */
+  --color-raised: #ffffff; /* cards and form fields */
+  --color-tint: #f2f7ff; /* tags, selected states */
+  --color-ink: #1b3354; /* main text */
+  --color-ink-soft: #233f65; /* secondary text */
+  --color-ink-muted: #476795; /* captions, labels */
+  --color-accent: #8e4d0e; /* orange text on page backgrounds */
+  --color-line: #e4eefc; /* borders */
+  --color-line-strong: #c9dbf4; /* stronger borders */
+  --color-control: #6182b0; /* form field borders (3:1) */
+  --color-band: #1b3354; /* navy section */
+  --color-band-deep: #122b4d; /* deepest navy section, footer */
 
   /* Brand orange (primary accent) */
   --color-orange-50: #fff9f2;
@@ -81,6 +100,37 @@
     var(--font-noto-ethiopic), "Nyala", "Abyssinica SIL", sans-serif;
 }
 
+/*
+ * Dark theme: only the theme tokens change. Bands go darker than the page so they still stand
+ * out, and the ladder shifts lighter so its bottom rungs stay visible.
+ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-surface: #0f2038;
+  --color-paper: #142946;
+  --color-raised: #1b3354;
+  --color-tint: #233f65;
+  --color-ink: #f2f7ff;
+  --color-ink-soft: #d5e2f5;
+  --color-ink-muted: #a6c0e3;
+  --color-accent: #feb853;
+  --color-line: #2a4364;
+  --color-line-strong: #3d5a80;
+  --color-control: #82a0cb;
+  --color-band: #0a1729;
+  --color-band-deep: #07111f;
+  --color-red: #ff9c93;
+
+  --color-ladder-1: #355b7d;
+  --color-ladder-2: #406b8f;
+  --color-ladder-3: #4f7a9e;
+  --color-ladder-4: #5983a5;
+  --color-ladder-5: #7aa3c1;
+  --color-ladder-6: #99c3de;
+  --color-ladder-7: #c4dcec;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -94,8 +144,8 @@
   }
 
   body {
-    background: var(--color-white);
-    color: var(--color-navy-900);
+    background: var(--color-surface);
+    color: var(--color-ink);
     font-family: var(--font-sans);
   }
 
@@ -116,7 +166,7 @@
 
   /* Visible focus everywhere: navy on light backgrounds, orange on dark sections. */
   :focus-visible {
-    outline: 3px solid var(--color-navy-900);
+    outline: 3px solid var(--color-ink);
     outline-offset: 3px;
   }
 

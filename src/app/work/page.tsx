@@ -43,7 +43,7 @@ export default async function WorkPage({ searchParams }: PageProps<"/work">) {
         intro="See what we’ve delivered, filtered by the service or industry that matters to you."
       />
 
-      <section aria-label="Projects" className="bg-white py-12 lg:py-16">
+      <section aria-label="Projects" className="bg-surface py-12 lg:py-16">
         <Container>
           <WorkFilters
             services={services}
@@ -54,7 +54,7 @@ export default async function WorkPage({ searchParams }: PageProps<"/work">) {
 
           <p
             role="status"
-            className="mt-10 border-t border-navy-100 pt-6 text-sm text-navy-600"
+            className="mt-10 border-t border-line pt-6 text-sm text-ink-muted"
           >
             {projects.length} {projects.length === 1 ? "project" : "projects"}
           </p>
@@ -73,11 +73,11 @@ export default async function WorkPage({ searchParams }: PageProps<"/work">) {
               ))}
             </ul>
           ) : (
-            <div className="mt-8 rounded-sm border border-dashed border-navy-200 bg-paper px-6 py-16 text-center">
+            <div className="mt-8 rounded-sm border border-dashed border-line-strong bg-paper px-6 py-16 text-center">
               <h2 className="font-display text-2xl font-bold">
                 No projects match these filters
               </h2>
-              <p className="mt-3 text-navy-700">
+              <p className="mt-3 text-ink-soft">
                 Try a different service or industry, or see everything.
               </p>
               {filtered && (

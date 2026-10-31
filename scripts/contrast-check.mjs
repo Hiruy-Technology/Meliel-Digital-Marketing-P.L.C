@@ -8,12 +8,21 @@ const css = readFileSync(
   new URL("../src/app/globals.css", import.meta.url),
   "utf8",
 );
-const tokens = Object.fromEntries(
-  [...css.matchAll(/--color-([\w-]+):\s*(#[0-9a-fA-F]{6})\s*;/g)].map((m) => [
-    m[1],
-    m[2].toLowerCase(),
-  ]),
-);
+const readTokens = (text) =>
+  Object.fromEntries(
+    [...text.matchAll(/--color-([\w-]+):\s*(#[0-9a-fA-F]{6})\s*;/g)].map(
+      (m) => [m[1], m[2].toLowerCase()],
+    ),
+  );
+
+// Light values, with the dark theme's overrides layered on top for the second pass.
+const [lightCss, afterDark] = css.split(':root[data-theme="dark"] {');
+const lightTokens = readTokens(lightCss);
+const darkTokens = {
+  ...lightTokens,
+  ...readTokens(afterDark.slice(0, afterDark.indexOf("}"))),
+};
+let tokens = lightTokens;
 
 // AA: 4.5 for normal text, 3.0 for large text (24px+, or 18.66px+ bold) and UI parts (borders, focus rings).
 const TEXT = 4.5;
@@ -75,6 +84,49 @@ const pairs = [
   ["white", "navy-900", UI, "white ring around floating buttons on navy"],
 ];
 
+// Theme tokens: checked in light and in dark.
+const themePairs = [
+  ["ink", "surface", TEXT, "main text"],
+  ["ink", "paper", TEXT, "main text on alternate sections"],
+  ["ink", "raised", TEXT, "main text on cards and fields"],
+  ["ink", "tint", TEXT, "text on selected states"],
+  ["ink-soft", "surface", TEXT, "secondary text"],
+  ["ink-soft", "paper", TEXT, "secondary text on alternate sections"],
+  ["ink-soft", "raised", TEXT, "secondary text on cards"],
+  ["ink-soft", "tint", TEXT, "tags"],
+  ["ink-muted", "surface", TEXT, "captions"],
+  ["ink-muted", "paper", TEXT, "captions on alternate sections"],
+  ["ink-muted", "raised", TEXT, "captions on cards"],
+  ["ink-muted", "tint", TEXT, "muted text on selected states"],
+  ["accent", "surface", TEXT, "orange text"],
+  ["accent", "paper", TEXT, "orange text on alternate sections"],
+  ["accent", "raised", TEXT, "orange text on cards"],
+  ["red", "surface", TEXT, "form errors"],
+  ["red", "paper", TEXT, "form errors on alternate sections"],
+  ["red", "raised", TEXT, "error summary"],
+  ["surface", "ink", TEXT, "secondary button"],
+  ["surface", "ink-soft", TEXT, "secondary button (hover)"],
+  ["white", "band", TEXT, "text on navy bands"],
+  ["white", "band-deep", TEXT, "text on the deepest bands and footer"],
+  ["navy-100", "band-deep", TEXT, "footer links"],
+  ["navy-200", "band", TEXT, "muted text on bands"],
+  ["navy-200", "band-deep", TEXT, "muted text on deepest bands"],
+  ["ice-300", "band", TEXT, "accent text on bands"],
+  ["ice-300", "band-deep", TEXT, "accent text on deepest bands"],
+  ["orange-500", "band", TEXT, "orange text on bands"],
+  ["orange-500", "band-deep", TEXT, "orange text on deepest bands"],
+  ["navy-900", "orange-500", TEXT, "primary button"],
+  ["navy-900", "orange-400", TEXT, "primary button (hover)"],
+  ["ink", "surface", UI, "focus ring"],
+  ["ink", "paper", UI, "focus ring on alternate sections"],
+  ["orange-500", "band", UI, "focus ring on bands"],
+  ["control", "raised", UI, "form field borders"],
+  ["control", "surface", UI, "form field borders on the page"],
+  ["red", "raised", UI, "invalid field border"],
+  ["whatsapp", "surface", UI, "WhatsApp button on the page"],
+  ["telegram", "surface", UI, "Telegram button on the page"],
+];
+
 // Known-bad pairs, listed so nobody uses them by accident.
 const forbidden = [
   ["orange-500", "white", "orange text on white"],
@@ -102,15 +154,27 @@ function color(name) {
 }
 
 let failures = 0;
-console.log("Required pairs (WCAG 2.1 AA)\n");
-for (const [fg, bg, min, use] of pairs) {
-  const r = ratio(color(fg), color(bg));
-  const ok = r >= min;
-  if (!ok) failures++;
-  console.log(
-    `${ok ? "PASS" : "FAIL"}  ${r.toFixed(2).padStart(5)}:1  (need ${min.toFixed(1)})  ${fg} on ${bg}  ${use}`,
-  );
+function check(list) {
+  for (const [fg, bg, min, use] of list) {
+    const r = ratio(color(fg), color(bg));
+    const ok = r >= min;
+    if (!ok) failures++;
+    console.log(
+      `${ok ? "PASS" : "FAIL"}  ${r.toFixed(2).padStart(5)}:1  (need ${min.toFixed(1)})  ${fg} on ${bg}  ${use}`,
+    );
+  }
 }
+
+console.log("Required pairs (WCAG 2.1 AA)\n");
+check(pairs);
+
+console.log("\nLight theme\n");
+check(themePairs);
+
+console.log("\nDark theme\n");
+tokens = darkTokens;
+check(themePairs);
+tokens = lightTokens;
 
 console.log("\nDo not use (fail AA for normal text)\n");
 for (const [fg, bg, use] of forbidden) {

@@ -37,7 +37,7 @@ export function SectionHeading({
           className={clsx(
             "flex items-center gap-3 font-display text-xs font-semibold tracking-[0.16em] uppercase",
             align === "center" && "justify-center",
-            dark ? "text-ice-300" : "text-orange-800",
+            dark ? "text-ice-300" : "text-accent",
           )}
         >
           {/* A single orange rung marks every section label */}
@@ -52,7 +52,7 @@ export function SectionHeading({
         <div
           className={clsx(
             "mt-5 text-lg",
-            dark ? "text-navy-200" : "text-navy-700",
+            dark ? "text-navy-200" : "text-ink-soft",
           )}
         >
           {intro}

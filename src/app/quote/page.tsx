@@ -27,7 +27,7 @@ export default async function QuotePage({ searchParams }: PageProps<"/quote">) {
         title="Tell us what you need"
         intro="Choose the services you’re interested in, share your budget and timeline, and we’ll come back with a quote."
       />
-      <section className="bg-white py-12 lg:py-16">
+      <section className="bg-surface py-12 lg:py-16">
         <Container>
           <QuoteForm
             services={services}

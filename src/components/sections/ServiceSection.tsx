@@ -25,7 +25,7 @@ export function ServiceSection({
     <Section id={service.slug} tone={tone} aria-labelledby={titleId}>
       <Rise className="grid gap-8 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-4">
-          <span className="font-mono text-sm text-orange-800">
+          <span className="font-mono text-sm text-accent">
             {String(number).padStart(2, "0")}
           </span>
           <h2
@@ -37,16 +37,16 @@ export function ServiceSection({
         </div>
 
         <div className="lg:col-span-8">
-          <p className="text-lg text-navy-800 sm:text-xl">{service.summary}</p>
+          <p className="text-lg text-ink-soft sm:text-xl">{service.summary}</p>
 
           {service.includes.length > 0 && (
             <>
-              <h3 className="mt-8 font-display text-xs font-semibold tracking-[0.16em] text-navy-600 uppercase">
+              <h3 className="mt-8 font-display text-xs font-semibold tracking-[0.16em] text-ink-muted uppercase">
                 Includes
               </h3>
               <ul className="mt-4 grid gap-x-8 gap-y-3 sm:grid-cols-2">
                 {service.includes.map((item) => (
-                  <li key={item} className="flex gap-3 text-navy-800">
+                  <li key={item} className="flex gap-3 text-ink-soft">
                     {/* Small ladder rung as the list marker */}
                     <span
                       aria-hidden

@@ -27,14 +27,14 @@ export function VideoFacade({ video }: { video: Video }) {
           title={title}
           allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
           allowFullScreen
-          className="aspect-video w-full rounded-sm border-0 bg-navy-950"
+          className="aspect-video w-full rounded-sm border-0 bg-band-deep"
         />
       ) : playing && uploadUrl ? (
         <video
           src={uploadUrl}
           controls
           autoPlay
-          className="aspect-video w-full rounded-sm bg-navy-950"
+          className="aspect-video w-full rounded-sm bg-band-deep"
         />
       ) : (
         <div className="group relative">
@@ -63,7 +63,7 @@ export function VideoFacade({ video }: { video: Video }) {
           )}
         </div>
       )}
-      <figcaption className="mt-3 text-sm text-navy-700">
+      <figcaption className="mt-3 text-sm text-ink-soft">
         <Value value={title} />
       </figcaption>
     </figure>

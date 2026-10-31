@@ -29,7 +29,7 @@ export default async function ServicesPage() {
               <li key={service.slug}>
                 <a
                   href={`#${service.slug}`}
-                  className="inline-flex h-11 items-center rounded-sm border border-navy-200 bg-white px-4 font-display text-sm font-semibold text-navy-800 transition-colors hover:border-navy-900 hover:text-navy-900"
+                  className="inline-flex h-11 items-center rounded-sm border border-line-strong bg-surface px-4 font-display text-sm font-semibold text-ink-soft transition-colors hover:border-ink hover:text-ink"
                 >
                   {service.name}
                 </a>

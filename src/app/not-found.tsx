@@ -16,13 +16,13 @@ export default function NotFound() {
     <Section tone="paper" className="flex min-h-[70vh] items-center">
       <div className="grid items-center gap-12 md:grid-cols-[1fr_auto] md:gap-20">
         <div className="max-w-xl">
-          <p className="font-display text-sm font-semibold tracking-[0.14em] text-orange-800 uppercase">
+          <p className="font-display text-sm font-semibold tracking-[0.14em] text-accent uppercase">
             Error 404
           </p>
           <h1 className="mt-3 font-display text-display font-bold">
             This step is missing.
           </h1>
-          <p className="mt-5 text-lg text-navy-700">
+          <p className="mt-5 text-lg text-ink-soft">
             The page you’re looking for doesn’t exist or has moved. Here are a
             few ways back on track.
           </p>
@@ -34,11 +34,11 @@ export default function NotFound() {
               See Our Work
             </Button>
           </div>
-          <p className="mt-6 text-navy-700">
+          <p className="mt-6 text-ink-soft">
             Looking for something specific?{" "}
             <Link
               href="/contact"
-              className="rounded-sm font-semibold text-navy-900 underline decoration-orange-500 decoration-2 underline-offset-4"
+              className="rounded-sm font-semibold text-ink underline decoration-orange-500 decoration-2 underline-offset-4"
             >
               Contact us
             </Link>
@@ -55,7 +55,7 @@ export default function NotFound() {
               key={n}
               className={
                 n === MISSING
-                  ? "h-6 w-32 rounded-[2px] border-2 border-dashed border-navy-300"
+                  ? "h-6 w-32 rounded-[2px] border-2 border-dashed border-line-strong"
                   : "h-6 w-32 rounded-[2px]"
               }
               style={
