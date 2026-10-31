@@ -10,7 +10,7 @@ The review counts as **revision round 1 of 2** (`docs/01-scope.md`).
 | Hiruy's VPS (Hostinger + PM2 + Nginx + Cloudflare) | Matches the possible production setup. Needs a subdomain, e.g. `preview.hiruytechnologies.com`. |
 | Vercel Pro | Simplest deploy. The free Hobby plan is for non-commercial use, so check the current terms before using it for a client project. |
 
-No database or API keys are needed for the preview.
+No database or API keys are needed for the preview (confirmed after Payload was added: public pages build and run without them, but `/admin` won't work).
 
 ## 2. Environment variables
 

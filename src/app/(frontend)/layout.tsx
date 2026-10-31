@@ -8,7 +8,7 @@ import { LadderProgress } from "@/components/ui/LadderProgress";
 import { inter, sora } from "@/lib/fonts";
 import { isPreview, siteName, siteUrl } from "@/lib/site";
 import { themeScript } from "@/lib/theme";
-import "./globals.css";
+import "../globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

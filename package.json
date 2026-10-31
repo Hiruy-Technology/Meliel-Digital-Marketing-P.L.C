@@ -2,6 +2,7 @@
   "name": "meliel-website",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,11 +12,22 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "contrast": "node scripts/contrast-check.mjs",
-    "placeholders": "node scripts/list-placeholders.mjs"
+    "placeholders": "node scripts/list-placeholders.mjs",
+    "db:up": "docker compose up -d --wait",
+    "db:down": "docker compose stop",
+    "payload": "payload",
+    "generate:types": "payload generate:types",
+    "generate:importmap": "payload generate:importmap"
   },
   "dependencies": {
+    "@payloadcms/db-postgres": "3.92.1",
+    "@payloadcms/next": "3.92.1",
+    "@payloadcms/richtext-lexical": "3.92.1",
+    "@payloadcms/ui": "3.92.1",
     "clsx": "2.1.1",
+    "graphql": "16.8.1",
     "next": "16.4.3",
+    "payload": "3.92.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "zod": "4.6.7"

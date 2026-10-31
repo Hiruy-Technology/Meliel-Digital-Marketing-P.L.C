@@ -1,0 +1,25 @@
+# Local development database only. Production uses Neon.
+# Start with `pnpm db:up`, stop with `pnpm db:down`. Data survives stops; it lives in the volume.
+#
+# These credentials are for this local container only, and it is reachable only from this
+# computer. Port 5435 avoids other projects' databases on 5432-5434.
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: meliel-postgres
+    environment:
+      POSTGRES_USER: meliel
+      POSTGRES_PASSWORD: meliel_dev
+      POSTGRES_DB: meliel
+    ports:
+      - "127.0.0.1:5435:5432"
+    volumes:
+      - meliel-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U meliel -d meliel"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  meliel-postgres-data:
