@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/ui/Link";
 import clsx from "clsx";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -6,26 +6,27 @@ import { Icon } from "@/components/ui/Icon";
 import { Rise } from "@/components/ui/Rise";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { pathwaysStatement } from "@/content/copy";
 import type { Service } from "@/lib/types";
+import { getI18n } from "@/i18n";
 
 // Five service cards linking to /services#slug. Desktop: three across, then two wider.
-export function ServicesOverview({ services }: { services: Service[] }) {
+export async function ServicesOverview({ services }: { services: Service[] }) {
+  const { t } = await getI18n();
   return (
     <Section aria-labelledby="services-title">
       <Rise className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <SectionHeading
           id="services-title"
-          eyebrow="Services"
-          title="What we do"
-          intro={pathwaysStatement}
+          eyebrow={t.home.servicesEyebrow}
+          title={t.home.servicesTitle}
+          intro={t.copy.pathwaysStatement}
         />
         <Button
           href="/services"
           variant="outline"
           className="self-start lg:self-auto"
         >
-          All services
+          {t.home.allServices}
         </Button>
       </Rise>
 
@@ -58,7 +59,7 @@ export function ServicesOverview({ services }: { services: Service[] }) {
                   </p>
                 )}
                 <span className="mt-auto flex items-center gap-2 pt-6 font-display text-sm font-semibold text-ink">
-                  Learn more
+                  {t.home.learnMore}
                   <Icon
                     name="arrow-right"
                     className="size-4 transition-transform group-hover:translate-x-1"

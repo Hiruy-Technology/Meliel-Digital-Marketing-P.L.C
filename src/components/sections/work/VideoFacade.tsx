@@ -9,7 +9,13 @@ import { videoEmbedUrl } from "@/lib/video";
 
 // Click-to-load video: only a thumbnail until the visitor presses play, so YouTube/Vimeo add
 // nothing to the page's load on slow connections. Players have their own full-screen button.
-export function VideoFacade({ video }: { video: Video }) {
+export function VideoFacade({
+  video,
+  playLabel,
+}: {
+  video: Video;
+  playLabel: string;
+}) {
   const [playing, setPlaying] = useState(false);
   const embedUrl = videoEmbedUrl(video);
   const uploadUrl = video.provider === "upload" ? video.url : null;
@@ -46,7 +52,7 @@ export function VideoFacade({ video }: { video: Video }) {
             <button
               type="button"
               onClick={() => setPlaying(true)}
-              aria-label={`Play video: ${title}`}
+              aria-label={playLabel}
               className="absolute inset-0 rounded-sm"
             >
               <span

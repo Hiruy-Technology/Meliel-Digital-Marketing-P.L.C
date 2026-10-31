@@ -1,10 +1,12 @@
 import { Container } from "@/components/ui/Container";
 import { MediaImage } from "@/components/ui/MediaImage";
 import type { ClientLogo } from "@/lib/types";
+import { getI18n } from "@/i18n";
 
 // Logos strip under the hero. Hidden entirely until there are logos (with permission).
-export function ClientLogos({ logos }: { logos: ClientLogo[] }) {
+export async function ClientLogos({ logos }: { logos: ClientLogo[] }) {
   if (logos.length === 0) return null;
+  const { t } = await getI18n();
   return (
     <section
       aria-labelledby="clients-title"
@@ -15,7 +17,7 @@ export function ClientLogos({ logos }: { logos: ClientLogo[] }) {
           id="clients-title"
           className="text-center font-display text-xs font-semibold tracking-[0.16em] text-ink-muted uppercase"
         >
-          Brands we’ve worked with
+          {t.home.clients}
         </h2>
         <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {logos.map((logo) => {

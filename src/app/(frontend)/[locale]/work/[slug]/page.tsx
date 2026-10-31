@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/components/ui/Link";
 import { notFound } from "next/navigation";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { RungStats } from "@/components/sections/RungStats";
@@ -19,6 +19,8 @@ import {
   getProjectSlugs,
 } from "@/lib/data";
 import type { Project, RichText } from "@/lib/types";
+import { fill, getI18n } from "@/i18n";
+import { alternates } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const slugs = await getProjectSlugs();
@@ -27,14 +29,15 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: PageProps<"/work/[slug]">): Promise<Metadata> {
+}: PageProps<"/[locale]/work/[slug]">): Promise<Metadata> {
   const { slug } = await params;
+  const { locale } = await getI18n();
   const project = await getProjectBySlug(slug);
   if (!project) return {};
   return {
     title: project.title,
     description: project.challenge[0],
-    alternates: { canonical: `/work/${project.slug}` },
+    alternates: alternates(`/work/${project.slug}`, locale),
   };
 }
 
@@ -63,9 +66,11 @@ function CaseBlock({
 function ProjectLink({
   project,
   direction,
+  label,
 }: {
   project: Project;
   direction: "previous" | "next";
+  label: string;
 }) {
   const next = direction === "next";
   return (
@@ -81,9 +86,7 @@ function ProjectLink({
         className="size-5 text-ink-muted transition-colors group-hover:text-ink"
       />
       <span className="min-w-0">
-        <span className="block text-sm text-ink-muted">
-          {next ? "Next project" : "Previous project"}
-        </span>
+        <span className="block text-sm text-ink-muted">{label}</span>
         <span className="mt-1 block font-display font-semibold text-ink">
           <Value value={project.title} />
         </span>
@@ -94,8 +97,9 @@ function ProjectLink({
 
 export default async function ProjectPage({
   params,
-}: PageProps<"/work/[slug]">) {
+}: PageProps<"/[locale]/work/[slug]">) {
   const { slug } = await params;
+  const { t } = await getI18n();
   const project = await getProjectBySlug(slug);
   if (!project) notFound();
   const { previous, next } = await getAdjacentProjects(slug);
@@ -109,7 +113,7 @@ export default async function ProjectPage({
             className="inline-flex min-h-11 items-center gap-2 rounded-sm font-display text-sm font-semibold text-ink-soft hover:text-ink"
           >
             <Icon name="arrow-left" className="size-4" />
-            All work
+            {t.work.allWork}
           </Link>
 
           <div className="mt-6 max-w-4xl">
@@ -124,7 +128,7 @@ export default async function ProjectPage({
             </h1>
             <ul
               className="mt-6 flex flex-wrap gap-2"
-              aria-label="Project details"
+              aria-label={t.work.details}
             >
               <li>
                 <Tag className="bg-surface! ring-1 ring-line">
@@ -150,7 +154,7 @@ export default async function ProjectPage({
       </section>
 
       {project.resultHighlights.length > 0 && (
-        <Section tone="navy" aria-label="Results at a glance">
+        <Section tone="navy" aria-label={t.work.glance}>
           <RungStats
             stats={project.resultHighlights}
             columns={project.resultHighlights.length >= 4 ? 4 : 3}
@@ -158,20 +162,20 @@ export default async function ProjectPage({
         </Section>
       )}
 
-      <Section aria-label="The project">
+      <Section aria-label={t.work.theProject}>
         <div className="space-y-14 lg:space-y-20">
-          <CaseBlock title="The challenge" paragraphs={project.challenge} />
-          <CaseBlock title="What we delivered" paragraphs={project.delivered} />
+          <CaseBlock title={t.work.challenge} paragraphs={project.challenge} />
+          <CaseBlock title={t.work.delivered} paragraphs={project.delivered} />
         </div>
       </Section>
 
       {project.gallery.length > 0 && (
         <Section tone="paper" aria-labelledby="gallery-title">
           <Rise>
-            <SectionHeading id="gallery-title" title="The work" />
+            <SectionHeading id="gallery-title" title={t.work.gallery} />
           </Rise>
           <div className="mt-10">
-            <ProjectGallery images={project.gallery} />
+            <ProjectGallery images={project.gallery} t={t.work} />
           </div>
         </Section>
       )}
@@ -181,33 +185,40 @@ export default async function ProjectPage({
           <Rise>
             <SectionHeading
               id="videos-title"
-              title={project.videos.length > 1 ? "Videos" : "Video"}
+              title={project.videos.length > 1 ? t.work.videos : t.work.video}
             />
           </Rise>
           <ul className="mt-10 grid gap-8 md:grid-cols-2">
             {project.videos.map((video) => (
               <li key={video.title}>
-                <VideoFacade video={video} />
+                <VideoFacade
+                  video={video}
+                  playLabel={fill(t.work.playVideo, { title: video.title })}
+                />
               </li>
             ))}
           </ul>
         </Section>
       )}
 
-      <Section tone="paper" aria-label="Results">
-        <CaseBlock title="The results" paragraphs={project.results} />
+      <Section tone="paper" aria-label={t.work.resultsLabel}>
+        <CaseBlock title={t.work.results} paragraphs={project.results} />
       </Section>
 
       {previous && next && (
-        <section aria-label="More projects" className="bg-surface py-10">
+        <section aria-label={t.work.more} className="bg-surface py-10">
           <Container className="flex flex-col gap-4 sm:flex-row">
-            <ProjectLink project={previous} direction="previous" />
-            <ProjectLink project={next} direction="next" />
+            <ProjectLink
+              project={previous}
+              direction="previous"
+              label={t.work.previous}
+            />
+            <ProjectLink project={next} direction="next" label={t.work.next} />
           </Container>
         </section>
       )}
 
-      <CtaBand title="Want results like these?" />
+      <CtaBand title={t.cta.projectTitle} />
     </>
   );
 }

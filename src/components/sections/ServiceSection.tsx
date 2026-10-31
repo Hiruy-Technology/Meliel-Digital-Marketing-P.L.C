@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { Rise } from "@/components/ui/Rise";
 import { Section } from "@/components/ui/Section";
 import type { Service } from "@/lib/types";
+import { getI18n } from "@/i18n";
 
 type ServiceSectionProps = {
   service: Service;
@@ -14,12 +15,13 @@ type ServiceSectionProps = {
 
 // One service on /services. The id is the anchor used across the site (/services#branding).
 // Works with or without an "Includes" list, because Meliel gave lists for only two services.
-export function ServiceSection({
+export async function ServiceSection({
   service,
   number,
   tone,
   hasWork,
 }: ServiceSectionProps) {
+  const { t } = await getI18n();
   const titleId = `${service.slug}-title`;
   return (
     <Section id={service.slug} tone={tone} aria-labelledby={titleId}>
@@ -42,7 +44,7 @@ export function ServiceSection({
           {service.includes.length > 0 && (
             <>
               <h3 className="mt-8 font-display text-xs font-semibold tracking-[0.16em] text-ink-muted uppercase">
-                Includes
+                {t.services.includes}
               </h3>
               <ul className="mt-4 grid gap-x-8 gap-y-3 sm:grid-cols-2">
                 {service.includes.map((item) => (
@@ -66,10 +68,12 @@ export function ServiceSection({
           )}
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button href={`/quote?service=${service.slug}`}>Get a quote</Button>
+            <Button href={`/quote?service=${service.slug}`}>
+              {t.common.getQuote}
+            </Button>
             {hasWork && (
               <Button href={`/work?service=${service.slug}`} variant="outline">
-                See related work
+                {t.services.relatedWork}
               </Button>
             )}
           </div>

@@ -1,17 +1,23 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/components/ui/Link";
 import { usePathname } from "next/navigation";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import clsx from "clsx";
 import { buttonClasses } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { isActive, type NavLink } from "@/lib/navigation";
 
-export function DesktopNav({ links }: { links: NavLink[] }) {
+export function DesktopNav({
+  links,
+  label,
+}: {
+  links: NavLink[];
+  label: string;
+}) {
   const pathname = usePathname();
   return (
-    <nav aria-label="Main" className="hidden lg:block">
+    <nav aria-label={label} className="hidden lg:block">
       <ul className="flex items-center gap-8">
         {links.map((link) => {
           const active = isActive(pathname, link.href);
@@ -39,7 +45,22 @@ export function DesktopNav({ links }: { links: NavLink[] }) {
   );
 }
 
-export function MobileMenu({ links, cta }: { links: NavLink[]; cta: NavLink }) {
+export function MobileMenu({
+  links,
+  cta,
+  label,
+  openLabel,
+  closeLabel,
+  children,
+}: {
+  links: NavLink[];
+  cta: NavLink;
+  label: string;
+  openLabel: string;
+  closeLabel: string;
+  /** Extra controls at the bottom of the phone menu. */
+  children?: ReactNode;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -77,7 +98,7 @@ export function MobileMenu({ links, cta }: { links: NavLink[]; cta: NavLink }) {
         className="-mr-2 inline-flex size-11 items-center justify-center rounded-sm text-ink hover:bg-tint"
       >
         <Icon name={open ? "close" : "menu"} />
-        <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
+        <span className="sr-only">{open ? closeLabel : openLabel}</span>
       </button>
 
       <div
@@ -86,7 +107,7 @@ export function MobileMenu({ links, cta }: { links: NavLink[]; cta: NavLink }) {
         hidden={!open}
         className="absolute inset-x-0 top-full h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-line bg-surface"
       >
-        <nav aria-label="Main" className="px-4 pt-4 pb-10 sm:px-6">
+        <nav aria-label={label} className="px-4 pt-4 pb-10 sm:px-6">
           <ul className="divide-y divide-line">
             {links.map((link) => {
               const active = isActive(pathname, link.href);
@@ -126,6 +147,7 @@ export function MobileMenu({ links, cta }: { links: NavLink[]; cta: NavLink }) {
           >
             {cta.label}
           </Link>
+          <div className="mt-6 flex justify-center sm:hidden">{children}</div>
         </nav>
       </div>
     </div>

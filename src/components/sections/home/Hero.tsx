@@ -2,8 +2,8 @@ import type { CSSProperties } from "react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/ui/Logo";
-import { heroHeadline, meaningShort, valueStatement } from "@/content/copy";
 import { projectCta } from "@/lib/navigation";
+import { getI18n } from "@/i18n";
 
 // Decorative ladder: 6 rungs and the small top square, as in the logo, climbing in on load.
 const PIECES = [
@@ -37,7 +37,10 @@ function HeroLadder() {
   );
 }
 
-export function Hero() {
+export async function Hero() {
+  const { t } = await getI18n();
+  const { heroHeadline, meaningShort, valueStatement } = t.copy;
+  const cta = projectCta(t);
   return (
     <section
       aria-labelledby="hero-title"
@@ -47,7 +50,7 @@ export function Hero() {
         <div className="lg:col-span-8">
           <p className="flex items-center gap-3 font-display text-xs font-semibold tracking-[0.16em] text-accent uppercase">
             <span aria-hidden className="h-1 w-6 rounded-[1px] bg-orange-500" />
-            Digital marketing · Addis Ababa
+            {t.home.eyebrow}
           </p>
           <h1
             id="hero-title"
@@ -64,11 +67,11 @@ export function Hero() {
             {valueStatement}
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <Button href={projectCta.href} size="lg">
-              {projectCta.label}
+            <Button href={cta.href} size="lg">
+              {cta.label}
             </Button>
             <Button href="/work" variant="outline" size="lg">
-              See Our Work
+              {t.common.seeOurWork}
             </Button>
           </div>
         </div>

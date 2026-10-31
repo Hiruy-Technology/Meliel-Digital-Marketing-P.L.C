@@ -2,6 +2,8 @@
 // schemas validate on the server (Server Actions) before saving to Inquiries and emailing Meliel.
 
 import { z } from "zod";
+import { fill } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/en";
 import type { ServiceSlug } from "./types";
 
 export const SERVICE_SLUGS = [
@@ -12,85 +14,78 @@ export const SERVICE_SLUGS = [
   "event-production",
 ] as const satisfies readonly ServiceSlug[];
 
-/** Budget option for visitors who don't know yet. Hiruy's addition: confirm with the client. */
-export const BUDGET_NOT_SURE = "Not sure yet";
+type Messages = Dictionary["errors"];
 
-const optionalText = (max: number) =>
+const limited = (max: number, m: Messages) =>
   z
     .string()
     .trim()
-    .max(max, { error: `Please keep this under ${max} characters.` });
+    .max(max, { error: fill(m.tooLong, { max }) });
 
 // Fields shared by both forms.
-const contactDetails = {
+const contactDetails = (m: Messages) => ({
   name: z
     .string()
     .trim()
-    .min(2, { error: "Please enter your name." })
-    .max(120, { error: "Please keep this under 120 characters." }),
-  company: optionalText(160),
-  email: z.email({
-    error: "Please enter a valid email address, like name@company.com.",
-  }),
+    .min(2, { error: m.name })
+    .max(120, { error: fill(m.tooLong, { max: 120 }) }),
+  company: limited(160, m),
+  email: z.email({ error: m.email }),
   phone: z
     .string()
     .trim()
-    .regex(/^[+\d][\d\s()-]{6,24}$|^$/, {
-      error: "Please enter a valid phone number, or leave this empty.",
-    }),
-  message: optionalText(2000),
+    .regex(/^[+\d][\d\s()-]{6,24}$|^$/, { error: m.phone }),
+  message: limited(2000, m),
   /** Honeypot: hidden from people, so anything in it means a bot filled the form. */
   website: z.string(),
-};
+});
 
 /** Event Production is quoted separately, so budget is optional when it's the only service. */
 export function isBudgetOptional(services: readonly string[]): boolean {
   return services.length === 1 && services[0] === "event-production";
 }
 
-export const quoteSchema = z
-  .object({
-    ...contactDetails,
-    services: z
-      .array(z.enum(SERVICE_SLUGS))
-      .min(1, { error: "Please choose at least one service." }),
-    selectedIncludes: z.array(z.string()),
-    budget: z.string(),
-    timeline: z.string().min(1, { error: "Please choose a timeline." }),
-  })
-  .refine((data) => isBudgetOptional(data.services) || data.budget !== "", {
-    error: "Please choose a budget range.",
-    path: ["budget"],
-    // Report this with the other errors, instead of only after they're fixed.
-    when: () => true,
-  });
+export const quoteSchema = (m: Messages) =>
+  z
+    .object({
+      ...contactDetails(m),
+      services: z.array(z.enum(SERVICE_SLUGS)).min(1, { error: m.services }),
+      selectedIncludes: z.array(z.string()),
+      budget: z.string(),
+      timeline: z.string().min(1, { error: m.timeline }),
+    })
+    .refine((data) => isBudgetOptional(data.services) || data.budget !== "", {
+      error: m.budget,
+      path: ["budget"],
+      // Report this with the other errors, instead of only after they're fixed.
+      when: () => true,
+    });
 
-export type QuoteInput = z.infer<typeof quoteSchema>;
+export type QuoteInput = z.infer<ReturnType<typeof quoteSchema>>;
 
 /** Service choice on the contact form for visitors who don't know yet. */
 export const SERVICE_NOT_SURE = "not-sure";
 
-export const contactSchema = z
-  .object({
-    ...contactDetails,
-    service: z
-      .string()
-      .min(1, { error: "Please choose a service, or “Not sure yet”." }),
-    budget: z.string(),
-    timeline: z.string(),
-    message: z
-      .string()
-      .trim()
-      .min(1, { error: "Please tell us a little about what you need." })
-      .max(2000, { error: "Please keep this under 2000 characters." }),
-  })
-  .refine((data) => isBudgetOptional([data.service]) || data.budget !== "", {
-    error: "Please choose a budget range.",
-    path: ["budget"],
-    when: () => true,
-  });
+export const contactSchema = (m: Messages) =>
+  z
+    .object({
+      ...contactDetails(m),
+      service: z.string().min(1, { error: m.service }),
+      budget: z.string(),
+      timeline: z.string(),
+      message: z
+        .string()
+        .trim()
+        .min(1, { error: m.message })
+        .max(2000, { error: fill(m.tooLong, { max: 2000 }) }),
+    })
+    .refine((data) => isBudgetOptional([data.service]) || data.budget !== "", {
+      error: m.budget,
+      path: ["budget"],
+      when: () => true,
+    });
 
-export type ContactInput = z.infer<typeof contactSchema>;
+export type ContactInput = z.infer<ReturnType<typeof contactSchema>>;
 
 /** First error message per field, keyed by field name. */
 export function fieldErrors(error: z.ZodError): Record<string, string> {

@@ -1,16 +1,16 @@
-import Link from "next/link";
+import { Link } from "@/components/ui/Link";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { Placeholder } from "@/components/ui/Placeholder";
-import { brandLine } from "@/content/copy";
 import { emailHref, phoneHref } from "@/lib/contact";
 import { getServices, getSiteSettings } from "@/lib/data";
 import { footerNav, projectCta } from "@/lib/navigation";
 import { isPlaceholder, placeholderLabel } from "@/lib/placeholder";
 import { SocialLinks } from "../sections/SocialLinks";
+import { getI18n } from "@/i18n";
 
 /** Shows a settings value, or a clearly marked placeholder while it's missing. */
 function SettingText({ value }: { value: string }) {
@@ -45,6 +45,8 @@ function ContactRow({
 }
 
 export async function Footer() {
+  const { t } = await getI18n();
+  const cta = projectCta(t);
   const [settings, services] = await Promise.all([
     getSiteSettings(),
     getServices(),
@@ -56,17 +58,23 @@ export async function Footer() {
     <footer data-tone="dark" className="bg-band-deep text-white">
       <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 lg:py-20">
         <div className="sm:col-span-2 lg:col-span-4">
-          <Logo variant="color-on-dark" withName className="h-10 text-xl" />
-          <p className="mt-6 max-w-sm text-navy-200">{brandLine}</p>
-          <Button href={projectCta.href} className="mt-8">
-            {projectCta.label}
+          <Logo
+            variant="color-on-dark"
+            withName
+            name={t.common.meliel}
+            tagline={t.common.digitalMarketing}
+            className="h-10 text-xl"
+          />
+          <p className="mt-6 max-w-sm text-navy-200">{t.copy.brandLine}</p>
+          <Button href={cta.href} className="mt-8">
+            {cta.label}
           </Button>
         </div>
 
-        <nav aria-label="Footer" className="lg:col-span-2">
-          <FooterHeading>Explore</FooterHeading>
+        <nav aria-label={t.nav.footer} className="lg:col-span-2">
+          <FooterHeading>{t.footer.explore}</FooterHeading>
           <ul className="mt-5 space-y-3">
-            {footerNav.map((link) => (
+            {footerNav(t).map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -80,7 +88,7 @@ export async function Footer() {
         </nav>
 
         <div className="lg:col-span-3">
-          <FooterHeading>Services</FooterHeading>
+          <FooterHeading>{t.common.services}</FooterHeading>
           <ul className="mt-5 space-y-3">
             {services.map((s) => (
               <li key={s.slug}>
@@ -96,7 +104,7 @@ export async function Footer() {
         </div>
 
         <div className="lg:col-span-3">
-          <FooterHeading>Contact</FooterHeading>
+          <FooterHeading>{t.footer.contact}</FooterHeading>
           <ul className="mt-5 space-y-4 text-navy-100">
             {settings.phones.map((phone) => {
               const href = phoneHref(phone);
@@ -144,9 +152,11 @@ export async function Footer() {
         {/* Left-aligned, with room at the bottom on phones, so the floating WhatsApp/Telegram
             buttons never cover these links at the end of the page. */}
         <Container className="flex flex-col gap-3 pt-6 pb-36 text-sm text-navy-200 sm:flex-row sm:items-center sm:gap-8 sm:pb-6 lg:pr-56">
-          <p>© {year} Meliel Digital Marketing P.L.C. All rights reserved.</p>
+          <p>
+            © {year} Meliel Digital Marketing P.L.C. {t.footer.rights}
+          </p>
           <Link href="/privacy" className="rounded-sm hover:text-white">
-            Privacy Policy
+            {t.footer.privacy}
           </Link>
         </Container>
       </div>

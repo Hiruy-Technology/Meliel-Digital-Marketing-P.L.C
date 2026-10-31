@@ -1,17 +1,25 @@
 import { Rise } from "@/components/ui/Rise";
 import { Section } from "@/components/ui/Section";
-import { mission, vision } from "@/content/copy";
+import { getI18n } from "@/i18n";
 
-const ITEMS = [
-  { title: "Mission", text: mission, rung: "var(--color-ladder-3)" },
-  { title: "Vision", text: vision, rung: "var(--color-ladder-5)" },
-];
-
-export function MissionVision() {
+export async function MissionVision() {
+  const { t } = await getI18n();
+  const items = [
+    {
+      title: t.about.mission,
+      text: t.copy.mission,
+      rung: "var(--color-ladder-3)",
+    },
+    {
+      title: t.about.vision,
+      text: t.copy.vision,
+      rung: "var(--color-ladder-5)",
+    },
+  ];
   return (
-    <Section tone="paper" aria-label="Mission and vision">
+    <Section tone="paper" aria-label={t.about.missionVision}>
       <div className="grid gap-10 md:grid-cols-2 md:gap-8">
-        {ITEMS.map((item) => (
+        {items.map((item) => (
           <Rise key={item.title}>
             <span
               aria-hidden

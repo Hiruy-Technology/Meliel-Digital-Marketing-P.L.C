@@ -7,19 +7,26 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Rise } from "@/components/ui/Rise";
 import { getIndustries, getProjects, getServices } from "@/lib/data";
+import { getI18n } from "@/i18n";
+import { alternates } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Our Work",
-  description:
-    "Browse Meliel Digital Marketing's portfolio of projects, filtered by service or industry.",
-  alternates: { canonical: "/work" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { locale, t } = await getI18n();
+  return {
+    title: t.meta.workTitle,
+    description: t.meta.workDescription,
+    alternates: alternates("/work", locale),
+  };
+}
 
 /** A query value may be repeated in the URL; only the first counts. */
 const first = (value: string | string[] | undefined) =>
   Array.isArray(value) ? value[0] : value;
 
-export default async function WorkPage({ searchParams }: PageProps<"/work">) {
+export default async function WorkPage({
+  searchParams,
+}: PageProps<"/[locale]/work">) {
+  const { t } = await getI18n();
   const query = await searchParams;
   const [services, industries] = await Promise.all([
     getServices(),
@@ -38,12 +45,15 @@ export default async function WorkPage({ searchParams }: PageProps<"/work">) {
   return (
     <>
       <PageHero
-        eyebrow="Our work"
-        title="Work that moves brands forward"
-        intro="See what we’ve delivered, filtered by the service or industry that matters to you."
+        eyebrow={t.work.eyebrow}
+        title={t.work.title}
+        intro={t.work.intro}
       />
 
-      <section aria-label="Projects" className="bg-surface py-12 lg:py-16">
+      <section
+        aria-label={t.work.projects}
+        className="bg-surface py-12 lg:py-16"
+      >
         <Container>
           <WorkFilters
             services={services}
@@ -56,7 +66,8 @@ export default async function WorkPage({ searchParams }: PageProps<"/work">) {
             role="status"
             className="mt-10 border-t border-line pt-6 text-sm text-ink-muted"
           >
-            {projects.length} {projects.length === 1 ? "project" : "projects"}
+            {projects.length}{" "}
+            {projects.length === 1 ? t.work.oneProject : t.work.manyProjects}
           </p>
 
           {projects.length > 0 ? (
@@ -75,11 +86,9 @@ export default async function WorkPage({ searchParams }: PageProps<"/work">) {
           ) : (
             <div className="mt-8 rounded-sm border border-dashed border-line-strong bg-paper px-6 py-16 text-center">
               <h2 className="font-display text-2xl font-bold">
-                No projects match these filters
+                {t.work.emptyTitle}
               </h2>
-              <p className="mt-3 text-ink-soft">
-                Try a different service or industry, or see everything.
-              </p>
+              <p className="mt-3 text-ink-soft">{t.work.emptyText}</p>
               {filtered && (
                 <Button
                   href={workHref({})}
@@ -87,7 +96,7 @@ export default async function WorkPage({ searchParams }: PageProps<"/work">) {
                   className="mt-6"
                   scroll={false}
                 >
-                  Clear filters
+                  {t.work.clearFilters}
                 </Button>
               )}
             </div>

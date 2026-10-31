@@ -1,28 +1,35 @@
 // Site navigation, shared by the header, mobile menu and footer.
 
+import type { Dictionary } from "@/i18n/en";
+import { stripLocale } from "@/i18n/config";
+
 export type NavLink = { href: string; label: string };
 
-export const mainNav: NavLink[] = [
-  { href: "/work", label: "Work" },
-  { href: "/services", label: "Services" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+export const mainNav = (t: Dictionary): NavLink[] => [
+  { href: "/work", label: t.nav.work },
+  { href: "/services", label: t.nav.services },
+  { href: "/about", label: t.nav.about },
+  { href: "/contact", label: t.nav.contact },
 ];
 
 /** The main call to action everywhere: the quote page. */
-export const projectCta: NavLink = { href: "/quote", label: "Start a Project" };
+export const projectCta = (t: Dictionary): NavLink => ({
+  href: "/quote",
+  label: t.common.startProject,
+});
 
-export const footerNav: NavLink[] = [
-  { href: "/", label: "Home" },
-  { href: "/work", label: "Our Work" },
-  { href: "/services", label: "Services" },
-  { href: "/about", label: "About Us" },
-  { href: "/quote", label: "Get a Quote" },
-  { href: "/contact", label: "Contact" },
+export const footerNav = (t: Dictionary): NavLink[] => [
+  { href: "/", label: t.nav.home },
+  { href: "/work", label: t.nav.ourWork },
+  { href: "/services", label: t.nav.services },
+  { href: "/about", label: t.nav.aboutUs },
+  { href: "/quote", label: t.nav.getQuote },
+  { href: "/contact", label: t.nav.contact },
 ];
 
-/** True when `pathname` is `href` or a page inside it (e.g. /work/project-1 under /work). */
+/** True when `pathname` is `href` or a page inside it, in any language. */
 export function isActive(pathname: string, href: string): boolean {
-  if (href === "/") return pathname === "/";
-  return pathname === href || pathname.startsWith(`${href}/`);
+  const path = stripLocale(pathname);
+  if (href === "/") return path === "/";
+  return path === href || path.startsWith(`${href}/`);
 }

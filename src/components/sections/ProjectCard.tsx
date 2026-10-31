@@ -1,19 +1,21 @@
-import Link from "next/link";
+import { Link } from "@/components/ui/Link";
 import { Icon } from "@/components/ui/Icon";
 import { MediaImage } from "@/components/ui/MediaImage";
 import { Tag } from "@/components/ui/Tag";
 import { Value } from "@/components/ui/Value";
 import type { Project } from "@/lib/types";
+import { getI18n } from "@/i18n";
 
 // Portfolio card: cover, client, title, services, and one headline result.
 // Used on Home (featured work) and /work. The whole card is one link.
-export function ProjectCard({
+export async function ProjectCard({
   project,
   sizes,
 }: {
   project: Project;
   sizes: string;
 }) {
+  const { t } = await getI18n();
   const highlight = project.resultHighlights[0];
   return (
     <article className="group relative flex h-full flex-col">
@@ -39,7 +41,10 @@ export function ProjectCard({
           </Link>
         </h3>
 
-        <ul className="mt-4 flex flex-wrap gap-2" aria-label="Services">
+        <ul
+          className="mt-4 flex flex-wrap gap-2"
+          aria-label={t.common.services}
+        >
           {project.services.map((s) => (
             <li key={s.slug}>
               <Tag>{s.name}</Tag>

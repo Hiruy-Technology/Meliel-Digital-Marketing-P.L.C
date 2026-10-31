@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { Icon } from "@/components/ui/Icon";
 import { externalHref } from "@/lib/contact";
 import type { SocialLink } from "@/lib/types";
+import { fill, getI18n } from "@/i18n";
 
 const LABELS: Record<SocialLink["platform"], string> = {
   facebook: "Facebook",
@@ -29,7 +30,7 @@ const TONES = {
   },
 };
 
-export function SocialLinks({
+export async function SocialLinks({
   links,
   tone = "light",
   className,
@@ -38,11 +39,12 @@ export function SocialLinks({
   tone?: keyof typeof TONES;
   className?: string;
 }) {
+  const { t } = await getI18n();
   const colors = TONES[tone];
   return (
     <ul
       className={clsx("flex flex-wrap gap-2", className)}
-      aria-label="Social media"
+      aria-label={t.footer.socialMedia}
     >
       {links.map((social) => {
         const href = externalHref(social.url);
@@ -54,7 +56,7 @@ export function SocialLinks({
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Meliel on ${label} (opens in a new tab)`}
+                aria-label={fill(t.footer.onPlatform, { platform: label })}
                 className={clsx(BASE, colors.idle, colors.live)}
               >
                 <Icon name={social.platform} className="size-5" />
@@ -64,7 +66,7 @@ export function SocialLinks({
               <span
                 role="img"
                 title={social.url}
-                aria-label={`${label} (link not provided yet)`}
+                aria-label={fill(t.footer.linkPending, { platform: label })}
                 className={clsx(BASE, colors.idle, colors.pending)}
               >
                 <Icon name={social.platform} className="size-5" />

@@ -6,19 +6,22 @@ import { Button } from "@/components/ui/Button";
 import { ErrorSummary } from "@/components/ui/ErrorSummary";
 import { SelectField, TextAreaField, TextField } from "@/components/ui/Field";
 import {
-  BUDGET_NOT_SURE,
   SERVICE_NOT_SURE,
   contactSchema,
   fieldErrors,
   isBudgetOptional,
 } from "@/lib/inquiry-schema";
 import type { InquiryOptions, Service } from "@/lib/types";
+import { localePath } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/en";
+import { useLocale } from "@/i18n/LocaleProvider";
 
 type ContactFormProps = {
   services: Service[];
   options: InquiryOptions;
   /** Selected on arrival, from ?service= in the URL. */
   initialService: string;
+  t: Pick<Dictionary, "form" | "errors" | "contact">;
 };
 
 const FIELDS = {
@@ -37,7 +40,9 @@ export function ContactForm({
   services,
   options,
   initialService,
+  t,
 }: ContactFormProps) {
+  const locale = useLocale();
   const router = useRouter();
   const [service, setService] = useState(initialService);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -53,7 +58,7 @@ export function ContactForm({
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const text = (name: string) => String(form.get(name) ?? "");
-    const result = contactSchema.safeParse({
+    const result = contactSchema(t.errors).safeParse({
       service,
       budget: text("budget"),
       timeline: text("timeline"),
@@ -73,26 +78,32 @@ export function ContactForm({
     setErrors({});
     // Design phase: nothing is sent or stored. Phase 3 calls a Server Action here, which also
     // discards the submission silently if the `website` honeypot is filled in.
-    router.push("/contact/thank-you");
+    router.push(localePath("/contact/thank-you", locale));
   };
 
   return (
     <form noValidate onSubmit={onSubmit} className="space-y-6">
-      <ErrorSummary ref={summaryRef} errors={errors} fields={FIELDS} />
+      <ErrorSummary
+        ref={summaryRef}
+        errors={errors}
+        fields={FIELDS}
+        one={t.form.errorOne}
+        many={t.form.errorMany}
+      />
 
       <div className="grid gap-6 sm:grid-cols-2">
         <TextField
           id={FIELDS.name.id}
           name="name"
-          label="Name"
+          label={t.form.name}
           autoComplete="name"
           error={errors.name}
         />
         <TextField
           id={FIELDS.company.id}
           name="company"
-          label="Company"
-          optional
+          label={t.form.company}
+          optional={t.form.optional}
           autoComplete="organization"
           error={errors.company}
         />
@@ -100,7 +111,7 @@ export function ContactForm({
           id={FIELDS.email.id}
           name="email"
           type="email"
-          label="Email"
+          label={t.form.email}
           autoComplete="email"
           error={errors.email}
         />
@@ -108,8 +119,8 @@ export function ContactForm({
           id={FIELDS.phone.id}
           name="phone"
           type="tel"
-          label="Phone"
-          optional
+          label={t.form.phone}
+          optional={t.form.optional}
           autoComplete="tel"
           error={errors.phone}
         />
@@ -117,50 +128,46 @@ export function ContactForm({
           <SelectField
             id={FIELDS.service.id}
             name="service"
-            label="Service you’re interested in"
+            label={t.contact.service}
             error={errors.service}
             value={service}
             onChange={(e) => setService(e.target.value)}
           >
-            <option value="">Choose a service</option>
+            <option value="">{t.contact.chooseService}</option>
             {services.map((s) => (
               <option key={s.slug} value={s.slug}>
                 {s.name}
               </option>
             ))}
-            <option value={SERVICE_NOT_SURE}>Not sure yet</option>
+            <option value={SERVICE_NOT_SURE}>{t.form.notSure}</option>
           </SelectField>
         </div>
         <SelectField
           id={FIELDS.budget.id}
           name="budget"
-          label="Budget range"
-          optional={budgetOptional}
-          hint={
-            budgetOptional
-              ? "Quote on request: Event Production is priced on your requirements."
-              : undefined
-          }
+          label={t.form.budget}
+          optional={budgetOptional ? t.form.optional : undefined}
+          hint={budgetOptional ? t.form.quoteOnRequest : undefined}
           error={errors.budget}
           defaultValue=""
         >
-          <option value="">Choose a range</option>
+          <option value="">{t.form.chooseRange}</option>
           {options.budgetRanges.map((range) => (
             <option key={range} value={range}>
               {range}
             </option>
           ))}
-          <option value={BUDGET_NOT_SURE}>{BUDGET_NOT_SURE}</option>
+          <option value={t.form.notSure}>{t.form.notSure}</option>
         </SelectField>
         <SelectField
           id={FIELDS.timeline.id}
           name="timeline"
-          label="Timeline"
-          optional
+          label={t.form.timeline}
+          optional={t.form.optional}
           error={errors.timeline}
           defaultValue=""
         >
-          <option value="">Choose a timeline</option>
+          <option value="">{t.form.chooseTimeline}</option>
           {options.timelines.map((timeline) => (
             <option key={timeline} value={timeline}>
               {timeline}
@@ -171,7 +178,7 @@ export function ContactForm({
           <TextAreaField
             id={FIELDS.message.id}
             name="message"
-            label="How can we help?"
+            label={t.contact.help}
             error={errors.message}
           />
         </div>
@@ -180,13 +187,13 @@ export function ContactForm({
       {/* Honeypot: invisible to people and skipped by keyboards; bots fill it in. */}
       <div aria-hidden className="absolute -left-[9999px]">
         <label>
-          Website
+          {t.form.honeypot}
           <input type="text" name="website" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
 
       <Button type="submit" size="lg" className="w-full sm:w-auto">
-        Send message
+        {t.contact.send}
       </Button>
     </form>
   );

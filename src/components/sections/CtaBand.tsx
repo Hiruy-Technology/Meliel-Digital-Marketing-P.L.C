@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Rise } from "@/components/ui/Rise";
 import { Section } from "@/components/ui/Section";
 import { projectCta } from "@/lib/navigation";
+import { getI18n } from "@/i18n";
 
 type CtaBandProps = {
   title?: string;
@@ -11,10 +12,9 @@ type CtaBandProps = {
 
 // Closing call to action on navy, used at the end of most pages.
 // Wording is Hiruy's proposal (not client copy): confirm at the design review.
-export function CtaBand({
-  title = "Ready to take your brand where it has the potential to be?",
-  text = "Tell us where your brand is today and where you want it to go. Pick the services you need and we’ll come back with a quote.",
-}: CtaBandProps) {
+export async function CtaBand({ title, text }: CtaBandProps) {
+  const { t } = await getI18n();
+  const cta = projectCta(t);
   return (
     <Section
       tone="navy-deep"
@@ -24,15 +24,15 @@ export function CtaBand({
       <div className="relative grid items-center gap-10 lg:grid-cols-[1fr_auto]">
         <Rise className="max-w-2xl">
           <h2 id="cta-title" className="font-display text-display-sm font-bold">
-            {title}
+            {title ?? t.cta.title}
           </h2>
-          <p className="mt-5 text-lg text-navy-200">{text}</p>
+          <p className="mt-5 text-lg text-navy-200">{text ?? t.cta.text}</p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <Button href={projectCta.href} size="lg">
-              {projectCta.label}
+            <Button href={cta.href} size="lg">
+              {cta.label}
             </Button>
             <Button href="/contact" variant="on-dark" size="lg">
-              Contact us
+              {t.common.contactUs}
             </Button>
           </div>
         </Rise>

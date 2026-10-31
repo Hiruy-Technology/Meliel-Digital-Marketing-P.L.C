@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { Icon } from "@/components/ui/Icon";
 import { telegramHref, whatsappHref } from "@/lib/contact";
 import { getSiteSettings } from "@/lib/data";
+import { fill, getI18n } from "@/i18n";
 
 // One-tap WhatsApp and Telegram buttons on every page (contracted feature).
 // Bottom-right, above the iPhone home bar. Labels show beside the icons on desktop.
@@ -12,9 +13,19 @@ type ButtonProps = {
   href: string | null;
   /** The placeholder text, shown as a tooltip while the number/username is missing. */
   pendingNote: string;
+  /** Spoken names for the link and for the inactive button. */
+  chatLabel: string;
+  pendingLabel: string;
 };
 
-function FloatingButton({ kind, label, href, pendingNote }: ButtonProps) {
+function FloatingButton({
+  kind,
+  label,
+  href,
+  pendingNote,
+  chatLabel,
+  pendingLabel,
+}: ButtonProps) {
   const classes = clsx(
     "group flex h-13 min-w-13 items-center justify-center gap-2 rounded-full px-3.5 text-white shadow-lg ring-2 shadow-navy-950/25 ring-white transition-transform hover:-translate-y-0.5 lg:px-5",
     kind === "whatsapp" ? "bg-whatsapp" : "bg-telegram",
@@ -34,7 +45,7 @@ function FloatingButton({ kind, label, href, pendingNote }: ButtonProps) {
       <span
         role="img"
         title={pendingNote}
-        aria-label={`${label} (not set up yet)`}
+        aria-label={pendingLabel}
         className={clsx(
           classes,
           "outline-2 outline-offset-2 outline-orange-500 outline-dashed",
@@ -50,7 +61,7 @@ function FloatingButton({ kind, label, href, pendingNote }: ButtonProps) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Chat with Meliel on ${label} (opens in a new tab)`}
+      aria-label={chatLabel}
       className={classes}
     >
       {content}
@@ -59,23 +70,30 @@ function FloatingButton({ kind, label, href, pendingNote }: ButtonProps) {
 }
 
 export async function FloatingContact() {
+  const { t } = await getI18n();
   const settings = await getSiteSettings();
+  const names = (platform: string) => ({
+    chatLabel: fill(t.floating.chat, { platform }),
+    pendingLabel: fill(t.floating.notSetUp, { platform }),
+  });
   return (
     <aside
       className="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 flex flex-col items-end gap-3 sm:right-6 sm:bottom-6"
-      aria-label="Quick contact"
+      aria-label={t.floating.quickContact}
     >
       <FloatingButton
         kind="whatsapp"
         label="WhatsApp"
         href={whatsappHref(settings.whatsappNumber)}
         pendingNote={settings.whatsappNumber}
+        {...names("WhatsApp")}
       />
       <FloatingButton
         kind="telegram"
         label="Telegram"
         href={telegramHref(settings.telegramUsername)}
         pendingNote={settings.telegramUsername}
+        {...names("Telegram")}
       />
     </aside>
   );

@@ -2,20 +2,22 @@ import { Card } from "@/components/ui/Card";
 import { Rise } from "@/components/ui/Rise";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { headingText, values } from "@/content/copy";
+import { headingText } from "@/content/copy";
+import { getI18n } from "@/i18n";
 
-export function Values() {
+export async function Values() {
+  const { t } = await getI18n();
   return (
     <Section aria-labelledby="values-title">
       <Rise>
         <SectionHeading
           id="values-title"
-          eyebrow="Values"
-          title="What we stand for"
+          eyebrow={t.about.valuesEyebrow}
+          title={t.about.valuesTitle}
         />
       </Rise>
       <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {values.map((value, i) => (
+        {t.copy.values.map((value, i) => (
           <li key={value.title}>
             <Rise className="h-full">
               <Card className="h-full p-7">

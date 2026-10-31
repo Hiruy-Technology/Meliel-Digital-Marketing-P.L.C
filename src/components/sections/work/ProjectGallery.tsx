@@ -5,10 +5,18 @@ import { Icon } from "@/components/ui/Icon";
 import { MediaImage } from "@/components/ui/MediaImage";
 import { isPlaceholder } from "@/lib/placeholder";
 import type { Media } from "@/lib/types";
+import { fill } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/en";
 
 // Image grid with a full-screen viewer (contracted feature). Uses the native <dialog>, which
 // keeps keyboard focus inside, closes on Esc, and returns focus to the image that opened it.
-export function ProjectGallery({ images }: { images: Media[] }) {
+export function ProjectGallery({
+  images,
+  t,
+}: {
+  images: Media[];
+  t: Dictionary["work"];
+}) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [index, setIndex] = useState(0);
   const [open, setOpen] = useState(false);
@@ -49,7 +57,7 @@ export function ProjectGallery({ images }: { images: Media[] }) {
             <button
               type="button"
               onClick={() => show(i)}
-              aria-label={`View image ${i + 1} of ${images.length} full screen`}
+              aria-label={fill(t.viewImage, { n: i + 1, total: images.length })}
               className="absolute inset-0 flex items-end justify-end rounded-sm p-3"
             >
               <span className="inline-flex size-10 items-center justify-center rounded-full bg-white/90 text-navy-900 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
@@ -63,7 +71,7 @@ export function ProjectGallery({ images }: { images: Media[] }) {
       <dialog
         ref={dialogRef}
         data-tone="dark"
-        aria-label="Project images"
+        aria-label={t.images}
         onClose={() => setOpen(false)}
         onKeyDown={onKeyDown}
         onClick={onDialogClick}
@@ -81,7 +89,7 @@ export function ProjectGallery({ images }: { images: Media[] }) {
                 className="inline-flex size-11 items-center justify-center rounded-sm text-white hover:bg-white/10"
               >
                 <Icon name="close" />
-                <span className="sr-only">Close</span>
+                <span className="sr-only">{t.close}</span>
               </button>
             </div>
 
@@ -102,7 +110,7 @@ export function ProjectGallery({ images }: { images: Media[] }) {
                     className={`${navButton} left-2 sm:left-5`}
                   >
                     <Icon name="chevron-left" />
-                    <span className="sr-only">Previous image</span>
+                    <span className="sr-only">{t.previousImage}</span>
                   </button>
                   <button
                     type="button"
@@ -110,7 +118,7 @@ export function ProjectGallery({ images }: { images: Media[] }) {
                     className={`${navButton} right-2 sm:right-5`}
                   >
                     <Icon name="chevron-right" />
-                    <span className="sr-only">Next image</span>
+                    <span className="sr-only">{t.nextImage}</span>
                   </button>
                 </>
               )}

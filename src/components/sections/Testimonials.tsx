@@ -4,21 +4,23 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Value } from "@/components/ui/Value";
 import type { Testimonial } from "@/lib/types";
+import { getI18n } from "@/i18n";
 
 // Client quotes from the Portfolio Manager. Hidden entirely until there are real ones.
-export function Testimonials({
+export async function Testimonials({
   testimonials,
 }: {
   testimonials: Testimonial[];
 }) {
   if (testimonials.length === 0) return null;
+  const { t: i18n } = await getI18n();
   return (
     <Section tone="paper" aria-labelledby="testimonials-title">
       <Rise>
         <SectionHeading
           id="testimonials-title"
-          eyebrow="Testimonials"
-          title="What our clients say"
+          eyebrow={i18n.home.testimonialsEyebrow}
+          title={i18n.home.testimonialsTitle}
         />
       </Rise>
       <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">

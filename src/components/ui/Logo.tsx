@@ -27,14 +27,19 @@ type LogoProps = {
    * "white": single-color white logo (dark backgrounds, photos).
    */
   variant?: "color" | "color-on-dark" | "white";
-  /** Show "Meliel Digital Marketing" in Latin text next to the wordmark. */
+  /** Show the company name next to the wordmark. */
   withName?: boolean;
+  /** The name in the page's language. */
+  name?: string;
+  tagline?: string;
   className?: string;
 };
 
 export function Logo({
   variant = "color",
   withName = false,
+  name = "Meliel",
+  tagline = "Digital Marketing",
   className,
 }: LogoProps) {
   const white = variant === "white";
@@ -82,14 +87,14 @@ export function Logo({
           onDark ? "border-white/30 text-white" : "border-line-strong text-ink",
         )}
       >
-        <span className="text-[1.05em] font-bold tracking-tight">Meliel</span>{" "}
+        <span className="text-[1.05em] font-bold tracking-tight">{name}</span>{" "}
         <span
           className={clsx(
             "mt-1 text-[0.55em] font-medium tracking-[0.14em] uppercase",
             onDark ? "text-ice-300" : "text-ink-muted",
           )}
         >
-          Digital Marketing
+          {tagline}
         </span>
       </span>
     </span>

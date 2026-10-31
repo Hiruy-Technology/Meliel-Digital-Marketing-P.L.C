@@ -3,15 +3,22 @@ import { PageHero } from "@/components/sections/PageHero";
 import { QuoteForm } from "@/components/sections/quote/QuoteForm";
 import { Container } from "@/components/ui/Container";
 import { getInquiryOptions, getServices, isServiceSlug } from "@/lib/data";
+import { getI18n } from "@/i18n";
+import { alternates } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Get a Quote",
-  description:
-    "Choose the services you need from Meliel Digital Marketing, share your budget and timeline, and request a quote.",
-  alternates: { canonical: "/quote" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { locale, t } = await getI18n();
+  return {
+    title: t.meta.quoteTitle,
+    description: t.meta.quoteDescription,
+    alternates: alternates("/quote", locale),
+  };
+}
 
-export default async function QuotePage({ searchParams }: PageProps<"/quote">) {
+export default async function QuotePage({
+  searchParams,
+}: PageProps<"/[locale]/quote">) {
+  const { t } = await getI18n();
   const { service } = await searchParams;
   const [services, options] = await Promise.all([
     getServices(),
@@ -23,9 +30,9 @@ export default async function QuotePage({ searchParams }: PageProps<"/quote">) {
   return (
     <>
       <PageHero
-        eyebrow="Get a quote"
-        title="Tell us what you need"
-        intro="Choose the services you’re interested in, share your budget and timeline, and we’ll come back with a quote."
+        eyebrow={t.quote.eyebrow}
+        title={t.quote.title}
+        intro={t.quote.intro}
       />
       <section className="bg-surface py-12 lg:py-16">
         <Container>
@@ -33,6 +40,12 @@ export default async function QuotePage({ searchParams }: PageProps<"/quote">) {
             services={services}
             options={options}
             initialServices={initialServices}
+            t={{
+              form: t.form,
+              errors: t.errors,
+              quote: t.quote,
+              common: t.common,
+            }}
           />
         </Container>
       </section>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/components/ui/Link";
 import { PageHero } from "@/components/sections/PageHero";
 import { ContactForm } from "@/components/sections/contact/ContactForm";
 import { ContactMethods } from "@/components/sections/contact/ContactMethods";
@@ -13,17 +13,22 @@ import {
   getSiteSettings,
   isServiceSlug,
 } from "@/lib/data";
+import { getI18n } from "@/i18n";
+import { alternates } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Contact Meliel Digital Marketing in Addis Ababa by form, phone, email, WhatsApp, or Telegram.",
-  alternates: { canonical: "/contact" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { locale, t } = await getI18n();
+  return {
+    title: t.meta.contactTitle,
+    description: t.meta.contactDescription,
+    alternates: alternates("/contact", locale),
+  };
+}
 
 export default async function ContactPage({
   searchParams,
-}: PageProps<"/contact">) {
+}: PageProps<"/[locale]/contact">) {
+  const { t } = await getI18n();
   const { service } = await searchParams;
   const [services, options, settings] = await Promise.all([
     getServices(),
@@ -36,13 +41,13 @@ export default async function ContactPage({
   return (
     <>
       <PageHero
-        eyebrow="Contact"
-        title="Let’s talk"
-        intro="Send us a message or reach us directly, whichever is easiest for you."
+        eyebrow={t.contact.eyebrow}
+        title={t.contact.title}
+        intro={t.contact.intro}
       />
 
       <section
-        aria-label="Contact Meliel"
+        aria-label={t.contact.region}
         className="bg-surface py-12 lg:py-16"
       >
         <Container className="grid gap-12 lg:grid-cols-12">
@@ -51,7 +56,7 @@ export default async function ContactPage({
               href="/quote"
               className="group mb-8 flex items-center justify-between gap-4 rounded-sm border-2 border-ink p-4 font-display font-semibold text-ink hover:bg-tint"
             >
-              Know which services you need? Get a quote
+              {t.contact.quoteLink}
               <Icon
                 name="arrow-right"
                 className="size-5 transition-transform group-hover:translate-x-1"
@@ -61,6 +66,7 @@ export default async function ContactPage({
               services={services}
               options={options}
               initialService={initialService}
+              t={{ form: t.form, errors: t.errors, contact: t.contact }}
             />
           </div>
           <div className="lg:col-span-5">
@@ -70,13 +76,15 @@ export default async function ContactPage({
       </section>
 
       <section
-        aria-label="Office location"
+        aria-label={t.contact.location}
         className="bg-surface pb-16 lg:pb-24"
       >
         <Container>
           <MapFacade
             url={settings.mapEmbedUrl}
             pendingLabel={pendingCopy.officeMap}
+            title={t.contact.mapTitle}
+            showLabel={t.contact.showMap}
           />
         </Container>
       </section>

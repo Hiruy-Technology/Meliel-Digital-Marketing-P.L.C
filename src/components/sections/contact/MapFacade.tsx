@@ -11,12 +11,19 @@ type MapFacadeProps = {
   url: string | null;
   /** Placeholder text shown while there is no URL. */
   pendingLabel: string;
+  title: string;
+  showLabel: string;
 };
 
 const FRAME = "aspect-[4/3] w-full rounded-sm sm:aspect-[21/9]";
 
 // Click-to-load map: Google Maps is heavy, so nothing loads until a visitor asks for it.
-export function MapFacade({ url, pendingLabel }: MapFacadeProps) {
+export function MapFacade({
+  url,
+  pendingLabel,
+  title,
+  showLabel,
+}: MapFacadeProps) {
   const [loaded, setLoaded] = useState(false);
 
   if (!url) {
@@ -29,7 +36,7 @@ export function MapFacade({ url, pendingLabel }: MapFacadeProps) {
     return (
       <iframe
         src={url}
-        title="Meliel Digital Marketing office location on Google Maps"
+        title={title}
         referrerPolicy="no-referrer-when-downgrade"
         className={`${FRAME} border-0 bg-tint`}
       />
@@ -45,7 +52,7 @@ export function MapFacade({ url, pendingLabel }: MapFacadeProps) {
           className="mt-4"
           onClick={() => setLoaded(true)}
         >
-          Show map
+          {showLabel}
         </Button>
       </div>
     </div>

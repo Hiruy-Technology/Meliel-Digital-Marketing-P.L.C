@@ -2,16 +2,21 @@ import type { Metadata } from "next";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { PageHero } from "@/components/sections/PageHero";
 import { ServiceSection } from "@/components/sections/ServiceSection";
-import { pathwaysStatement } from "@/content/copy";
 import { getProjects, getServices } from "@/lib/data";
+import { getI18n } from "@/i18n";
+import { alternates } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description: pathwaysStatement,
-  alternates: { canonical: "/services" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { locale, t } = await getI18n();
+  return {
+    title: t.meta.servicesTitle,
+    description: t.copy.pathwaysStatement,
+    alternates: alternates("/services", locale),
+  };
+}
 
 export default async function ServicesPage() {
+  const { t } = await getI18n();
   const [services, projects] = await Promise.all([
     getServices(),
     getProjects(),
@@ -22,8 +27,12 @@ export default async function ServicesPage() {
 
   return (
     <>
-      <PageHero eyebrow="Services" title="What we do" intro={pathwaysStatement}>
-        <nav aria-label="Services on this page">
+      <PageHero
+        eyebrow={t.common.services}
+        title={t.services.title}
+        intro={t.copy.pathwaysStatement}
+      >
+        <nav aria-label={t.services.onThisPage}>
           <ul className="flex flex-wrap gap-2">
             {services.map((service) => (
               <li key={service.slug}>

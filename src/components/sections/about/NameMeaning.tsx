@@ -1,12 +1,13 @@
 import { Rise } from "@/components/ui/Rise";
 import { Section } from "@/components/ui/Section";
-import { nameMeaning } from "@/content/copy";
+import { getI18n } from "@/i18n";
 
 // The page's signature section: what መልዕል means, in Amharic and English.
 // The first English paragraph is the page intro, so it starts from the second here,
 // and the closing line (the brand line) is set large.
-export function NameMeaning() {
-  const { amharic, english } = nameMeaning;
+export async function NameMeaning() {
+  const { t } = await getI18n();
+  const { amharic, english } = t.copy.nameMeaning;
   const body = english.paragraphs.slice(1, -1);
   const closing = english.paragraphs[english.paragraphs.length - 1];
 

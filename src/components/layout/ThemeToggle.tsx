@@ -5,7 +5,7 @@ import { THEME_KEY } from "@/lib/theme";
 
 // Light/dark switch. The icon and label come from CSS (dark:), so server and browser render the
 // same HTML and there is no mismatch before the theme is known.
-export function ThemeToggle() {
+export function ThemeToggle({ light, dark }: { light: string; dark: string }) {
   const toggle = () => {
     const root = document.documentElement;
     const next = root.dataset.theme === "dark" ? "light" : "dark";
@@ -25,11 +25,11 @@ export function ThemeToggle() {
     >
       <span className="hidden dark:inline">
         <Icon name="sun" />
-        <span className="sr-only">Switch to light theme</span>
+        <span className="sr-only">{light}</span>
       </span>
       <span className="dark:hidden">
         <Icon name="moon" />
-        <span className="sr-only">Switch to dark theme</span>
+        <span className="sr-only">{dark}</span>
       </span>
     </button>
   );

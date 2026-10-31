@@ -1,8 +1,9 @@
-import Link from "next/link";
+import { Link } from "@/components/ui/Link";
 import clsx from "clsx";
 import type { ReactNode } from "react";
 import { Value } from "@/components/ui/Value";
 import type { Industry, Service } from "@/lib/types";
+import { getI18n } from "@/i18n";
 
 type WorkFiltersProps = {
   services: Service[];
@@ -71,17 +72,18 @@ function FilterGroup({
 
 // Plain links, not client state: each filter is a real URL that works without JavaScript
 // and can be shared.
-export function WorkFilters({
+export async function WorkFilters({
   services,
   industries,
   service,
   industry,
 }: WorkFiltersProps) {
+  const { t } = await getI18n();
   return (
-    <nav aria-label="Filter projects" className="space-y-5">
-      <FilterGroup label="Service">
+    <nav aria-label={t.work.filter} className="space-y-5">
+      <FilterGroup label={t.work.service}>
         <Chip href={workHref({ industry })} active={!service}>
-          All services
+          {t.work.allServices}
         </Chip>
         {services.map((s) => (
           <Chip
@@ -94,9 +96,9 @@ export function WorkFilters({
         ))}
       </FilterGroup>
 
-      <FilterGroup label="Industry">
+      <FilterGroup label={t.work.industry}>
         <Chip href={workHref({ service })} active={!industry}>
-          All industries
+          {t.work.allIndustries}
         </Chip>
         {industries.map((i) => (
           <Chip

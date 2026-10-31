@@ -1,18 +1,19 @@
 import { Rise } from "@/components/ui/Rise";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { differentiatorDetail, differentiatorLead } from "@/content/copy";
+import { getI18n } from "@/i18n";
 
-export function Differentiator() {
+export async function Differentiator() {
+  const { t } = await getI18n();
   return (
     <Section tone="navy" aria-labelledby="different-title">
       <Rise>
         <SectionHeading
           id="different-title"
           tone="dark"
-          eyebrow="What makes Meliel different"
-          title={differentiatorLead}
-          intro={differentiatorDetail}
+          eyebrow={t.about.differentEyebrow}
+          title={t.copy.differentiatorLead}
+          intro={t.copy.differentiatorDetail}
         />
       </Rise>
     </Section>

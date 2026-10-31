@@ -7,7 +7,6 @@ import { FeaturedWork } from "@/components/sections/home/FeaturedWork";
 import { Hero } from "@/components/sections/home/Hero";
 import { ServicesOverview } from "@/components/sections/home/ServicesOverview";
 import { Stats } from "@/components/sections/home/Stats";
-import { valueStatement } from "@/content/copy";
 import {
   getClientLogos,
   getProjects,
@@ -15,12 +14,17 @@ import {
   getSiteSettings,
   getTestimonials,
 } from "@/lib/data";
+import { getI18n } from "@/i18n";
+import { alternates } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: { absolute: "Meliel Digital Marketing | Addis Ababa" },
-  description: valueStatement,
-  alternates: { canonical: "/" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { locale, t } = await getI18n();
+  return {
+    title: { absolute: t.meta.homeTitle },
+    description: t.copy.valueStatement,
+    alternates: alternates("/", locale),
+  };
+}
 
 export default async function HomePage() {
   const [logos, settings, services, featured, testimonials] = await Promise.all(

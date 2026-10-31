@@ -9,8 +9,8 @@ const control =
 type FieldShellProps = {
   id: string;
   label: string;
-  /** Shows "(optional)" after the label. */
-  optional?: boolean;
+  /** The "(optional)" wording, when the field is optional. */
+  optional?: string;
   hint?: ReactNode;
   error?: string;
   children: ReactNode;
@@ -47,7 +47,7 @@ function FieldShell({
       <label htmlFor={id} className="font-medium text-ink">
         {label}
         {optional && (
-          <span className="font-normal text-ink-muted"> (optional)</span>
+          <span className="font-normal text-ink-muted"> {optional}</span>
         )}
       </label>
       {hint && (

@@ -4,17 +4,19 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Value } from "@/components/ui/Value";
 import type { TeamMember } from "@/lib/types";
+import { getI18n } from "@/i18n";
 
 // Optional section: hidden entirely if the client doesn't send team details.
-export function Team({ members }: { members: TeamMember[] }) {
+export async function Team({ members }: { members: TeamMember[] }) {
   if (members.length === 0) return null;
+  const { t } = await getI18n();
   return (
     <Section tone="paper" aria-labelledby="team-title">
       <Rise>
         <SectionHeading
           id="team-title"
-          eyebrow="Our team"
-          title="The team behind the work"
+          eyebrow={t.about.teamEyebrow}
+          title={t.about.teamTitle}
         />
       </Rise>
       <ul className="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">

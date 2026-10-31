@@ -8,25 +8,30 @@ import { NameMeaning } from "@/components/sections/about/NameMeaning";
 import { Story } from "@/components/sections/about/Story";
 import { Team } from "@/components/sections/about/Team";
 import { Values } from "@/components/sections/about/Values";
-import { meaningShort, mission, nameMeaning } from "@/content/copy";
 import { getTeamMembers } from "@/lib/data";
 import { notoEthiopic } from "@/lib/font-ethiopic";
+import { getI18n } from "@/i18n";
+import { alternates } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About Us",
-  description: mission,
-  alternates: { canonical: "/about" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { locale, t } = await getI18n();
+  return {
+    title: t.meta.aboutTitle,
+    description: t.copy.mission,
+    alternates: alternates("/about", locale),
+  };
+}
 
 export default async function AboutPage() {
+  const { t } = await getI18n();
   const team = await getTeamMembers();
 
   return (
     <>
       <PageHero
-        eyebrow="About us"
-        title={nameMeaning.english.title}
-        intro={meaningShort}
+        eyebrow={t.about.eyebrow}
+        title={t.copy.nameMeaning.english.title}
+        intro={t.copy.meaningShort}
       />
       <div className={notoEthiopic.variable}>
         <NameMeaning />
