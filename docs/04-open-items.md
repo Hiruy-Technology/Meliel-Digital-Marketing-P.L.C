@@ -27,7 +27,7 @@ Per Article 6.2, the timeline extends for client content delays.
 ### Content
 - [ ] Company story and founding year
 - [ ] Homepage numbers (clients served, campaigns delivered, years in business, etc.)
-- [ ] Client logos (with permission)
+- [ ] Client logos: 14 received 2026-11-01 as one slide screenshot. Still needed: the original image files, each client's exact name, and confirmation that Meliel has permission to show them
 - [ ] Testimonials (quote, name, title, company)
 - [ ] Team members (optional): names, roles, photos, bios
 - [ ] Contact details: phone, email, WhatsApp, Telegram, address, map pin, office hours

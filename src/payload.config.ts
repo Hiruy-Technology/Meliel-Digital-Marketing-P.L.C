@@ -3,19 +3,35 @@ import { fileURLToPath } from "url";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { buildConfig } from "payload";
+import sharp from "sharp";
+import { Industries } from "./collections/Industries";
+import { Media } from "./collections/Media";
+import { Projects } from "./collections/Projects";
+import { Services } from "./collections/Services";
 import { Users } from "./collections/Users";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// The Portfolio Manager at /admin. Content collections arrive in step 14.
+// The Portfolio Manager at /admin.
 export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
     meta: { titleSuffix: " | Meliel Portfolio Manager" },
   },
-  collections: [Users],
+  collections: [Projects, Services, Industries, Media, Users],
+  // Content languages only: the admin itself stays in English.
+  localization: {
+    locales: [
+      { code: "en", label: "English" },
+      { code: "am", label: "አማርኛ" },
+    ],
+    defaultLocale: "en",
+    fallback: true,
+  },
   editor: lexicalEditor(),
+  sharp,
+  upload: { limits: { fileSize: 50 * 1024 * 1024 }, abortOnLimit: true },
   secret: process.env.PAYLOAD_SECRET || "",
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL || "" },

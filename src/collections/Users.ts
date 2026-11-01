@@ -1,14 +1,8 @@
-import type { Access, CollectionConfig, FieldAccess } from "payload";
+import type { Access, CollectionConfig } from "payload";
+import { adminField, adminOnly, isAdmin } from "./access";
 
 // People who can sign in to the Portfolio Manager at /admin.
-// admin: everything, including managing users. editor: content only (from step 14).
-
-const isAdmin = (user: { role?: string | null } | null | undefined) =>
-  user?.role === "admin";
-
-const adminField: FieldAccess = ({ req }) => isAdmin(req.user);
-
-const adminOnly: Access = ({ req }) => isAdmin(req.user);
+// admin: everything, including managing users. editor: content only.
 
 /** Admins can reach every user; everyone else only their own account. */
 const adminOrSelf: Access = ({ req }) => {
@@ -19,6 +13,7 @@ const adminOrSelf: Access = ({ req }) => {
 export const Users: CollectionConfig = {
   slug: "users",
   admin: {
+    group: "Settings",
     useAsTitle: "email",
     defaultColumns: ["email", "role", "updatedAt"],
   },
