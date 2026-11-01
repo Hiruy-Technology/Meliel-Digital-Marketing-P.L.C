@@ -27,12 +27,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
+  const { locale } = await getI18n();
   const [logos, settings, services, featured, testimonials] = await Promise.all(
     [
       getClientLogos(),
       getSiteSettings(),
-      getServices(),
-      getProjects({ featured: true, limit: 6 }),
+      getServices(locale),
+      getProjects({ featured: true, limit: 6 }, locale),
       getTestimonials({ featured: true }),
     ],
   );

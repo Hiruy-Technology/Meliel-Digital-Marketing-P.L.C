@@ -33,6 +33,7 @@ export const en = {
   },
 
   meta: {
+    siteName: "Meliel Digital Marketing",
     homeTitle: "Meliel Digital Marketing | Addis Ababa",
     aboutTitle: "About Us",
     servicesTitle: "Services",
@@ -73,6 +74,7 @@ export const en = {
   footer: {
     explore: "Explore",
     contact: "Contact",
+    legalName: "Meliel Digital Marketing P.L.C.",
     rights: "All rights reserved.",
     privacy: "Privacy Policy",
     socialMedia: "Social media",
@@ -87,9 +89,12 @@ export const en = {
   },
 
   preview: {
+    notice: "Site notice",
     banner:
       "Design preview for Meliel Digital Marketing. Boxes marked “PLACEHOLDER” are waiting for your content.",
     formsOff: "Design preview: forms don’t send anything yet.",
+    draftTranslation:
+      "Draft translation: this Amharic text has not been reviewed yet.",
   },
 
   notFound: {

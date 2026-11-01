@@ -18,10 +18,10 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function QuotePage({
   searchParams,
 }: PageProps<"/[locale]/quote">) {
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
   const { service } = await searchParams;
   const [services, options] = await Promise.all([
-    getServices(),
+    getServices(locale),
     getInquiryOptions(),
   ]);
   // ?service= can repeat; unknown values are ignored.

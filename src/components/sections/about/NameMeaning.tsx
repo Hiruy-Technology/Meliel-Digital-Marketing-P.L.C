@@ -2,9 +2,10 @@ import { Rise } from "@/components/ui/Rise";
 import { Section } from "@/components/ui/Section";
 import { getI18n } from "@/i18n";
 
-// The page's signature section: what መልዕል means, in Amharic and English.
-// The first English paragraph is the page intro, so it starts from the second here,
-// and the closing line (the brand line) is set large.
+// The page's signature section: what መልዕል means. English pages show Meliel's Amharic beside the
+// English. On /am the left column is just the heading, and Meliel's Amharic is the main text (am.ts).
+// The first paragraph is the page intro, so it starts from the second here, and the closing line
+// (the brand line) is set large.
 export async function NameMeaning() {
   const { t } = await getI18n();
   const { amharic, english } = t.copy.nameMeaning;
@@ -24,11 +25,13 @@ export async function NameMeaning() {
           >
             {amharic.title}
           </h2>
-          <div className="mt-6 space-y-5 text-lg leading-loose text-navy-200">
-            {amharic.paragraphs.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
-          </div>
+          {amharic.paragraphs.length > 0 && (
+            <div className="mt-6 space-y-5 text-lg leading-loose text-navy-200">
+              {amharic.paragraphs.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+            </div>
+          )}
         </Rise>
 
         <Rise>

@@ -32,7 +32,7 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/work/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const { locale } = await getI18n();
-  const project = await getProjectBySlug(slug);
+  const project = await getProjectBySlug(slug, locale);
   if (!project) return {};
   return {
     title: project.title,
@@ -99,8 +99,8 @@ export default async function ProjectPage({
   params,
 }: PageProps<"/[locale]/work/[slug]">) {
   const { slug } = await params;
-  const { t } = await getI18n();
-  const project = await getProjectBySlug(slug);
+  const { locale, t } = await getI18n();
+  const project = await getProjectBySlug(slug, locale);
   if (!project) notFound();
   const { previous, next } = await getAdjacentProjects(slug);
 

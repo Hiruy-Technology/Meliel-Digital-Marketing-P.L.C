@@ -2,6 +2,12 @@
 
 export const locales = ["en", "am"] as const;
 export type Locale = (typeof locales)[number];
+/**
+ * False until Jacob has reviewed the Amharic and Meliel has signed it off. While false, /am shows a
+ * "draft translation" banner, is noindex, and stays out of the sitemap and hreflang. Flip it once.
+ */
+export const amharicApproved: boolean = false;
+
 export const defaultLocale: Locale = "en";
 
 export const hasLocale = (value: string): value is Locale =>

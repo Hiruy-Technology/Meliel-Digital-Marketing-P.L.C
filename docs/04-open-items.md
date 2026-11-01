@@ -43,7 +43,10 @@ Per Article 6.2, the timeline extends for client content delays.
 - [x] Languages: full Amharic and English site, decided by Jacob 2026-10-30 (replaces "English only")
 - [ ] Written agreement with Meliel for the Amharic site and dark theme: price and timeline
 - [x] Amharic text: Hiruy translates (Claude drafts, Jacob reviews), decided 2026-10-30
-- [ ] Meliel sign-off of the Amharic text
+- [ ] Jacob's review of the Amharic drafts (`docs/06-amharic-review.md`)
+- [ ] Meliel sign-off of the Amharic text, then set `amharicApproved` to true in `src/i18n/config.ts`
+- [ ] Registered Amharic company name, to replace the draft in the footer
+- [ ] Legal review of the Amharic Privacy Policy
 - [x] Default language English; `/admin` stays in English
 - [x] Budget and timeline options editable in the admin (added to Site Settings)
 - [ ] Hosting choice (Vercel vs. VPS)

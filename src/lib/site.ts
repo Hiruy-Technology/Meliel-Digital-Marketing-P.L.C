@@ -7,5 +7,3 @@ export const siteUrl = (
 
 /** The client's design preview: shows the banner and keeps search engines out. */
 export const isPreview = process.env.NEXT_PUBLIC_SITE_ENV === "preview";
-
-export const siteName = "Meliel Digital Marketing";

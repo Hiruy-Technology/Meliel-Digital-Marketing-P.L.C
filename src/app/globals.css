@@ -97,7 +97,8 @@
   --font-display:
     var(--font-sora), var(--font-inter), ui-sans-serif, sans-serif;
   --font-ethiopic:
-    var(--font-noto-ethiopic), "Nyala", "Abyssinica SIL", sans-serif;
+    var(--font-noto-ethiopic), var(--font-inter), "Nyala", "Abyssinica SIL",
+    sans-serif;
 }
 
 /*
@@ -159,9 +160,8 @@
 
   /* Any Amharic text (lang="am") uses Noto Sans Ethiopic automatically. */
   :lang(am) {
-    /* --font-noto-ethiopic only exists inside the wrapper that loads the font (see About). */
-    font-family:
-      var(--font-noto-ethiopic), "Nyala", "Abyssinica SIL", sans-serif;
+    /* --font-noto-ethiopic is set on <html> on /am, and on a wrapper on English About. */
+    font-family: var(--font-ethiopic);
   }
 
   /* Visible focus everywhere: navy on light backgrounds, orange on dark sections. */
@@ -267,4 +267,26 @@
   .ladder-progress {
     display: none !important;
   }
+}
+
+/*
+ * Amharic pages. Outside any layer, so these beat next/font's rule and the tracking utilities.
+ * Sora has no Amharic letters, and Tailwind compiles font-display straight to --font-sora, so that
+ * is the variable to swap. Ethiopic letters are also never spaced out like Latin capitals.
+ */
+html:lang(am) {
+  --font-sora: var(--font-noto-ethiopic);
+}
+
+html:lang(am) [class*="tracking-"] {
+  letter-spacing: normal;
+}
+
+/* Ethiopic letters need more size than Latin capitals to stay readable. */
+html:lang(am) .text-xs {
+  font-size: 0.8125rem;
+}
+
+html:lang(am) .text-\[0\.55em\] {
+  font-size: 0.68em;
 }

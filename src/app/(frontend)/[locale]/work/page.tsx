@@ -26,10 +26,10 @@ const first = (value: string | string[] | undefined) =>
 export default async function WorkPage({
   searchParams,
 }: PageProps<"/[locale]/work">) {
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
   const query = await searchParams;
   const [services, industries] = await Promise.all([
-    getServices(),
+    getServices(locale),
     getIndustries(),
   ]);
 
@@ -39,7 +39,7 @@ export default async function WorkPage({
   const service = services.find((s) => s.slug === requestedService)?.slug;
   const industry = industries.find((i) => i.slug === requestedIndustry)?.slug;
 
-  const projects = await getProjects({ service, industry });
+  const projects = await getProjects({ service, industry }, locale);
   const filtered = Boolean(service || industry);
 
   return (

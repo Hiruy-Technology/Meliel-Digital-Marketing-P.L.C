@@ -28,10 +28,10 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ContactPage({
   searchParams,
 }: PageProps<"/[locale]/contact">) {
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
   const { service } = await searchParams;
   const [services, options, settings] = await Promise.all([
-    getServices(),
+    getServices(locale),
     getInquiryOptions(),
     getSiteSettings(),
   ]);

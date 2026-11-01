@@ -45,11 +45,11 @@ function ContactRow({
 }
 
 export async function Footer() {
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
   const cta = projectCta(t);
   const [settings, services] = await Promise.all([
     getSiteSettings(),
-    getServices(),
+    getServices(locale),
   ]);
   const email = emailHref(settings.email);
   const year = new Date().getFullYear();
@@ -153,7 +153,7 @@ export async function Footer() {
             buttons never cover these links at the end of the page. */}
         <Container className="flex flex-col gap-3 pt-6 pb-36 text-sm text-navy-200 sm:flex-row sm:items-center sm:gap-8 sm:pb-6 lg:pr-56">
           <p>
-            © {year} Meliel Digital Marketing P.L.C. {t.footer.rights}
+            © {year} {t.footer.legalName} {t.footer.rights}
           </p>
           <Link href="/privacy" className="rounded-sm hover:text-white">
             {t.footer.privacy}

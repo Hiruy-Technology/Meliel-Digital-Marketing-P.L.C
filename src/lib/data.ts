@@ -13,6 +13,8 @@ import {
   teamMembers,
   testimonials,
 } from "@/content/seed";
+import { servicesAm } from "@/content/services-am";
+import type { Locale } from "@/i18n/config";
 import type {
   ClientLogo,
   Industry,
@@ -28,17 +30,31 @@ import type {
 const bySortOrder = <T extends { sortOrder: number }>(a: T, b: T) =>
   a.sortOrder - b.sortOrder;
 
+// Design phase: the 5 real services are the only translated content. In phase 3 Payload returns the
+// requested language directly, and these two helpers go away.
+const inLocale = (service: Service, locale: Locale): Service =>
+  locale === "am" ? { ...service, ...servicesAm[service.slug] } : service;
+
+const projectInLocale = (project: Project, locale: Locale): Project => ({
+  ...project,
+  services: project.services.map((s) => inLocale(s, locale)),
+});
+
 const published = () =>
   projects.filter((p) => p.status === "published").sort(bySortOrder);
 
 // --- Services -------------------------------------------------------------
 
-export async function getServices(): Promise<Service[]> {
-  return [...services].sort(bySortOrder);
+export async function getServices(locale: Locale): Promise<Service[]> {
+  return [...services].sort(bySortOrder).map((s) => inLocale(s, locale));
 }
 
-export async function getServiceBySlug(slug: string): Promise<Service | null> {
-  return services.find((s) => s.slug === slug) ?? null;
+export async function getServiceBySlug(
+  slug: string,
+  locale: Locale,
+): Promise<Service | null> {
+  const service = services.find((s) => s.slug === slug);
+  return service ? inLocale(service, locale) : null;
 }
 
 /** Type guard for values from URLs, e.g. /quote?service=branding. */
@@ -67,7 +83,8 @@ export type ProjectFilter = {
 
 /** Published projects only, in the order Meliel set (sortOrder). */
 export async function getProjects(
-  filter: ProjectFilter = {},
+  filter: ProjectFilter,
+  locale: Locale,
 ): Promise<Project[]> {
   const { service, industry, featured, limit } = filter;
   let list = published();
@@ -80,11 +97,17 @@ export async function getProjects(
   if (featured !== undefined) {
     list = list.filter((p) => p.featured === featured);
   }
-  return limit ? list.slice(0, limit) : list;
+  return (limit ? list.slice(0, limit) : list).map((p) =>
+    projectInLocale(p, locale),
+  );
 }
 
-export async function getProjectBySlug(slug: string): Promise<Project | null> {
-  return published().find((p) => p.slug === slug) ?? null;
+export async function getProjectBySlug(
+  slug: string,
+  locale: Locale,
+): Promise<Project | null> {
+  const project = published().find((p) => p.slug === slug);
+  return project ? projectInLocale(project, locale) : null;
 }
 
 /** For "previous / next project" links. Wraps around at the ends. */

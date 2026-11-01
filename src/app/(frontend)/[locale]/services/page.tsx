@@ -16,10 +16,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ServicesPage() {
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
   const [services, projects] = await Promise.all([
-    getServices(),
-    getProjects(),
+    getServices(locale),
+    getProjects({}, locale),
   ]);
   const withWork = new Set(
     projects.flatMap((p) => p.services.map((s) => s.slug)),

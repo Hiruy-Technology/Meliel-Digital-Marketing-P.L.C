@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AboutPage() {
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
   const team = await getTeamMembers();
 
   return (
@@ -33,7 +33,8 @@ export default async function AboutPage() {
         title={t.copy.nameMeaning.english.title}
         intro={t.copy.meaningShort}
       />
-      <div className={notoEthiopic.variable}>
+      {/* /am already has the full font, which this subset must not shadow. */}
+      <div className={locale === "en" ? notoEthiopic.variable : undefined}>
         <NameMeaning />
       </div>
       <Story />

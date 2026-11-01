@@ -13,6 +13,7 @@
     "format:check": "prettier --check .",
     "contrast": "node scripts/contrast-check.mjs",
     "placeholders": "node scripts/list-placeholders.mjs",
+    "amharic": "node scripts/amharic-review.mjs",
     "db:up": "docker compose up -d --wait",
     "db:down": "docker compose stop",
     "payload": "payload",

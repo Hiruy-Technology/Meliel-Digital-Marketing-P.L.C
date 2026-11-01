@@ -51,7 +51,7 @@ export function Logo({
       className="h-full w-auto shrink-0"
       {...(withName
         ? { "aria-hidden": true }
-        : { role: "img", "aria-label": "Meliel" })}
+        : { role: "img", "aria-label": name })}
     >
       <g
         fill={white ? "#ffffff" : "var(--color-orange-500)"}

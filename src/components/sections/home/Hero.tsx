@@ -80,7 +80,10 @@ export async function Hero() {
           <HeroLadder />
           <p className="max-w-56 text-sm text-ink-soft lg:text-center">
             {/* The logo spells መልዕል, so Home doesn't need to download the 194 KB Amharic font. */}
-            <Logo className="h-8 lg:mx-auto lg:flex lg:justify-center" />
+            <Logo
+              name={t.common.meliel}
+              className="h-8 lg:mx-auto lg:flex lg:justify-center"
+            />
             <span className="mt-1 block">{meaningShort}</span>
           </p>
         </div>

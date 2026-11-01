@@ -21,12 +21,11 @@ function Switch({ label, query }: LanguageSwitcherProps & { query: string }) {
     <a
       href={query ? `${path}?${query}` : path}
       hrefLang={target}
-      lang={target}
       className="inline-flex h-11 min-w-11 items-center justify-center rounded-sm px-2 font-display text-sm font-semibold text-ink hover:bg-tint"
     >
       {/* Spoken name includes the visible text, so voice control can find it too. */}
       <span className="sr-only">{label}: </span>
-      {target === "am" ? "አማ" : "EN"}
+      <span lang={target}>{target === "am" ? "አማ" : "EN"}</span>
     </a>
   );
 }

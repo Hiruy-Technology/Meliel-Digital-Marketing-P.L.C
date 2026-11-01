@@ -10,4 +10,6 @@ export const notoEthiopic = localFont({
   weight: "100 900",
   variable: "--font-noto-ethiopic",
   display: "swap",
+  // English About only: without this, /am/about would preload a file it never uses.
+  preload: false,
 });

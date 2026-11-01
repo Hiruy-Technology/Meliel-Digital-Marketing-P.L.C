@@ -5,12 +5,12 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { PreviewBanner } from "@/components/layout/PreviewBanner";
 import { LadderProgress } from "@/components/ui/LadderProgress";
-import { inter, sora } from "@/lib/fonts";
-import { isPreview, siteName, siteUrl } from "@/lib/site";
+import { inter, notoEthiopicFull, sora } from "@/lib/fonts";
+import { isPreview, siteUrl } from "@/lib/site";
 import { themeScript } from "@/lib/theme";
 import "../../globals.css";
 import { getI18n } from "@/i18n";
-import { locales } from "@/i18n/config";
+import { amharicApproved, locales } from "@/i18n/config";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
 
 export function generateStaticParams() {
@@ -18,16 +18,22 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
+  const { siteName } = t.meta;
+  // The design preview and any unreviewed Amharic stay out of search results.
+  const hidden = isPreview || (locale === "am" && !amharicApproved);
   return {
     metadataBase: new URL(siteUrl),
     title: {
       default: siteName,
       template: `%s | ${siteName}`,
     },
-    openGraph: { siteName, type: "website", locale: "en_US" },
-    // Extra safeguard on top of robots.txt: the design preview stays out of search results.
-    ...(isPreview ? { robots: { index: false, follow: false } } : {}),
+    openGraph: {
+      siteName,
+      type: "website",
+      locale: locale === "am" ? "am_ET" : "en_US",
+    },
+    ...(hidden ? { robots: { index: false, follow: false } } : {}),
     // Fallback description; each page sets its own.
     description: t.copy.valueStatement,
   };
@@ -42,7 +48,12 @@ export default async function RootLayout({
       lang={locale}
       // The theme script sets data-theme before React loads.
       suppressHydrationWarning
-      className={clsx(sora.variable, inter.variable, "h-full antialiased")}
+      className={clsx(
+        sora.variable,
+        inter.variable,
+        locale === "am" && notoEthiopicFull.variable,
+        "h-full antialiased",
+      )}
     >
       <head>
         {/* Sets the theme before the first paint, so there's no flash of the wrong one. */}
