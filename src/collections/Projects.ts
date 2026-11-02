@@ -3,8 +3,7 @@ import { requiredInEnglish } from "@/fields/required-in-english";
 import { slugField } from "@/fields/slug";
 import { videoEmbedUrl } from "@/lib/video";
 import { signedIn } from "./access";
-
-const isImage = { mimeType: { contains: "image" } };
+import { isImage } from "./Media";
 
 const videoLink: TextFieldSingleValidation = (value, { siblingData }) => {
   const { provider } = siblingData as {

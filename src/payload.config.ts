@@ -4,11 +4,16 @@ import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { buildConfig } from "payload";
 import sharp from "sharp";
+import { ClientLogos } from "./collections/ClientLogos";
 import { Industries } from "./collections/Industries";
+import { Inquiries } from "./collections/Inquiries";
 import { Media } from "./collections/Media";
 import { Projects } from "./collections/Projects";
 import { Services } from "./collections/Services";
+import { TeamMembers } from "./collections/TeamMembers";
+import { Testimonials } from "./collections/Testimonials";
 import { Users } from "./collections/Users";
+import { SiteSettings } from "./globals/SiteSettings";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -19,7 +24,18 @@ export default buildConfig({
     importMap: { baseDir: path.resolve(dirname) },
     meta: { titleSuffix: " | Meliel Portfolio Manager" },
   },
-  collections: [Projects, Services, Industries, Media, Users],
+  collections: [
+    Inquiries,
+    Projects,
+    Services,
+    Industries,
+    Media,
+    Testimonials,
+    ClientLogos,
+    TeamMembers,
+    Users,
+  ],
+  globals: [SiteSettings],
   // Content languages only: the admin itself stays in English.
   localization: {
     locales: [

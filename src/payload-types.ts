@@ -67,10 +67,14 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    inquiries: Inquiry;
     projects: Project;
     services: Service;
     industries: Industry;
     media: Media;
+    testimonials: Testimonial;
+    'client-logos': ClientLogo;
+    'team-members': TeamMember;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -79,10 +83,14 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    inquiries: InquiriesSelect<false> | InquiriesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     industries: IndustriesSelect<false> | IndustriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    'client-logos': ClientLogosSelect<false> | ClientLogosSelect<true>;
+    'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -93,8 +101,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'am') | ('en' | 'am')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+  };
   locale: 'en' | 'am';
   widgets: {
     collections: CollectionsWidget;
@@ -122,6 +134,61 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiries".
+ */
+export interface Inquiry {
+  id: number;
+  type: 'general' | 'quote';
+  /**
+   * The language the visitor used.
+   */
+  locale: 'en' | 'am';
+  name: string;
+  company?: string | null;
+  email: string;
+  phone?: string | null;
+  services?: (number | Service)[] | null;
+  selectedIncludes?: string[] | null;
+  budget?: string | null;
+  timeline?: string | null;
+  message?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  name?: string | null;
+  /**
+   * Built into the site, so it can't be changed.
+   */
+  slug: 'branding' | 'digital-marketing' | 'market-analysis' | 'websites' | 'event-production';
+  summary?: string | null;
+  /**
+   * Optional list. Visitors can tick these items on the quote page.
+   */
+  includes?:
+    | {
+        item?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. Event Production's pricing note.
+   */
+  note?: string | null;
+  /**
+   * Lower numbers come first.
+   */
+  sortOrder: number;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -275,29 +342,53 @@ export interface Industry {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "services".
+ * via the `definition` "testimonials".
  */
-export interface Service {
+export interface Testimonial {
+  id: number;
+  /**
+   * The client's real words. Never write these.
+   */
+  quote?: string | null;
+  name: string;
+  jobTitle?: string | null;
+  company?: string | null;
+  photo?: (number | null) | Media;
+  /**
+   * Show on the home page.
+   */
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Only show clients who agreed to appear on the website.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "client-logos".
+ */
+export interface ClientLogo {
   id: number;
   name?: string | null;
+  logo: number | Media;
+  url?: string | null;
   /**
-   * Built into the site, so it can't be changed.
+   * Lower numbers come first.
    */
-  slug: 'branding' | 'digital-marketing' | 'market-analysis' | 'websites' | 'event-production';
-  summary?: string | null;
-  /**
-   * Optional list. Visitors can tick these items on the quote page.
-   */
-  includes?:
-    | {
-        item?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * e.g. Event Production's pricing note.
-   */
-  note?: string | null;
+  sortOrder: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members".
+ */
+export interface TeamMember {
+  id: number;
+  name?: string | null;
+  role?: string | null;
+  bio?: string | null;
+  photo?: (number | null) | Media;
   /**
    * Lower numbers come first.
    */
@@ -360,6 +451,10 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'inquiries';
+        value: number | Inquiry;
+      } | null)
+    | ({
         relationTo: 'projects';
         value: number | Project;
       } | null)
@@ -374,6 +469,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'client-logos';
+        value: number | ClientLogo;
+      } | null)
+    | ({
+        relationTo: 'team-members';
+        value: number | TeamMember;
       } | null)
     | ({
         relationTo: 'users';
@@ -420,6 +527,25 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiries_select".
+ */
+export interface InquiriesSelect<T extends boolean = true> {
+  type?: T;
+  locale?: T;
+  name?: T;
+  company?: T;
+  email?: T;
+  phone?: T;
+  services?: T;
+  selectedIncludes?: T;
+  budget?: T;
+  timeline?: T;
+  message?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -524,6 +650,45 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  quote?: T;
+  name?: T;
+  jobTitle?: T;
+  company?: T;
+  photo?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "client-logos_select".
+ */
+export interface ClientLogosSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  url?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members_select".
+ */
+export interface TeamMembersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  bio?: T;
+  photo?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -585,6 +750,96 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  /**
+   * Press Enter after each number.
+   */
+  phones?: string[] | null;
+  email?: string | null;
+  whatsappNumber?: string | null;
+  telegramUsername?: string | null;
+  address?: string | null;
+  officeHours?: string | null;
+  mapEmbedUrl?: string | null;
+  socialLinks?:
+    | {
+        platform: 'facebook' | 'instagram' | 'linkedin' | 'tiktok' | 'x' | 'youtube' | 'telegram';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Use real numbers only.
+   */
+  homepageStats?:
+    | {
+        value: string;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  budgetRanges?:
+    | {
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  timelines?:
+    | {
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  phones?: T;
+  email?: T;
+  whatsappNumber?: T;
+  telegramUsername?: T;
+  address?: T;
+  officeHours?: T;
+  mapEmbedUrl?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  homepageStats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  budgetRanges?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  timelines?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

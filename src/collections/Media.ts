@@ -3,6 +3,9 @@ import type { CollectionConfig } from "payload";
 import { requiredInEnglish } from "@/fields/required-in-english";
 import { signedIn } from "./access";
 
+/** For upload fields that must not offer MP4 files. */
+export const isImage = { mimeType: { contains: "image" } };
+
 // Uploaded images and short videos. Local disk in dev, Cloudflare R2 in production (step 18).
 export const Media: CollectionConfig = {
   slug: "media",
