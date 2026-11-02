@@ -15,6 +15,7 @@ import {
 } from "@/lib/data";
 import { getI18n } from "@/i18n";
 import { alternates } from "@/lib/seo";
+import { showPlaceholders } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { locale, t } = await getI18n();
@@ -75,19 +76,21 @@ export default async function ContactPage({
         </Container>
       </section>
 
-      <section
-        aria-label={t.contact.location}
-        className="bg-surface pb-16 lg:pb-24"
-      >
-        <Container>
-          <MapFacade
-            url={settings.mapEmbedUrl}
-            pendingLabel={pendingCopy.officeMap}
-            title={t.contact.mapTitle}
-            showLabel={t.contact.showMap}
-          />
-        </Container>
-      </section>
+      {(settings.mapEmbedUrl || showPlaceholders) && (
+        <section
+          aria-label={t.contact.location}
+          className="bg-surface pb-16 lg:pb-24"
+        >
+          <Container>
+            <MapFacade
+              url={settings.mapEmbedUrl}
+              pendingLabel={pendingCopy.officeMap}
+              title={t.contact.mapTitle}
+              showLabel={t.contact.showMap}
+            />
+          </Container>
+        </section>
+      )}
     </>
   );
 }

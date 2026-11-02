@@ -1,6 +1,7 @@
 import path from "path";
 import type { CollectionConfig } from "payload";
 import { requiredInEnglish } from "@/fields/required-in-english";
+import { refreshHooks } from "@/fields/revalidate";
 import { signedIn } from "./access";
 
 /** For upload fields that must not offer MP4 files. */
@@ -15,6 +16,7 @@ export const Media: CollectionConfig = {
     useAsTitle: "alt",
     defaultColumns: ["filename", "alt", "updatedAt"],
   },
+  hooks: refreshHooks,
   access: {
     // Files must load for every visitor.
     read: () => true,

@@ -8,6 +8,7 @@
 //   so the design can still be reviewed. Production never does: empty sections hide, and a database
 //   error is raised, so visitors keep the last good page instead of a blank one.
 
+import { unstable_cache } from "next/cache";
 import { cache } from "react";
 import config from "@payload-config";
 import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintext";
@@ -30,7 +31,7 @@ import type {
   Project as CmsProject,
   Service as CmsService,
 } from "@/payload-types";
-import { showPlaceholders } from "./site";
+import { CMS_TAG, showPlaceholders } from "./site";
 import type {
   ClientLogo,
   Industry,
@@ -51,10 +52,20 @@ const bySortOrder = <T extends { sortOrder: number }>(a: T, b: T) =>
 
 const isPresent = <T>(value: T | null | undefined): value is T => value != null;
 
-/** Runs a query. `null` means "use the placeholders": only possible on dev and preview builds. */
-async function read<T>(query: (payload: Payload) => Promise<T>) {
+/**
+ * Runs a query, cached so /work, /quote and /contact (which read the URL, so they render per visit)
+ * neither hit the database each time nor fail while it's down. Saving in /admin clears the cache.
+ * `unstable_cache` because its replacement, `use cache`, needs cacheComponents, which stays off.
+ * `null` means "use the placeholders": only possible on dev and preview builds.
+ */
+async function read<T>(key: string, query: (payload: Payload) => Promise<T>) {
   try {
-    return await query(await getPayload({ config }));
+    const cached = unstable_cache(
+      async () => query(await getPayload({ config })),
+      [key],
+      { tags: [CMS_TAG], revalidate: 3600 },
+    );
+    return await cached();
   } catch (error) {
     if (!showPlaceholders) throw error;
     return null;
@@ -71,7 +82,7 @@ function orPlaceholders<T>(list: T[] | null, placeholders: () => T[]): T[] {
 
 /** Every image's English alt text, for images with no Amharic description yet. */
 const englishAlts = cache(async () => {
-  const docs = await read(async (payload) => {
+  const docs = await read("media-alts", async (payload) => {
     const { docs } = await payload.find({
       collection: "media",
       locale: "en",
@@ -123,7 +134,7 @@ const placeholderProject = (project: Project, locale: Locale): Project => ({
 });
 
 export const getServices = cache(async (locale: Locale): Promise<Service[]> => {
-  const docs = await read(async (payload) => {
+  const docs = await read(`services:${locale}`, async (payload) => {
     const { docs } = await payload.find({
       collection: "services",
       locale,
@@ -223,7 +234,7 @@ function toProject(doc: CmsProject, alts: Alts): Project | null {
 /** Published projects in this language, in the order Meliel set. */
 const published = cache(async (locale: Locale): Promise<Project[]> => {
   const alts = await englishAlts();
-  const docs = await read(async (payload) => {
+  const docs = await read(`projects:${locale}`, async (payload) => {
     const { docs } = await payload.find({
       collection: "projects",
       locale,
@@ -315,7 +326,7 @@ export async function getIndustries(locale: Locale): Promise<Industry[]> {
 const allTestimonials = cache(
   async (locale: Locale): Promise<Testimonial[]> => {
     const alts = await englishAlts();
-    const docs = await read(async (payload) => {
+    const docs = await read(`testimonials:${locale}`, async (payload) => {
       const { docs } = await payload.find({
         collection: "testimonials",
         locale,
@@ -353,7 +364,7 @@ export async function getTestimonials(
 export const getClientLogos = cache(
   async (locale: Locale): Promise<ClientLogo[]> => {
     const alts = await englishAlts();
-    const docs = await read(async (payload) => {
+    const docs = await read(`logos:${locale}`, async (payload) => {
       const { docs } = await payload.find({
         collection: "client-logos",
         locale,
@@ -384,7 +395,7 @@ export const getClientLogos = cache(
 export const getTeamMembers = cache(
   async (locale: Locale): Promise<TeamMember[]> => {
     const alts = await englishAlts();
-    const docs = await read(async (payload) => {
+    const docs = await read(`team:${locale}`, async (payload) => {
       const { docs } = await payload.find({
         collection: "team-members",
         locale,
@@ -411,7 +422,7 @@ export const getTeamMembers = cache(
 // --- Globals ----------------------------------------------------------------
 
 const readSettings = cache(async (locale: Locale) =>
-  read((payload) =>
+  read(`settings:${locale}`, (payload) =>
     payload.findGlobal({
       slug: "site-settings",
       locale,

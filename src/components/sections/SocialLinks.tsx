@@ -39,6 +39,7 @@ export async function SocialLinks({
   tone?: keyof typeof TONES;
   className?: string;
 }) {
+  if (links.length === 0) return null;
   const { t } = await getI18n();
   const colors = TONES[tone];
   return (

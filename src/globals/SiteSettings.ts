@@ -1,6 +1,7 @@
 import type { GlobalConfig } from "payload";
 import { signedIn } from "@/collections/access";
 import { requiredInEnglish } from "@/fields/required-in-english";
+import { refreshAfterChange } from "@/fields/revalidate";
 import {
   googleMapEmbed,
   httpsUrl,
@@ -13,6 +14,7 @@ export const SiteSettings: GlobalConfig = {
   label: "Site settings",
   admin: { group: "Settings" },
   access: { read: signedIn, update: signedIn },
+  hooks: { afterChange: [refreshAfterChange] },
   fields: [
     {
       type: "tabs",

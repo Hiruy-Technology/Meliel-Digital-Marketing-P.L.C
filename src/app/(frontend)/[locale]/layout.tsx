@@ -13,6 +13,9 @@ import { getI18n } from "@/i18n";
 import { amharicApproved, locales } from "@/i18n/config";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
 
+// A safety net: saving in /admin refreshes pages straight away (src/fields/revalidate.ts).
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }

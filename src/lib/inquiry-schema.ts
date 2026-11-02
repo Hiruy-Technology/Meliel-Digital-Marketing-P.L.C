@@ -4,7 +4,7 @@
 import { z } from "zod";
 import { fill } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/en";
-import type { ServiceSlug } from "./types";
+import type { InquiryOptions, ServiceSlug } from "./types";
 
 export const SERVICE_SLUGS = [
   "branding",
@@ -45,28 +45,40 @@ export function isBudgetOptional(services: readonly string[]): boolean {
   return services.length === 1 && services[0] === "event-production";
 }
 
-export const quoteSchema = (m: Messages) =>
+/**
+ * The schemas take the form's choices because a choice that Meliel hasn't set up yet is hidden from
+ * the form, so it can't be required: a visitor must always be able to send an inquiry.
+ */
+export const quoteSchema = (m: Messages, options: InquiryOptions) =>
   z
     .object({
       ...contactDetails(m),
       services: z.array(z.enum(SERVICE_SLUGS)).min(1, { error: m.services }),
       selectedIncludes: z.array(z.string()),
       budget: z.string(),
-      timeline: z.string().min(1, { error: m.timeline }),
+      timeline: z
+        .string()
+        .min(options.timelines.length > 0 ? 1 : 0, { error: m.timeline }),
     })
-    .refine((data) => isBudgetOptional(data.services) || data.budget !== "", {
-      error: m.budget,
-      path: ["budget"],
-      // Report this with the other errors, instead of only after they're fixed.
-      when: () => true,
-    });
+    .refine(
+      (data) =>
+        options.budgetRanges.length === 0 ||
+        isBudgetOptional(data.services) ||
+        data.budget !== "",
+      {
+        error: m.budget,
+        path: ["budget"],
+        // Report this with the other errors, instead of only after they're fixed.
+        when: () => true,
+      },
+    );
 
 export type QuoteInput = z.infer<ReturnType<typeof quoteSchema>>;
 
 /** Service choice on the contact form for visitors who don't know yet. */
 export const SERVICE_NOT_SURE = "not-sure";
 
-export const contactSchema = (m: Messages) =>
+export const contactSchema = (m: Messages, options: InquiryOptions) =>
   z
     .object({
       ...contactDetails(m),
@@ -79,11 +91,13 @@ export const contactSchema = (m: Messages) =>
         .min(1, { error: m.message })
         .max(2000, { error: fill(m.tooLong, { max: 2000 }) }),
     })
-    .refine((data) => isBudgetOptional([data.service]) || data.budget !== "", {
-      error: m.budget,
-      path: ["budget"],
-      when: () => true,
-    });
+    .refine(
+      (data) =>
+        options.budgetRanges.length === 0 ||
+        isBudgetOptional([data.service]) ||
+        data.budget !== "",
+      { error: m.budget, path: ["budget"], when: () => true },
+    );
 
 export type ContactInput = z.infer<ReturnType<typeof contactSchema>>;
 

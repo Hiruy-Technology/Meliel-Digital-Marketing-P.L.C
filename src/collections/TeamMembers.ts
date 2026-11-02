@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload";
 import { requiredInEnglish } from "@/fields/required-in-english";
+import { refreshHooks } from "@/fields/revalidate";
 import { signedIn } from "./access";
 import { isImage } from "./Media";
 
@@ -13,6 +14,7 @@ export const TeamMembers: CollectionConfig = {
     defaultColumns: ["name", "role", "sortOrder"],
   },
   defaultSort: "sortOrder",
+  hooks: refreshHooks,
   access: {
     read: signedIn,
     create: signedIn,

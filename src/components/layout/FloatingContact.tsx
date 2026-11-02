@@ -72,6 +72,8 @@ function FloatingButton({
 export async function FloatingContact() {
   const { locale, t } = await getI18n();
   const settings = await getSiteSettings(locale);
+  const { whatsappNumber, telegramUsername } = settings;
+  if (!whatsappNumber && !telegramUsername) return null;
   const names = (platform: string) => ({
     chatLabel: fill(t.floating.chat, { platform }),
     pendingLabel: fill(t.floating.notSetUp, { platform }),
@@ -81,20 +83,24 @@ export async function FloatingContact() {
       className="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 flex flex-col items-end gap-3 sm:right-6 sm:bottom-6"
       aria-label={t.floating.quickContact}
     >
-      <FloatingButton
-        kind="whatsapp"
-        label="WhatsApp"
-        href={whatsappHref(settings.whatsappNumber)}
-        pendingNote={settings.whatsappNumber}
-        {...names("WhatsApp")}
-      />
-      <FloatingButton
-        kind="telegram"
-        label="Telegram"
-        href={telegramHref(settings.telegramUsername)}
-        pendingNote={settings.telegramUsername}
-        {...names("Telegram")}
-      />
+      {whatsappNumber && (
+        <FloatingButton
+          kind="whatsapp"
+          label="WhatsApp"
+          href={whatsappHref(whatsappNumber)}
+          pendingNote={whatsappNumber}
+          {...names("WhatsApp")}
+        />
+      )}
+      {telegramUsername && (
+        <FloatingButton
+          kind="telegram"
+          label="Telegram"
+          href={telegramHref(telegramUsername)}
+          pendingNote={telegramUsername}
+          {...names("Telegram")}
+        />
+      )}
     </aside>
   );
 }

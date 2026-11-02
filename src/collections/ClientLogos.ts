@@ -1,6 +1,7 @@
 import type { CollectionConfig } from "payload";
 import { requiredInEnglish } from "@/fields/required-in-english";
 import { httpsUrl } from "@/fields/validate";
+import { refreshHooks } from "@/fields/revalidate";
 import { signedIn } from "./access";
 import { isImage } from "./Media";
 
@@ -14,6 +15,7 @@ export const ClientLogos: CollectionConfig = {
     description: "Only show clients who agreed to appear on the website.",
   },
   defaultSort: "sortOrder",
+  hooks: refreshHooks,
   access: {
     read: signedIn,
     create: signedIn,

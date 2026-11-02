@@ -1,6 +1,7 @@
 import type { CollectionConfig } from "payload";
 import { requiredInEnglish } from "@/fields/required-in-english";
 import { slugField } from "@/fields/slug";
+import { refreshHooks } from "@/fields/revalidate";
 import { signedIn } from "./access";
 
 export const Industries: CollectionConfig = {
@@ -12,6 +13,7 @@ export const Industries: CollectionConfig = {
     defaultColumns: ["name", "slug"],
   },
   defaultSort: "name",
+  hooks: refreshHooks,
   access: {
     read: signedIn,
     create: signedIn,

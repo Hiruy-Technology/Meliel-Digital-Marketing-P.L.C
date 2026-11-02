@@ -59,43 +59,67 @@ function Linked({
 
 export async function ContactMethods({ settings }: { settings: SiteSettings }) {
   const { t } = await getI18n();
+  const { address, email, officeHours, phones, socialLinks } = settings;
+  const { telegramUsername, whatsappNumber } = settings;
+  const hasDetails =
+    whatsappNumber ||
+    telegramUsername ||
+    phones.length > 0 ||
+    email ||
+    address ||
+    officeHours;
+  if (!hasDetails && socialLinks.length === 0) return null;
   return (
     <div className="rounded-sm bg-paper p-6 sm:p-8">
       <h2 className="font-display text-xl font-bold">{t.contact.direct}</h2>
       <ul className="mt-6 space-y-5">
-        <Row icon="whatsapp" label={t.contact.whatsapp}>
-          <Linked
-            href={whatsappHref(settings.whatsappNumber)}
-            value={settings.whatsappNumber}
-            external
-          />
-        </Row>
-        <Row icon="telegram" label={t.contact.telegram}>
-          <Linked
-            href={telegramHref(settings.telegramUsername)}
-            value={settings.telegramUsername}
-            external
-          />
-        </Row>
-        {settings.phones.map((phone) => (
+        {whatsappNumber && (
+          <Row icon="whatsapp" label={t.contact.whatsapp}>
+            <Linked
+              href={whatsappHref(whatsappNumber)}
+              value={whatsappNumber}
+              external
+            />
+          </Row>
+        )}
+        {telegramUsername && (
+          <Row icon="telegram" label={t.contact.telegram}>
+            <Linked
+              href={telegramHref(telegramUsername)}
+              value={telegramUsername}
+              external
+            />
+          </Row>
+        )}
+        {phones.map((phone) => (
           <Row key={phone} icon="phone" label={t.contact.phone}>
             <Linked href={phoneHref(phone)} value={phone} />
           </Row>
         ))}
-        <Row icon="mail" label={t.contact.email}>
-          <Linked href={emailHref(settings.email)} value={settings.email} />
-        </Row>
-        <Row icon="map-pin" label={t.contact.office}>
-          <Value value={settings.address} />
-        </Row>
-        <Row icon="clock" label={t.contact.hours}>
-          <Value value={settings.officeHours} />
-        </Row>
+        {email && (
+          <Row icon="mail" label={t.contact.email}>
+            <Linked href={emailHref(email)} value={email} />
+          </Row>
+        )}
+        {address && (
+          <Row icon="map-pin" label={t.contact.office}>
+            <Value value={address} />
+          </Row>
+        )}
+        {officeHours && (
+          <Row icon="clock" label={t.contact.hours}>
+            <Value value={officeHours} />
+          </Row>
+        )}
       </ul>
-      <h3 className="mt-8 font-display text-sm font-semibold text-ink">
-        {t.contact.follow}
-      </h3>
-      <SocialLinks links={settings.socialLinks} className="mt-3" />
+      {socialLinks.length > 0 && (
+        <>
+          <h3 className="mt-8 font-display text-sm font-semibold text-ink">
+            {t.contact.follow}
+          </h3>
+          <SocialLinks links={socialLinks} className="mt-3" />
+        </>
+      )}
     </div>
   );
 }

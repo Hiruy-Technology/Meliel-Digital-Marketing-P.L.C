@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload";
 import { requiredInEnglish } from "@/fields/required-in-english";
+import { refreshHooks } from "@/fields/revalidate";
 import { adminOnly, signedIn } from "./access";
 
 // The 5 services. Their slugs are built into the site (/services#branding, /quote?service=branding,
@@ -13,6 +14,7 @@ export const Services: CollectionConfig = {
     defaultColumns: ["name", "slug", "sortOrder"],
   },
   defaultSort: "sortOrder",
+  hooks: refreshHooks,
   access: {
     read: signedIn,
     create: adminOnly,

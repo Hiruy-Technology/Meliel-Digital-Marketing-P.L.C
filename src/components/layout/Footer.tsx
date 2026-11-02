@@ -52,6 +52,12 @@ export async function Footer() {
     getServices(locale),
   ]);
   const email = emailHref(settings.email);
+  const hasContact =
+    settings.phones.length > 0 ||
+    settings.email ||
+    settings.address ||
+    settings.officeHours ||
+    settings.socialLinks.length > 0;
   const year = new Date().getFullYear();
 
   return (
@@ -103,49 +109,57 @@ export async function Footer() {
           </ul>
         </div>
 
-        <div className="lg:col-span-3">
-          <FooterHeading>{t.footer.contact}</FooterHeading>
-          <ul className="mt-5 space-y-4 text-navy-100">
-            {settings.phones.map((phone) => {
-              const href = phoneHref(phone);
-              return (
-                <ContactRow key={phone} icon="phone">
-                  {href ? (
-                    <a href={href} className="rounded-sm hover:text-white">
-                      {phone}
+        {hasContact && (
+          <div className="lg:col-span-3">
+            <FooterHeading>{t.footer.contact}</FooterHeading>
+            <ul className="mt-5 space-y-4 text-navy-100">
+              {settings.phones.map((phone) => {
+                const href = phoneHref(phone);
+                return (
+                  <ContactRow key={phone} icon="phone">
+                    {href ? (
+                      <a href={href} className="rounded-sm hover:text-white">
+                        {phone}
+                      </a>
+                    ) : (
+                      <SettingText value={phone} />
+                    )}
+                  </ContactRow>
+                );
+              })}
+              {settings.email && (
+                <ContactRow icon="mail">
+                  {email ? (
+                    <a
+                      href={email}
+                      className="rounded-sm break-all hover:text-white"
+                    >
+                      {settings.email}
                     </a>
                   ) : (
-                    <SettingText value={phone} />
+                    <SettingText value={settings.email} />
                   )}
                 </ContactRow>
-              );
-            })}
-            <ContactRow icon="mail">
-              {email ? (
-                <a
-                  href={email}
-                  className="rounded-sm break-all hover:text-white"
-                >
-                  {settings.email}
-                </a>
-              ) : (
-                <SettingText value={settings.email} />
               )}
-            </ContactRow>
-            <ContactRow icon="map-pin">
-              <SettingText value={settings.address} />
-            </ContactRow>
-            <ContactRow icon="clock">
-              <SettingText value={settings.officeHours} />
-            </ContactRow>
-          </ul>
+              {settings.address && (
+                <ContactRow icon="map-pin">
+                  <SettingText value={settings.address} />
+                </ContactRow>
+              )}
+              {settings.officeHours && (
+                <ContactRow icon="clock">
+                  <SettingText value={settings.officeHours} />
+                </ContactRow>
+              )}
+            </ul>
 
-          <SocialLinks
-            links={settings.socialLinks}
-            tone="dark"
-            className="mt-6"
-          />
-        </div>
+            <SocialLinks
+              links={settings.socialLinks}
+              tone="dark"
+              className="mt-6"
+            />
+          </div>
+        )}
       </Container>
 
       <div className="border-t border-white/10">

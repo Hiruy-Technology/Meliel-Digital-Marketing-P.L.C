@@ -58,7 +58,7 @@ export function ContactForm({
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const text = (name: string) => String(form.get(name) ?? "");
-    const result = contactSchema(t.errors).safeParse({
+    const result = contactSchema(t.errors, options).safeParse({
       service,
       budget: text("budget"),
       timeline: text("timeline"),
@@ -142,38 +142,42 @@ export function ContactForm({
             <option value={SERVICE_NOT_SURE}>{t.form.notSure}</option>
           </SelectField>
         </div>
-        <SelectField
-          id={FIELDS.budget.id}
-          name="budget"
-          label={t.form.budget}
-          optional={budgetOptional ? t.form.optional : undefined}
-          hint={budgetOptional ? t.form.quoteOnRequest : undefined}
-          error={errors.budget}
-          defaultValue=""
-        >
-          <option value="">{t.form.chooseRange}</option>
-          {options.budgetRanges.map((range) => (
-            <option key={range} value={range}>
-              {range}
-            </option>
-          ))}
-          <option value={t.form.notSure}>{t.form.notSure}</option>
-        </SelectField>
-        <SelectField
-          id={FIELDS.timeline.id}
-          name="timeline"
-          label={t.form.timeline}
-          optional={t.form.optional}
-          error={errors.timeline}
-          defaultValue=""
-        >
-          <option value="">{t.form.chooseTimeline}</option>
-          {options.timelines.map((timeline) => (
-            <option key={timeline} value={timeline}>
-              {timeline}
-            </option>
-          ))}
-        </SelectField>
+        {options.budgetRanges.length > 0 && (
+          <SelectField
+            id={FIELDS.budget.id}
+            name="budget"
+            label={t.form.budget}
+            optional={budgetOptional ? t.form.optional : undefined}
+            hint={budgetOptional ? t.form.quoteOnRequest : undefined}
+            error={errors.budget}
+            defaultValue=""
+          >
+            <option value="">{t.form.chooseRange}</option>
+            {options.budgetRanges.map((range) => (
+              <option key={range} value={range}>
+                {range}
+              </option>
+            ))}
+            <option value={t.form.notSure}>{t.form.notSure}</option>
+          </SelectField>
+        )}
+        {options.timelines.length > 0 && (
+          <SelectField
+            id={FIELDS.timeline.id}
+            name="timeline"
+            label={t.form.timeline}
+            optional={t.form.optional}
+            error={errors.timeline}
+            defaultValue=""
+          >
+            <option value="">{t.form.chooseTimeline}</option>
+            {options.timelines.map((timeline) => (
+              <option key={timeline} value={timeline}>
+                {timeline}
+              </option>
+            ))}
+          </SelectField>
+        )}
         <div className="sm:col-span-2">
           <TextAreaField
             id={FIELDS.message.id}

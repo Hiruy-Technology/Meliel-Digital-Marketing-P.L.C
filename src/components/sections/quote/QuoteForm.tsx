@@ -106,6 +106,11 @@ export function QuoteForm({
 
   const chosen = services.filter((s) => selected.has(s.slug));
   const budgetOptional = isBudgetOptional(chosen.map((s) => s.slug));
+  const hasBudgets = options.budgetRanges.length > 0;
+  const hasTimelines = options.timelines.length > 0;
+  // With no budgets or timelines set up yet, the form is two steps.
+  const hasPlanStep = hasBudgets || hasTimelines;
+  const total = hasPlanStep ? 3 : 2;
 
   // After a failed submit, move focus to the error summary so everyone finds it.
   useEffect(() => {
@@ -159,7 +164,7 @@ export function QuoteForm({
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const text = (name: string) => String(form.get(name) ?? "");
-    const result = quoteSchema(t.errors).safeParse({
+    const result = quoteSchema(t.errors, options).safeParse({
       services: chosen.map((s) => s.slug),
       selectedIncludes: [...includes],
       budget: text("budget"),
@@ -207,7 +212,7 @@ export function QuoteForm({
             }
           >
             <StepLegend
-              label={fill(t.quote.stepOf, { step: 1 })}
+              label={fill(t.quote.stepOf, { step: 1, total })}
               title={t.quote.step1}
               hint={t.quote.step1Hint}
             />
@@ -274,51 +279,57 @@ export function QuoteForm({
           </fieldset>
 
           <div ref={detailsRef} id="quote-details" className="space-y-14">
-            <fieldset>
-              <StepLegend
-                label={fill(t.quote.stepOf, { step: 2 })}
-                title={t.quote.step2}
-              />
-              <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                <SelectField
-                  id={FIELDS.budget.id}
-                  name="budget"
-                  label={t.form.budget}
-                  optional={budgetOptional ? t.form.optional : undefined}
-                  hint={budgetOptional ? t.form.quoteOnRequest : undefined}
-                  error={errors.budget}
-                  defaultValue=""
-                  onChange={() => clearError("budget")}
-                >
-                  <option value="">{t.form.chooseRange}</option>
-                  {options.budgetRanges.map((range) => (
-                    <option key={range} value={range}>
-                      {range}
-                    </option>
-                  ))}
-                  <option value={t.form.notSure}>{t.form.notSure}</option>
-                </SelectField>
-                <SelectField
-                  id={FIELDS.timeline.id}
-                  name="timeline"
-                  label={t.form.timeline}
-                  error={errors.timeline}
-                  defaultValue=""
-                  onChange={() => clearError("timeline")}
-                >
-                  <option value="">{t.form.chooseTimeline}</option>
-                  {options.timelines.map((timeline) => (
-                    <option key={timeline} value={timeline}>
-                      {timeline}
-                    </option>
-                  ))}
-                </SelectField>
-              </div>
-            </fieldset>
+            {hasPlanStep && (
+              <fieldset>
+                <StepLegend
+                  label={fill(t.quote.stepOf, { step: 2, total })}
+                  title={t.quote.step2}
+                />
+                <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                  {hasBudgets && (
+                    <SelectField
+                      id={FIELDS.budget.id}
+                      name="budget"
+                      label={t.form.budget}
+                      optional={budgetOptional ? t.form.optional : undefined}
+                      hint={budgetOptional ? t.form.quoteOnRequest : undefined}
+                      error={errors.budget}
+                      defaultValue=""
+                      onChange={() => clearError("budget")}
+                    >
+                      <option value="">{t.form.chooseRange}</option>
+                      {options.budgetRanges.map((range) => (
+                        <option key={range} value={range}>
+                          {range}
+                        </option>
+                      ))}
+                      <option value={t.form.notSure}>{t.form.notSure}</option>
+                    </SelectField>
+                  )}
+                  {hasTimelines && (
+                    <SelectField
+                      id={FIELDS.timeline.id}
+                      name="timeline"
+                      label={t.form.timeline}
+                      error={errors.timeline}
+                      defaultValue=""
+                      onChange={() => clearError("timeline")}
+                    >
+                      <option value="">{t.form.chooseTimeline}</option>
+                      {options.timelines.map((timeline) => (
+                        <option key={timeline} value={timeline}>
+                          {timeline}
+                        </option>
+                      ))}
+                    </SelectField>
+                  )}
+                </div>
+              </fieldset>
+            )}
 
             <fieldset>
               <StepLegend
-                label={fill(t.quote.stepOf, { step: 3 })}
+                label={fill(t.quote.stepOf, { step: total, total })}
                 title={t.quote.step3}
               />
               <div className="mt-6 grid gap-6 sm:grid-cols-2">

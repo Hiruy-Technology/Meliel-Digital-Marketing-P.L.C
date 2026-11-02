@@ -41,6 +41,7 @@ export default async function WorkPage({
 
   const projects = await getProjects({ service, industry }, locale);
   const filtered = Boolean(service || industry);
+  const nothingYet = projects.length === 0 && !filtered;
 
   return (
     <>
@@ -55,20 +56,26 @@ export default async function WorkPage({
         className="bg-surface py-12 lg:py-16"
       >
         <Container>
-          <WorkFilters
-            services={services}
-            industries={industries}
-            service={service}
-            industry={industry}
-          />
+          {!nothingYet && (
+            <>
+              <WorkFilters
+                services={services}
+                industries={industries}
+                service={service}
+                industry={industry}
+              />
 
-          <p
-            role="status"
-            className="mt-10 border-t border-line pt-6 text-sm text-ink-muted"
-          >
-            {projects.length}{" "}
-            {projects.length === 1 ? t.work.oneProject : t.work.manyProjects}
-          </p>
+              <p
+                role="status"
+                className="mt-10 border-t border-line pt-6 text-sm text-ink-muted"
+              >
+                {projects.length}{" "}
+                {projects.length === 1
+                  ? t.work.oneProject
+                  : t.work.manyProjects}
+              </p>
+            </>
+          )}
 
           {projects.length > 0 ? (
             <ul className="mt-8 grid gap-x-6 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
@@ -86,9 +93,11 @@ export default async function WorkPage({
           ) : (
             <div className="mt-8 rounded-sm border border-dashed border-line-strong bg-paper px-6 py-16 text-center">
               <h2 className="font-display text-2xl font-bold">
-                {t.work.emptyTitle}
+                {nothingYet ? t.work.noneTitle : t.work.emptyTitle}
               </h2>
-              <p className="mt-3 text-ink-soft">{t.work.emptyText}</p>
+              <p className="mt-3 text-ink-soft">
+                {nothingYet ? t.work.noneText : t.work.emptyText}
+              </p>
               {filtered && (
                 <Button
                   href={workHref({})}

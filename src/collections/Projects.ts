@@ -2,6 +2,7 @@ import type { CollectionConfig, TextFieldSingleValidation } from "payload";
 import { requiredInEnglish } from "@/fields/required-in-english";
 import { slugField } from "@/fields/slug";
 import { videoEmbedUrl } from "@/lib/video";
+import { refreshHooks } from "@/fields/revalidate";
 import { signedIn } from "./access";
 import { isImage } from "./Media";
 
@@ -25,6 +26,7 @@ export const Projects: CollectionConfig = {
     listSearchableFields: ["title", "clientName"],
   },
   defaultSort: "sortOrder",
+  hooks: refreshHooks,
   access: {
     read: signedIn,
     create: signedIn,

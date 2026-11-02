@@ -166,6 +166,9 @@ export const en = {
     allIndustries: "All industries",
     oneProject: "project",
     manyProjects: "projects",
+    noneTitle: "Our case studies are on the way",
+    noneText:
+      "In the meantime, tell us about your brand and where you want it to go.",
     emptyTitle: "No projects match these filters",
     emptyText: "Try a different service or industry, or see everything.",
     clearFilters: "Clear filters",
@@ -226,7 +229,7 @@ export const en = {
     title: "Tell us what you need",
     intro:
       "Choose the services you’re interested in, share your budget and timeline, and we’ll come back with a quote.",
-    stepOf: "Step {step} of 3",
+    stepOf: "Step {step} of {total}",
     step1: "Which services do you need?",
     step1Hint: "Choose one or more.",
     anythingSpecific: "Anything specific?",

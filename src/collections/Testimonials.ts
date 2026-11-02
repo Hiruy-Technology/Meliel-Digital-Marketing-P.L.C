@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload";
 import { requiredInEnglish } from "@/fields/required-in-english";
+import { refreshHooks } from "@/fields/revalidate";
 import { signedIn } from "./access";
 import { isImage } from "./Media";
 
@@ -10,6 +11,7 @@ export const Testimonials: CollectionConfig = {
     useAsTitle: "name",
     defaultColumns: ["name", "company", "featured"],
   },
+  hooks: refreshHooks,
   access: {
     read: signedIn,
     create: signedIn,
