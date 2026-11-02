@@ -82,18 +82,18 @@ export default async function DataPage() {
     options,
   ] = await Promise.all([
     getServices("en"),
-    getIndustries(),
+    getIndustries("en"),
     getProjects({}, "en"),
     getProjects({ featured: true }, "en"),
     getProjects({ service: "branding" }, "en"),
     getProjects({ service: "digital-marketing", industry: "industry-a" }, "en"),
-    getSiteSettings(),
-    getTestimonials({ featured: true }),
-    getClientLogos(),
-    getTeamMembers(),
-    getInquiryOptions(),
+    getSiteSettings("en"),
+    getTestimonials({ featured: true }, "en"),
+    getClientLogos("en"),
+    getTeamMembers("en"),
+    getInquiryOptions("en"),
   ]);
-  const adjacent = await getAdjacentProjects(projects[0]?.slug ?? "");
+  const adjacent = await getAdjacentProjects(projects[0]?.slug ?? "", "en");
 
   return (
     <>

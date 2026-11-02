@@ -30,7 +30,7 @@ export default async function WorkPage({
   const query = await searchParams;
   const [services, industries] = await Promise.all([
     getServices(locale),
-    getIndustries(),
+    getIndustries(locale),
   ]);
 
   // Unknown values in the URL are ignored rather than showing an empty page.

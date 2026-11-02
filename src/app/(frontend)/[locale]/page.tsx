@@ -30,11 +30,11 @@ export default async function HomePage() {
   const { locale } = await getI18n();
   const [logos, settings, services, featured, testimonials] = await Promise.all(
     [
-      getClientLogos(),
-      getSiteSettings(),
+      getClientLogos(locale),
+      getSiteSettings(locale),
       getServices(locale),
       getProjects({ featured: true, limit: 6 }, locale),
-      getTestimonials({ featured: true }),
+      getTestimonials({ featured: true }, locale),
     ],
   );
 

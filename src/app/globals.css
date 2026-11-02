@@ -290,3 +290,28 @@ html:lang(am) .text-xs {
 html:lang(am) .text-\[0\.55em\] {
   font-size: 0.68em;
 }
+
+/* Case study text from the CMS. Links are underlined so they don't rely on color alone. */
+.case-study {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.case-study a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.case-study ul,
+.case-study ol {
+  padding-inline-start: 1.5rem;
+}
+
+.case-study ul {
+  list-style: disc;
+}
+
+.case-study ol {
+  list-style: decimal;
+}

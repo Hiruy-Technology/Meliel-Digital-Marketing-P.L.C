@@ -32,8 +32,8 @@ export default async function ContactPage({
   const { service } = await searchParams;
   const [services, options, settings] = await Promise.all([
     getServices(locale),
-    getInquiryOptions(),
-    getSiteSettings(),
+    getInquiryOptions(locale),
+    getSiteSettings(locale),
   ]);
   const requested = [service].flat()[0];
   const initialService = isServiceSlug(requested) ? requested : "";

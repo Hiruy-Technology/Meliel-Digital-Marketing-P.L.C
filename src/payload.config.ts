@@ -1,7 +1,16 @@
 import path from "path";
 import { fileURLToPath } from "url";
 import { postgresAdapter } from "@payloadcms/db-postgres";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import {
+  BoldFeature,
+  FixedToolbarFeature,
+  ItalicFeature,
+  lexicalEditor,
+  LinkFeature,
+  OrderedListFeature,
+  ParagraphFeature,
+  UnorderedListFeature,
+} from "@payloadcms/richtext-lexical";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 import { ClientLogos } from "./collections/ClientLogos";
@@ -45,7 +54,18 @@ export default buildConfig({
     defaultLocale: "en",
     fallback: true,
   },
-  editor: lexicalEditor(),
+  // Only what a case study needs, so editors can't break the page design.
+  editor: lexicalEditor({
+    features: [
+      ParagraphFeature(),
+      BoldFeature(),
+      ItalicFeature(),
+      LinkFeature({ enabledCollections: [] }),
+      UnorderedListFeature(),
+      OrderedListFeature(),
+      FixedToolbarFeature(),
+    ],
+  }),
   sharp,
   upload: { limits: { fileSize: 50 * 1024 * 1024 }, abortOnLimit: true },
   secret: process.env.PAYLOAD_SECRET || "",

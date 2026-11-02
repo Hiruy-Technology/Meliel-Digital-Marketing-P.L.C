@@ -7,3 +7,10 @@ export const siteUrl = (
 
 /** The client's design preview: shows the banner and keeps search engines out. */
 export const isPreview = process.env.NEXT_PUBLIC_SITE_ENV === "preview";
+
+/**
+ * Placeholders for content the client hasn't sent, on dev and preview builds only. Anything else,
+ * including a missing variable, counts as production, so they can never reach the live site.
+ */
+export const showPlaceholders =
+  process.env.NEXT_PUBLIC_SITE_ENV === "development" || isPreview;

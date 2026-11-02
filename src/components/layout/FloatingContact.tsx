@@ -70,8 +70,8 @@ function FloatingButton({
 }
 
 export async function FloatingContact() {
-  const { t } = await getI18n();
-  const settings = await getSiteSettings();
+  const { locale, t } = await getI18n();
+  const settings = await getSiteSettings(locale);
   const names = (platform: string) => ({
     chatLabel: fill(t.floating.chat, { platform }),
     pendingLabel: fill(t.floating.notSetUp, { platform }),

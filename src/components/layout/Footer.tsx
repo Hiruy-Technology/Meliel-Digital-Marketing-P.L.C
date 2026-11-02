@@ -48,7 +48,7 @@ export async function Footer() {
   const { locale, t } = await getI18n();
   const cta = projectCta(t);
   const [settings, services] = await Promise.all([
-    getSiteSettings(),
+    getSiteSettings(locale),
     getServices(locale),
   ]);
   const email = emailHref(settings.email);

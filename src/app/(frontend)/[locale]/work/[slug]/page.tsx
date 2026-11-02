@@ -19,11 +19,18 @@ import {
   getProjectSlugs,
 } from "@/lib/data";
 import type { Project, RichText } from "@/lib/types";
+import type { Locale } from "@/i18n/config";
 import { fill, getI18n } from "@/i18n";
+import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintext";
+import { RichText as PayloadRichText } from "@payloadcms/richtext-lexical/react";
 import { alternates } from "@/lib/seo";
 
-export async function generateStaticParams() {
-  const slugs = await getProjectSlugs();
+export async function generateStaticParams({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const slugs = await getProjectSlugs(params.locale as Locale);
   return slugs.map((slug) => ({ slug }));
 }
 
@@ -36,7 +43,7 @@ export async function generateMetadata({
   if (!project) return {};
   return {
     title: project.title,
-    description: project.challenge[0],
+    description: plainText(project.challenge),
     alternates: alternates(`/work/${project.slug}`, locale),
   };
 }
@@ -49,18 +56,33 @@ function CaseBlock({
   title: string;
   paragraphs: RichText;
 }) {
+  if (isEmpty(paragraphs)) return null;
   return (
     <Rise className="grid gap-4 lg:grid-cols-12 lg:gap-10">
       <h2 className="font-display text-2xl font-bold lg:col-span-4">{title}</h2>
       <div className="space-y-5 text-lg text-ink-soft lg:col-span-8">
-        {paragraphs.map((paragraph) => (
-          <p key={paragraph}>
-            <Value value={paragraph} />
-          </p>
-        ))}
+        {Array.isArray(paragraphs) ? (
+          paragraphs.map((paragraph) => (
+            <p key={paragraph}>
+              <Value value={paragraph} />
+            </p>
+          ))
+        ) : (
+          <PayloadRichText data={paragraphs} className="case-study" />
+        )}
       </div>
     </Rise>
   );
+}
+
+const isEmpty = (text: RichText) => Array.isArray(text) && text.length === 0;
+
+/** The opening of a case study, for search results. */
+function plainText(text: RichText): string | undefined {
+  const plain = Array.isArray(text)
+    ? text[0]
+    : convertLexicalToPlaintext({ data: text });
+  return plain?.trim().slice(0, 160) || undefined;
 }
 
 function ProjectLink({
@@ -102,7 +124,7 @@ export default async function ProjectPage({
   const { locale, t } = await getI18n();
   const project = await getProjectBySlug(slug, locale);
   if (!project) notFound();
-  const { previous, next } = await getAdjacentProjects(slug);
+  const { previous, next } = await getAdjacentProjects(slug, locale);
 
   return (
     <>
@@ -162,12 +184,20 @@ export default async function ProjectPage({
         </Section>
       )}
 
-      <Section aria-label={t.work.theProject}>
-        <div className="space-y-14 lg:space-y-20">
-          <CaseBlock title={t.work.challenge} paragraphs={project.challenge} />
-          <CaseBlock title={t.work.delivered} paragraphs={project.delivered} />
-        </div>
-      </Section>
+      {!(isEmpty(project.challenge) && isEmpty(project.delivered)) && (
+        <Section aria-label={t.work.theProject}>
+          <div className="space-y-14 lg:space-y-20">
+            <CaseBlock
+              title={t.work.challenge}
+              paragraphs={project.challenge}
+            />
+            <CaseBlock
+              title={t.work.delivered}
+              paragraphs={project.delivered}
+            />
+          </div>
+        </Section>
+      )}
 
       {project.gallery.length > 0 && (
         <Section tone="paper" aria-labelledby="gallery-title">
@@ -201,9 +231,11 @@ export default async function ProjectPage({
         </Section>
       )}
 
-      <Section tone="paper" aria-label={t.work.resultsLabel}>
-        <CaseBlock title={t.work.results} paragraphs={project.results} />
-      </Section>
+      {!isEmpty(project.results) && (
+        <Section tone="paper" aria-label={t.work.resultsLabel}>
+          <CaseBlock title={t.work.results} paragraphs={project.results} />
+        </Section>
+      )}
 
       {previous && next && (
         <section aria-label={t.work.more} className="bg-surface py-10">

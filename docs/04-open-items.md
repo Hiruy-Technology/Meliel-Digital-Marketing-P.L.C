@@ -50,3 +50,4 @@ Per Article 6.2, the timeline extends for client content delays.
 - [x] Default language English; `/admin` stays in English
 - [x] Budget and timeline options editable in the admin (added to Site Settings)
 - [ ] Hosting choice (Vercel vs. VPS)
+- [ ] Before launch: `pnpm placeholders` must be clean. The company story, founding year and Privacy Policy details stay in `seed.ts`, so they would still show on production until Meliel sends them

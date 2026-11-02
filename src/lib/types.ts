@@ -1,3 +1,5 @@
+import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
+
 // Content types for the public site. They mirror the Payload collections in CLAUDE.md
 // ("Payload data model"), in the shape pages receive them: relationships already resolved.
 // Design phase: filled from src/content/seed.ts. Phase 3: filled from Payload by src/lib/data.ts.
@@ -19,8 +21,8 @@ export type Media = {
   height: number;
 };
 
-/** Paragraphs of text. Payload stores rich text; the data layer converts it to this shape. */
-export type RichText = string[];
+/** Payload's rich text, or plain paragraphs from seed.ts. An empty list means nothing was written. */
+export type RichText = string[] | SerializedEditorState;
 
 export type Service = {
   id: string;

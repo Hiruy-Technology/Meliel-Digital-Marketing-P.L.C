@@ -22,7 +22,7 @@ export default async function QuotePage({
   const { service } = await searchParams;
   const [services, options] = await Promise.all([
     getServices(locale),
-    getInquiryOptions(),
+    getInquiryOptions(locale),
   ]);
   // ?service= can repeat; unknown values are ignored.
   const initialServices = [...new Set([service].flat().filter(isServiceSlug))];
