@@ -6,11 +6,13 @@
 
 import config from "@payload-config";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { getPayload } from "payload";
 import { getDictionary } from "@/i18n";
 import { hasLocale, localePath, type Locale } from "@/i18n/config";
 import { en } from "@/i18n/en";
 import { getInquiryOptions, getServices } from "./data";
+import { sendInquiryEmail, type InquiryEmail } from "./email";
 import {
   NOT_SURE,
   contactSchema,
@@ -55,27 +57,47 @@ const serviceIds = (slugs: string[], english: Service[]) =>
     .map((s) => Number(s.id))
     .filter(Number.isInteger);
 
+type Details = Omit<InquiryEmail, "id" | "type" | "locale"> & {
+  serviceIds: number[];
+};
+
+/** Saves the inquiry, then emails Meliel once the visitor already has the thank-you page. */
 async function save(
   locale: Locale,
   action: "contact" | "quote",
-  data: Record<string, unknown>,
+  details: Details,
 ): Promise<FormState | null> {
   const t = getDictionary(locale);
   const payload = await getPayload({ config });
   if (!(await allowSubmission(payload, action, await visitorKey()))) {
     return { errors: { form: t.errors.rateLimited } };
   }
-  await payload.create({
+  const { serviceIds, services, ...fields } = details;
+  const type = action === "quote" ? "quote" : "general";
+  const doc = await payload.create({
     collection: "inquiries",
-    data: {
-      type: action === "quote" ? "quote" : "general",
+    data: { ...fields, type, locale, services: serviceIds },
+  });
+  after(async () => {
+    const status = await sendInquiryEmail({
+      ...fields,
+      id: doc.id,
+      type,
       locale,
-      emailStatus: "not-configured",
-      ...data,
-    } as never,
+      services,
+    });
+    await payload.update({
+      collection: "inquiries",
+      id: doc.id,
+      data: { emailStatus: status },
+    });
   });
   return null;
 }
+
+/** English names of the chosen services, for the email. */
+const serviceNames = (slugs: string[], english: Service[]) =>
+  english.filter((s) => slugs.includes(s.slug)).map((s) => s.name);
 
 export async function submitQuote(
   _previous: FormState,
@@ -136,7 +158,8 @@ export async function submitQuote(
       email: data.email,
       phone: data.phone,
       message: data.message,
-      services: serviceIds(data.services, english),
+      services: serviceNames(data.services, english),
+      serviceIds: serviceIds(data.services, english),
       selectedIncludes: includes,
       budget,
       timeline,
@@ -203,7 +226,8 @@ export async function submitContact(
       email: data.email,
       phone: data.phone,
       message: data.message,
-      services: serviceIds([data.service], english),
+      services: serviceNames([data.service], english),
+      serviceIds: serviceIds([data.service], english),
       budget,
       timeline,
     });
