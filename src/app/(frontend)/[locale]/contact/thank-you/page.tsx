@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
-import { isPreview } from "@/lib/site";
 import { getI18n } from "@/i18n";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -33,11 +32,6 @@ export default async function ThankYouPage({
         <p className="mt-6 text-lg text-ink-soft">
           {isQuote ? t.thankYou.quoteText : t.thankYou.messageText}
         </p>
-        {isPreview && (
-          <p className="mt-4 rounded-sm bg-orange-50 p-3 text-sm text-navy-900">
-            {t.preview.formsOff}
-          </p>
-        )}
         <div className="mt-9 flex flex-wrap gap-3">
           <Button href="/work" size="lg">
             {t.common.seeOurWork}

@@ -11,7 +11,6 @@
 import type {
   ClientLogo,
   Industry,
-  InquiryOptions,
   Media,
   Project,
   Service,
@@ -295,7 +294,7 @@ export const siteSettings: SiteSettings = {
 // Inquiry / quote form options (pending from the client)
 // ---------------------------------------------------------------------------
 
-export const inquiryOptions: InquiryOptions = {
+export const inquiryOptions: { budgetRanges: string[]; timelines: string[] } = {
   budgetRanges: [
     "[PLACEHOLDER: budget range 1, in ETB]",
     "[PLACEHOLDER: budget range 2, in ETB]",

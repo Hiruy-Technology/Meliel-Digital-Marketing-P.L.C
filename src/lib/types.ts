@@ -31,6 +31,8 @@ export type Service = {
   summary: string;
   /** "Includes" list. Empty for services where Meliel gave no list. */
   includes: string[];
+  /** Each include's row id, the same in both languages. Missing for seed.ts: see includeId(). */
+  includeIds?: string[];
   sortOrder: number;
   /** e.g. Event Production's pricing note. */
   note?: string;
@@ -139,21 +141,27 @@ export type SiteSettings = {
   homepageStats: Stat[];
 };
 
+/** One form choice. `value` is the row id, the same in both languages, so the server can store
+ * the English wording whichever language the visitor used. */
+export type Choice = { value: string; label: string };
+
 /** Choices offered by the inquiry and quote forms. */
 export type InquiryOptions = {
-  budgetRanges: string[];
-  timelines: string[];
+  budgetRanges: Choice[];
+  timelines: Choice[];
 };
 
 /** One form submission. Stored in the Inquiries collection from phase 3. */
 export type Inquiry = {
   type: "general" | "quote";
+  /** The language the visitor used. */
+  locale: "en" | "am";
   name: string;
   company?: string;
   email: string;
   phone?: string;
   services: ServiceSlug[];
-  /** The "includes" items ticked on the quote page. */
+  /** The "includes" items ticked on the quote page, in English. */
   selectedIncludes: string[];
   budget?: string;
   timeline?: string;

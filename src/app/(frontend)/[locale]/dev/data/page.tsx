@@ -253,13 +253,13 @@ export default async function DataPage() {
           <p className="text-sm">
             Budget:{" "}
             {options.budgetRanges.map((b) => (
-              <Value key={b}>{b}</Value>
+              <Value key={b.value}>{b.label}</Value>
             ))}
           </p>
           <p className="mt-2 text-sm">
             Timeline:{" "}
             {options.timelines.map((t) => (
-              <Value key={t}>{t}</Value>
+              <Value key={t.value}>{t.label}</Value>
             ))}
           </p>
         </Block>

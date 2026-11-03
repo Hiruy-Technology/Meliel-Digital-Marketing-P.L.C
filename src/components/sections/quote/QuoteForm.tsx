@@ -1,8 +1,9 @@
 "use client";
 
 import { Link } from "@/components/ui/Link";
-import { useRouter } from "next/navigation";
 import {
+  startTransition,
+  useActionState,
   useEffect,
   useRef,
   useState,
@@ -20,13 +21,16 @@ import {
   TextField,
 } from "@/components/ui/Field";
 import { Icon } from "@/components/ui/Icon";
+import { submitQuote } from "@/lib/inquiries";
 import {
+  NOT_SURE,
   fieldErrors,
+  includeId,
   isBudgetOptional,
   quoteSchema,
 } from "@/lib/inquiry-schema";
 import type { InquiryOptions, Service, ServiceSlug } from "@/lib/types";
-import { fill, localePath } from "@/i18n/config";
+import { fill } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/en";
 import { useLocale } from "@/i18n/LocaleProvider";
 
@@ -95,13 +99,16 @@ export function QuoteForm({
   t,
 }: QuoteFormProps) {
   const locale = useLocale();
-  const router = useRouter();
+  const [state, formAction, pending] = useActionState(submitQuote, {
+    errors: {},
+  });
   const [selected, setSelected] = useState(() => new Set(initialServices));
   const [includes, setIncludes] = useState(() => new Set<string>());
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [attempts, setAttempts] = useState(0);
   const [detailsReached, setDetailsReached] = useState(false);
   const summaryRef = useRef<HTMLDivElement>(null);
+  const alertRef = useRef<HTMLParagraphElement>(null);
   const detailsRef = useRef<HTMLDivElement>(null);
 
   const chosen = services.filter((s) => selected.has(s.slug));
@@ -114,8 +121,20 @@ export function QuoteForm({
 
   // After a failed submit, move focus to the error summary so everyone finds it.
   useEffect(() => {
-    if (attempts > 0) summaryRef.current?.focus();
-  }, [attempts]);
+    if (attempts === 0) return;
+    (errors.form ? alertRef : summaryRef).current?.focus();
+  }, [attempts]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // The server checks everything again, and has the last word. Its errors replace the browser's
+  // when a new response arrives (adjusting state during render, as the React docs recommend).
+  const [response, setResponse] = useState(state);
+  if (state !== response) {
+    setResponse(state);
+    if (Object.keys(state.errors).length > 0) {
+      setErrors(state.errors);
+      setAttempts((n) => n + 1);
+    }
+  }
 
   // The phone summary bar steps aside once the visitor reaches step 2.
   useEffect(() => {
@@ -142,9 +161,9 @@ export function QuoteForm({
     if (next.has(service.slug)) {
       next.delete(service.slug);
       // Unticking a service also unticks its specific items.
+      const ids = service.includes.map((_, i) => includeId(service, i));
       setIncludes(
-        (items) =>
-          new Set([...items].filter((i) => !service.includes.includes(i))),
+        (items) => new Set([...items].filter((i) => !ids.includes(i))),
       );
     } else {
       next.add(service.slug);
@@ -153,10 +172,10 @@ export function QuoteForm({
     setSelected(next);
   };
 
-  const toggleInclude = (item: string) => {
+  const toggleInclude = (id: string) => {
     const next = new Set(includes);
-    if (next.has(item)) next.delete(item);
-    else next.add(item);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
     setIncludes(next);
   };
 
@@ -183,19 +202,31 @@ export function QuoteForm({
       return;
     }
     setErrors({});
-    // Design phase: nothing is sent or stored. Phase 3 calls a Server Action here, which also
-    // discards the submission silently if the `website` honeypot is filled in.
-    router.push(localePath("/contact/thank-you?type=quote", locale));
+    // Called here, not through the form's action, so React doesn't clear what the visitor typed
+    // when the server sends an error back. The action attribute still works with JavaScript off.
+    startTransition(() => formAction(form));
   };
 
   return (
     <>
       <form
         noValidate
+        action={formAction}
         onSubmit={onSubmit}
         className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12"
       >
         <div className="space-y-14 lg:col-span-8">
+          <input type="hidden" name="locale" value={locale} />
+          {errors.form && (
+            <p
+              ref={alertRef}
+              tabIndex={-1}
+              role="alert"
+              className="rounded-sm border-2 border-red bg-raised p-5 font-medium text-red"
+            >
+              {errors.form}
+            </p>
+          )}
           <ErrorSummary
             ref={summaryRef}
             errors={errors}
@@ -233,6 +264,8 @@ export function QuoteForm({
                     <label className="flex cursor-pointer gap-4 p-5">
                       <input
                         type="checkbox"
+                        name="services"
+                        value={service.slug}
                         checked={isOn}
                         onChange={() => toggleService(service)}
                         className="mt-1 size-5 shrink-0 accent-ink"
@@ -261,14 +294,19 @@ export function QuoteForm({
                           </span>
                         </legend>
                         <div className="clear-both grid pt-2 sm:grid-cols-2 sm:gap-x-6">
-                          {service.includes.map((item) => (
-                            <Checkbox
-                              key={item}
-                              label={item}
-                              checked={includes.has(item)}
-                              onChange={() => toggleInclude(item)}
-                            />
-                          ))}
+                          {service.includes.map((item, i) => {
+                            const id = includeId(service, i);
+                            return (
+                              <Checkbox
+                                key={id}
+                                name="includes"
+                                value={id}
+                                label={item}
+                                checked={includes.has(id)}
+                                onChange={() => toggleInclude(id)}
+                              />
+                            );
+                          })}
                         </div>
                       </fieldset>
                     )}
@@ -299,11 +337,11 @@ export function QuoteForm({
                     >
                       <option value="">{t.form.chooseRange}</option>
                       {options.budgetRanges.map((range) => (
-                        <option key={range} value={range}>
-                          {range}
+                        <option key={range.value} value={range.value}>
+                          {range.label}
                         </option>
                       ))}
-                      <option value={t.form.notSure}>{t.form.notSure}</option>
+                      <option value={NOT_SURE}>{t.form.notSure}</option>
                     </SelectField>
                   )}
                   {hasTimelines && (
@@ -317,8 +355,8 @@ export function QuoteForm({
                     >
                       <option value="">{t.form.chooseTimeline}</option>
                       {options.timelines.map((timeline) => (
-                        <option key={timeline} value={timeline}>
-                          {timeline}
+                        <option key={timeline.value} value={timeline.value}>
+                          {timeline.label}
                         </option>
                       ))}
                     </SelectField>
@@ -391,8 +429,14 @@ export function QuoteForm({
             </fieldset>
 
             <div>
-              <Button type="submit" size="lg" className="w-full sm:w-auto">
-                {t.quote.submit}
+              <Button
+                type="submit"
+                size="lg"
+                disabled={pending}
+                aria-busy={pending}
+                className="w-full sm:w-auto"
+              >
+                {pending ? t.form.sending : t.quote.submit}
               </Button>
               <p className="mt-4 text-sm text-ink-muted">
                 {t.quote.privacyBefore}{" "}
@@ -418,8 +462,8 @@ export function QuoteForm({
           ) : (
             <ul className="mt-4 space-y-3">
               {chosen.map((service) => {
-                const count = service.includes.filter((i) =>
-                  includes.has(i),
+                const count = service.includes.filter((_, i) =>
+                  includes.has(includeId(service, i)),
                 ).length;
                 return (
                   <li key={service.slug} className="flex gap-3">

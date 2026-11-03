@@ -112,6 +112,15 @@ function toMedia(
 
 // --- Services ---------------------------------------------------------------
 
+/** Rows with wording in this language, with their ids. */
+function includeRows(rows: CmsService["includes"]) {
+  const kept = (rows ?? []).filter((row) => row.item && row.id);
+  return {
+    includes: kept.map((row) => row.item as string),
+    includeIds: kept.map((row) => row.id as string),
+  };
+}
+
 function toService(doc: CmsService): Service | null {
   if (!doc.name || !doc.summary) return null;
   return {
@@ -119,7 +128,7 @@ function toService(doc: CmsService): Service | null {
     name: doc.name,
     slug: doc.slug,
     summary: doc.summary,
-    includes: doc.includes?.map((row) => row.item).filter(isPresent) ?? [],
+    ...includeRows(doc.includes),
     sortOrder: doc.sortOrder,
     note: doc.note ?? undefined,
   };
@@ -470,12 +479,22 @@ export async function getInquiryOptions(
   locale: Locale,
 ): Promise<InquiryOptions> {
   const doc = await readSettings(locale);
-  const labels = (rows: { label?: string | null }[] | null | undefined) =>
-    rows?.map((row) => row.label).filter(isPresent) ?? [];
-  const budgets = labels(doc?.budgetRanges);
-  const timelines = labels(doc?.timelines);
+  const choices = (
+    rows: { id?: string | null; label?: string | null }[] | null | undefined,
+  ) =>
+    (rows ?? []).flatMap((row) =>
+      row.id && row.label ? [{ value: row.id, label: row.label }] : [],
+    );
+  const placeholders = (labels: string[]) => () =>
+    labels.map((label, i) => ({ value: `placeholder-${i}`, label }));
   return {
-    budgetRanges: orPlaceholders(budgets, () => inquiryOptions.budgetRanges),
-    timelines: orPlaceholders(timelines, () => inquiryOptions.timelines),
+    budgetRanges: orPlaceholders(
+      choices(doc?.budgetRanges),
+      placeholders(inquiryOptions.budgetRanges),
+    ),
+    timelines: orPlaceholders(
+      choices(doc?.timelines),
+      placeholders(inquiryOptions.timelines),
+    ),
   };
 }

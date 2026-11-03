@@ -92,7 +92,6 @@ export const en = {
     notice: "Site notice",
     banner:
       "Design preview for Meliel Digital Marketing. Boxes marked “PLACEHOLDER” are waiting for your content.",
-    formsOff: "Design preview: forms don’t send anything yet.",
     draftTranslation:
       "Draft translation: this Amharic text has not been reviewed yet.",
   },
@@ -210,6 +209,7 @@ export const en = {
     quoteOnRequest:
       "Quote on request: Event Production is priced on your requirements.",
     honeypot: "Website",
+    sending: "Sending…",
   },
 
   errors: {
@@ -222,6 +222,10 @@ export const en = {
     budget: "Please choose a budget range.",
     service: "Please choose a service, or “Not sure yet”.",
     message: "Please tell us a little about what you need.",
+    tryAgain:
+      "Something went wrong, and your message wasn’t sent. Please try again, or contact us directly.",
+    rateLimited:
+      "You’ve sent several messages in a short time. Please try again in an hour, or reach us directly by WhatsApp or phone.",
   },
 
   quote: {

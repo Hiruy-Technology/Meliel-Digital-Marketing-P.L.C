@@ -1,10 +1,10 @@
-// Validation rules for the quote and contact forms. Runs in the browser now; in phase 3 the same
-// schemas validate on the server (Server Actions) before saving to Inquiries and emailing Meliel.
+// Validation rules for the quote and contact forms. The same rules run in the browser, for instant
+// errors, and on the server (src/lib/inquiries.ts), which decides.
 
 import { z } from "zod";
 import { fill } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/en";
-import type { InquiryOptions, ServiceSlug } from "./types";
+import type { InquiryOptions, Service, ServiceSlug } from "./types";
 
 export const SERVICE_SLUGS = [
   "branding",
@@ -75,8 +75,15 @@ export const quoteSchema = (m: Messages, options: InquiryOptions) =>
 
 export type QuoteInput = z.infer<ReturnType<typeof quoteSchema>>;
 
-/** Service choice on the contact form for visitors who don't know yet. */
-export const SERVICE_NOT_SURE = "not-sure";
+/** "Not sure yet", for the service, budget and timeline choices. */
+export const NOT_SURE = "not-sure";
+export const SERVICE_NOT_SURE = NOT_SURE;
+
+/** The value an "includes" checkbox sends: its row id, or its position for seed.ts services. */
+export const includeId = (
+  service: Pick<Service, "slug" | "includeIds">,
+  index: number,
+) => service.includeIds?.[index] ?? `${service.slug}-${index}`;
 
 export const contactSchema = (m: Messages, options: InquiryOptions) =>
   z

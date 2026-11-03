@@ -60,5 +60,17 @@ export const Inquiries: CollectionConfig = {
     { name: "budget", type: "text" },
     { name: "timeline", type: "text" },
     { name: "message", type: "textarea" },
+    {
+      name: "emailStatus",
+      label: "Email to Meliel",
+      type: "select",
+      defaultValue: "not-configured",
+      options: [
+        { label: "Sent", value: "sent" },
+        { label: "Failed (the inquiry is still saved)", value: "failed" },
+        { label: "Email not set up", value: "not-configured" },
+      ],
+      admin: { position: "sidebar" },
+    },
   ],
 };

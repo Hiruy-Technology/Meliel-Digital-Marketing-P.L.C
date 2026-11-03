@@ -1,18 +1,25 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  startTransition,
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import { Button } from "@/components/ui/Button";
 import { ErrorSummary } from "@/components/ui/ErrorSummary";
 import { SelectField, TextAreaField, TextField } from "@/components/ui/Field";
+import { submitContact } from "@/lib/inquiries";
 import {
+  NOT_SURE,
   SERVICE_NOT_SURE,
   contactSchema,
   fieldErrors,
   isBudgetOptional,
 } from "@/lib/inquiry-schema";
 import type { InquiryOptions, Service } from "@/lib/types";
-import { localePath } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/en";
 import { useLocale } from "@/i18n/LocaleProvider";
 
@@ -43,16 +50,31 @@ export function ContactForm({
   t,
 }: ContactFormProps) {
   const locale = useLocale();
-  const router = useRouter();
+  const [state, formAction, pending] = useActionState(submitContact, {
+    errors: {},
+  });
   const [service, setService] = useState(initialService);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [attempts, setAttempts] = useState(0);
   const summaryRef = useRef<HTMLDivElement>(null);
+  const alertRef = useRef<HTMLParagraphElement>(null);
   const budgetOptional = isBudgetOptional([service]);
 
   useEffect(() => {
-    if (attempts > 0) summaryRef.current?.focus();
-  }, [attempts]);
+    if (attempts === 0) return;
+    (errors.form ? alertRef : summaryRef).current?.focus();
+  }, [attempts]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // The server checks everything again, and has the last word. Its errors replace the browser's
+  // when a new response arrives (adjusting state during render, as the React docs recommend).
+  const [response, setResponse] = useState(state);
+  if (state !== response) {
+    setResponse(state);
+    if (Object.keys(state.errors).length > 0) {
+      setErrors(state.errors);
+      setAttempts((n) => n + 1);
+    }
+  }
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -76,13 +98,29 @@ export function ContactForm({
       return;
     }
     setErrors({});
-    // Design phase: nothing is sent or stored. Phase 3 calls a Server Action here, which also
-    // discards the submission silently if the `website` honeypot is filled in.
-    router.push(localePath("/contact/thank-you", locale));
+    // Called here, not through the form's action, so React doesn't clear what the visitor typed
+    // when the server sends an error back. The action attribute still works with JavaScript off.
+    startTransition(() => formAction(form));
   };
 
   return (
-    <form noValidate onSubmit={onSubmit} className="space-y-6">
+    <form
+      noValidate
+      action={formAction}
+      onSubmit={onSubmit}
+      className="space-y-6"
+    >
+      <input type="hidden" name="locale" value={locale} />
+      {errors.form && (
+        <p
+          ref={alertRef}
+          tabIndex={-1}
+          role="alert"
+          className="rounded-sm border-2 border-red bg-raised p-5 font-medium text-red"
+        >
+          {errors.form}
+        </p>
+      )}
       <ErrorSummary
         ref={summaryRef}
         errors={errors}
@@ -154,11 +192,11 @@ export function ContactForm({
           >
             <option value="">{t.form.chooseRange}</option>
             {options.budgetRanges.map((range) => (
-              <option key={range} value={range}>
-                {range}
+              <option key={range.value} value={range.value}>
+                {range.label}
               </option>
             ))}
-            <option value={t.form.notSure}>{t.form.notSure}</option>
+            <option value={NOT_SURE}>{t.form.notSure}</option>
           </SelectField>
         )}
         {options.timelines.length > 0 && (
@@ -172,8 +210,8 @@ export function ContactForm({
           >
             <option value="">{t.form.chooseTimeline}</option>
             {options.timelines.map((timeline) => (
-              <option key={timeline} value={timeline}>
-                {timeline}
+              <option key={timeline.value} value={timeline.value}>
+                {timeline.label}
               </option>
             ))}
           </SelectField>
@@ -196,8 +234,14 @@ export function ContactForm({
         </label>
       </div>
 
-      <Button type="submit" size="lg" className="w-full sm:w-auto">
-        {t.contact.send}
+      <Button
+        type="submit"
+        size="lg"
+        disabled={pending}
+        aria-busy={pending}
+        className="w-full sm:w-auto"
+      >
+        {pending ? t.form.sending : t.contact.send}
       </Button>
     </form>
   );

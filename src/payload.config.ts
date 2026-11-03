@@ -18,6 +18,7 @@ import { Industries } from "./collections/Industries";
 import { Inquiries } from "./collections/Inquiries";
 import { Media } from "./collections/Media";
 import { Projects } from "./collections/Projects";
+import { RateLimits } from "./collections/RateLimits";
 import { Services } from "./collections/Services";
 import { TeamMembers } from "./collections/TeamMembers";
 import { Testimonials } from "./collections/Testimonials";
@@ -43,6 +44,7 @@ export default buildConfig({
     ClientLogos,
     TeamMembers,
     Users,
+    RateLimits,
   ],
   globals: [SiteSettings],
   // Content languages only: the admin itself stays in English.
