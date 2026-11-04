@@ -50,6 +50,8 @@ Per Article 6.2, the timeline extends for client content delays.
 - [x] Default language English; `/admin` stays in English
 - [x] Budget and timeline options editable in the admin (added to Site Settings)
 - [ ] Hosting choice (Vercel vs. VPS)
+- [ ] GA4 measurement ID and Search Console code from Meliel's Google account, into the production environment (`NEXT_PUBLIC_GA_MEASUREMENT_ID`, `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`)
+- [ ] `/am` Lighthouse sits right at 90 on this PC; recheck on staging. A small existing layout shift (0.092, from the home page's lower sections) is worth fixing then
 - [ ] Step 17, AI Case Study Writer: postponed 2026-11-03, but contracted, so it must be built before handover. Needs an Anthropic API key under Meliel's Google account
 - [ ] Verify Meliel's domain in Resend, then set `INQUIRY_FROM_EMAIL` and the team's addresses in `INQUIRY_TO_EMAILS`. Until then, inquiry emails only reach the Resend account's own address
 - [x] Lighthouse on `/am` under 90: fixed 2026-11-03 with a smaller font (91 and 96)

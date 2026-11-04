@@ -162,7 +162,7 @@ export const am: Dictionary = {
 
   floating: {
     quickContact: "ፈጣን ግንኙነት",
-    chat: "ከመልዕል ጋር በ{platform} ይጻጻፉ (በአዲስ ትር ይከፈታል)",
+    chat: "{platform}፦ ከመልዕል ጋር ይጻጻፉ (በአዲስ ትር ይከፈታል)",
     notSetUp: "{platform} (ገና አልተዘጋጀም)",
   },
 
@@ -171,6 +171,15 @@ export const am: Dictionary = {
     banner:
       "ለመልዕል ዲጂታል ማርኬቲንግ የተዘጋጀ የዲዛይን ቅድመ-ዕይታ። “PLACEHOLDER” የሚል ምልክት ያላቸው ሳጥኖች የእርስዎን ይዘት እየጠበቁ ነው።",
     draftTranslation: "ረቂቅ ትርጉም፦ ይህ የአማርኛ ጽሑፍ ገና አልተገመገመም።",
+  },
+
+  consent: {
+    label: "የኩኪዎች ማሳሰቢያ",
+    text: "ጎብኝዎች ድረ-ገጹን እንዴት እንደሚጠቀሙ ለመረዳት የGoogle Analytics ኩኪዎችን መጠቀም እንፈልጋለን። ካልተቀበሉ ምንም አንከታተልም።",
+    accept: "እቀበላለሁ",
+    decline: "አልቀበልም",
+    privacy: "የግላዊነት ፖሊሲ",
+    settings: "የኩኪዎች ምርጫ",
   },
 
   notFound: {
@@ -391,6 +400,7 @@ export const am: Dictionary = {
         title: "ኩኪዎች እና የአጠቃቀም ልኬት",
         paragraphs: [
           "ድረ-ገጹ እንዴት ጥቅም ላይ እንደሚውል ለመለካት ኩኪዎችን የሚጠቀመውን Google Analytics እንጠቀማለን። በአሳሽዎ ቅንብሮች ኩኪዎችን ማገድ ወይም መሰረዝ ይችላሉ።",
+          "Google Analytics የሚሠራው በኩኪዎች ማሳሰቢያው ላይ ከተቀበሉ ብቻ ነው። በየገጹ ግርጌ ባለው “የኩኪዎች ምርጫ” በማንኛውም ጊዜ ምርጫዎን መቀየር ይችላሉ።",
         ],
       },
       {

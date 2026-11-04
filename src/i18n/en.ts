@@ -96,6 +96,15 @@ export const en = {
       "Draft translation: this Amharic text has not been reviewed yet.",
   },
 
+  consent: {
+    label: "Cookie notice",
+    text: "We’d like to use Google Analytics cookies to understand how visitors use this site. Nothing is tracked unless you accept.",
+    accept: "Accept",
+    decline: "Decline",
+    privacy: "Privacy Policy",
+    settings: "Cookie settings",
+  },
+
   notFound: {
     eyebrow: "Error 404",
     title: "This step is missing.",
@@ -322,6 +331,7 @@ export const en = {
         title: "Cookies and analytics",
         paragraphs: [
           "We use Google Analytics, which uses cookies to measure how the site is used. You can block or delete cookies in your browser settings.",
+          "Google Analytics only runs if you accept it in the cookie notice. You can change your choice at any time with “Cookie settings” at the bottom of every page.",
         ],
       },
       {

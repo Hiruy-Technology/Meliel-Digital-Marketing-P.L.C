@@ -6,7 +6,9 @@ import { Header } from "@/components/layout/Header";
 import { PreviewBanner } from "@/components/layout/PreviewBanner";
 import { LadderProgress } from "@/components/ui/LadderProgress";
 import { inter, notoEthiopicFull, sora } from "@/lib/fonts";
-import { isPreview, siteUrl } from "@/lib/site";
+import { gaMeasurementId, isPreview, siteUrl } from "@/lib/site";
+import { Analytics } from "@/components/layout/Analytics";
+import { ConsentBanner } from "@/components/layout/ConsentBanner";
 import { themeScript } from "@/lib/theme";
 import "../../globals.css";
 import { getI18n } from "@/i18n";
@@ -95,6 +97,12 @@ export default async function RootLayout({
           <Footer />
           <FloatingContact />
           <LadderProgress />
+          {gaMeasurementId && (
+            <>
+              <ConsentBanner t={t.consent} />
+              <Analytics measurementId={gaMeasurementId} />
+            </>
+          )}
         </LocaleProvider>
       </body>
     </html>

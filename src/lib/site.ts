@@ -12,6 +12,17 @@ export const isPreview = process.env.NEXT_PUBLIC_SITE_ENV === "preview";
  * Placeholders for content the client hasn't sent, on dev and preview builds only. Anything else,
  * including a missing variable, counts as production, so they can never reach the live site.
  */
+/**
+ * Google Analytics 4, only on the live site and only with a well-formed ID, so dev and client
+ * previews never count. The ID goes into an inline script, so the format check also keeps it safe.
+ */
+const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "";
+export const gaMeasurementId =
+  process.env.NEXT_PUBLIC_SITE_ENV === "production" &&
+  /^G-[A-Z0-9]+$/.test(gaId)
+    ? gaId
+    : null;
+
 /** Tag on every cached CMS query. Saving in /admin clears it (src/fields/revalidate.ts). */
 export const CMS_TAG = "cms";
 

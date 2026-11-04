@@ -80,7 +80,7 @@ export async function FloatingContact() {
   });
   return (
     <aside
-      className="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 flex flex-col items-end gap-3 sm:right-6 sm:bottom-6"
+      className="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 flex -translate-y-[var(--consent-height,0px)] flex-col items-end gap-3 sm:right-6 sm:bottom-6"
       aria-label={t.floating.quickContact}
     >
       {whatsappNumber && (

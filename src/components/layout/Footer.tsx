@@ -7,6 +7,8 @@ import { Logo } from "@/components/ui/Logo";
 import { Placeholder } from "@/components/ui/Placeholder";
 import { emailHref, phoneHref } from "@/lib/contact";
 import { getServices, getSiteSettings } from "@/lib/data";
+import { gaMeasurementId } from "@/lib/site";
+import { CookieSettingsButton } from "./ConsentBanner";
 import { footerNav, projectCta } from "@/lib/navigation";
 import { isPlaceholder, placeholderLabel } from "@/lib/placeholder";
 import { SocialLinks } from "../sections/SocialLinks";
@@ -172,6 +174,9 @@ export async function Footer() {
           <Link href="/privacy" className="rounded-sm hover:text-white">
             {t.footer.privacy}
           </Link>
+          {gaMeasurementId && (
+            <CookieSettingsButton label={t.consent.settings} />
+          )}
         </Container>
       </div>
     </footer>
