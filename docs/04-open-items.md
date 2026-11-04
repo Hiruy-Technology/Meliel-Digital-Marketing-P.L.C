@@ -41,7 +41,7 @@ Per Article 6.2, the timeline extends for client content delays.
 - [ ] Portfolio service filters = the 5 services in `02-meliel-content.md`
 - [ ] Event Production inquiries handled as "quote on request"
 - [x] Languages: full Amharic and English site, decided by Jacob 2026-10-30 (replaces "English only")
-- [ ] Written agreement with Meliel for the Amharic site and dark theme: price and timeline
+- [ ] Written agreement with Meliel for the Amharic site, dark theme and cookie consent banner: price and timeline
 - [x] Amharic text: Hiruy translates (Claude drafts, Jacob reviews), decided 2026-10-30
 - [ ] Jacob's review of the Amharic drafts (`docs/06-amharic-review.md`)
 - [ ] Meliel sign-off of the Amharic text, then set `amharicApproved` to true in `src/i18n/config.ts`
@@ -50,6 +50,7 @@ Per Article 6.2, the timeline extends for client content delays.
 - [x] Default language English; `/admin` stays in English
 - [x] Budget and timeline options editable in the admin (added to Site Settings)
 - [ ] Hosting choice (Vercel vs. VPS)
+- [ ] Step 17, AI Case Study Writer: postponed 2026-11-03, but contracted, so it must be built before handover. Needs an Anthropic API key under Meliel's Google account
 - [ ] Verify Meliel's domain in Resend, then set `INQUIRY_FROM_EMAIL` and the team's addresses in `INQUIRY_TO_EMAILS`. Until then, inquiry emails only reach the Resend account's own address
 - [x] Lighthouse on `/am` under 90: fixed 2026-11-03 with a smaller font (91 and 96)
 - [ ] Before launch: `pnpm placeholders` must be clean. The company story, founding year and Privacy Policy details stay in `seed.ts`, so they would still show on production until Meliel sends them

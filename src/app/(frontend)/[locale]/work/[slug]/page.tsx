@@ -23,6 +23,7 @@ import type { Locale } from "@/i18n/config";
 import { fill, getI18n } from "@/i18n";
 import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintext";
 import { RichText as PayloadRichText } from "@payloadcms/richtext-lexical/react";
+import { jsonLd, projectLd } from "@/lib/json-ld";
 import { alternates } from "@/lib/seo";
 
 export async function generateStaticParams({
@@ -126,8 +127,16 @@ export default async function ProjectPage({
   if (!project) notFound();
   const { previous, next } = await getAdjacentProjects(slug, locale);
 
+  const structured = projectLd(locale, project, plainText(project.challenge));
+
   return (
     <>
+      {structured && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(structured) }}
+        />
+      )}
       <section className="bg-paper pt-8 pb-12 sm:pt-10 lg:pb-16">
         <Container>
           <Link

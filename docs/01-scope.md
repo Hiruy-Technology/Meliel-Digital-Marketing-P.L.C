@@ -52,6 +52,7 @@ Decided by Jacob on 2026-10-30. Both go beyond Agreement HT-2026-006, which list
 |---|---|
 | Full Amharic and English site | Language switcher. All content switches together, with no mixed languages on a page. Includes the admin, forms, and SEO. |
 | Light and dark theme | Toggle in the site header. |
+| Cookie consent banner for Google Analytics | Decided by Jacob on 2026-11-03. GA4 loads only after the visitor accepts. Both languages; "Cookie settings" link in the footer. Needs the same written agreement with Meliel. |
 
 ## Out of scope (do not build without written approval)
 

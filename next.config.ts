@@ -7,7 +7,11 @@ const nextConfig: NextConfig = {
   // The file tracer copies sharp's .node file but misses the libvips libraries beside it, and without
   // them every Payload route fails in the standalone build, though dev works.
   outputFileTracingIncludes: {
-    "/**": ["./node_modules/.pnpm/@img+sharp-*/node_modules/@img/*/lib/**"],
+    "/**": [
+      "./node_modules/.pnpm/@img+sharp-*/node_modules/@img/*/lib/**",
+      // Fonts for the social sharing images (src/lib/og.tsx), read from disk.
+      "./src/fonts/og/**",
+    ],
   },
   // Serve photos as AVIF (smallest) with WebP fallback: many visitors are on slow mobile data.
   images: {

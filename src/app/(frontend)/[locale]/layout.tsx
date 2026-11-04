@@ -12,6 +12,8 @@ import "../../globals.css";
 import { getI18n } from "@/i18n";
 import { amharicApproved, locales } from "@/i18n/config";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
+import { getSiteSettings } from "@/lib/data";
+import { jsonLd, organizationLd } from "@/lib/json-ld";
 
 // A safety net: saving in /admin refreshes pages straight away (src/fields/revalidate.ts).
 export const revalidate = 3600;
@@ -36,7 +38,14 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       locale: locale === "am" ? "am_ET" : "en_US",
     },
+    twitter: { card: "summary_large_image" },
     ...(hidden ? { robots: { index: false, follow: false } } : {}),
+    // Search Console ownership check, from Meliel's Google account.
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && {
+      verification: {
+        google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+      },
+    }),
     // Fallback description; each page sets its own.
     description: t.copy.valueStatement,
   };
@@ -46,6 +55,7 @@ export default async function RootLayout({
   children,
 }: LayoutProps<"/[locale]">) {
   const { locale, t } = await getI18n();
+  const settings = await getSiteSettings(locale);
   return (
     <html
       lang={locale}
@@ -63,6 +73,12 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="flex min-h-full flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: jsonLd(organizationLd(locale, t, settings)),
+          }}
+        />
         <a
           href="#main"
           className="sr-only z-50 rounded-sm bg-orange-500 px-4 py-3 font-display font-semibold text-navy-900 focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
