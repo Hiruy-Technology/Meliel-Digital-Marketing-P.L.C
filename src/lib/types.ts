@@ -70,7 +70,8 @@ export type Project = {
   featured: boolean;
   sortOrder: number;
   status: "draft" | "published";
-  coverImage: Media;
+  /** null when there's no photo yet: the site shows a branded cover instead. */
+  coverImage: Media | null;
   gallery: Media[];
   videos: Video[];
   challenge: RichText;

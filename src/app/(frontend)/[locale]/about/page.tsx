@@ -7,6 +7,7 @@ import { MissionVision } from "@/components/sections/about/MissionVision";
 import { NameMeaning } from "@/components/sections/about/NameMeaning";
 import { Story } from "@/components/sections/about/Story";
 import { Team } from "@/components/sections/about/Team";
+import { Sectors } from "@/components/sections/Sectors";
 import { Values } from "@/components/sections/about/Values";
 import { getTeamMembers } from "@/lib/data";
 import { notoEthiopic } from "@/lib/font-ethiopic";
@@ -41,6 +42,7 @@ export default async function AboutPage() {
       <MissionVision />
       <Values />
       <Differentiator />
+      <Sectors />
       <Team members={team} />
       <ProcessLadder intro={null} />
       <CtaBand />

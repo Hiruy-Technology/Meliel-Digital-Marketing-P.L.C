@@ -8,10 +8,11 @@ Per Article 6.2, the timeline extends for client content delays.
 - Services list (5 services)
 - Logo files as PNG: 5 icon colorways (black, navy, gradient, orange, white/transparent) + 2 full-logo versions
 - Approximate color sheet (superseded by colors sampled from the files; see design direction)
+- **Company profile PDF (2026-11-04):** about paragraph, tagline, 5 sectors, team (10 names and roles), 8 case-study results, 14 client names, phones, email, address, legal name and TIN. On the site via `src/content/profile.ts` and `pnpm import:profile`. What's still missing is in `docs/07-content-request.md`
 
 ## Pending ⏳
 ### Blocking development
-- [ ] **Portfolio: 6 to 12 projects**, numbered by priority (client, industry, service, challenge, delivered, results with numbers, images, videos, client permission)
+- [ ] **Portfolio:** 8 case studies received in the profile, with results. Still needed per project: photos, videos, the challenge, what Meliel delivered, confirmation of industry and services, client permission
 - [x] **Meliel Google account** received by Jacob (2026-10-30). All external services and tools must be registered under this account. Credentials stay with Jacob: never put them in the repo, docs, or chat.
 - [ ] **Account setup (rest)**: domain (existing or preferred names), payment method for paid services
 - [ ] Email address(es) for inquiry notifications
@@ -25,16 +26,16 @@ Per Article 6.2, the timeline extends for client content delays.
 - [ ] 2 to 3 reference websites they like, 1 to 2 they dislike
 
 ### Content
-- [ ] Company story and founding year
+- [ ] Company story (how and why Meliel started) and founding year. The profile's "About Meliel" paragraph is on the About page
 - [ ] Homepage numbers (clients served, campaigns delivered, years in business, etc.)
-- [ ] Client logos: 14 received 2026-11-01 as one slide screenshot. Still needed: the original image files, each client's exact name, and confirmation that Meliel has permission to show them
+- [ ] Client logos: 14 names received (profile). Still needed: the original logo files and confirmation that each client agreed to be shown
 - [ ] Testimonials (quote, name, title, company)
-- [ ] Team members (optional): names, roles, photos, bios
-- [ ] Contact details: phone, email, WhatsApp, Telegram, address, map pin, office hours
+- [ ] Team: names and roles received (profile). Still needed: photos (with each person's agreement), short bios, and the Amharic spelling of each name
+- [ ] Contact details: phones, email and address received (profile). Still needed: WhatsApp number, Telegram username, map pin, office hours
 - [ ] Social media links
 - [ ] Inquiry form options: budget ranges (ETB) and timeline choices
-- [ ] Industry list for the portfolio filter (can derive from portfolio projects)
-- [ ] Privacy Policy details: legal entity name, address, data contact
+- [x] Industry list: the profile's 5 sectors
+- [ ] Privacy Policy details: legal name received (profile); the contact address and email are used for now. Still needed: confirmation of the registered address and data contact email, how long inquiries are kept, the policy date
 
 ## Decisions to confirm at kickoff
 - [x] Production database: Neon (decided by Jacob 2026-10-30)

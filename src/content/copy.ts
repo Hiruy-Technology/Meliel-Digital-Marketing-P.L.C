@@ -117,6 +117,18 @@ export const meaningShort =
 export const pathwaysStatement =
   "Through strategy, creative production, and integrated digital marketing, we create pathways for brands to move beyond where they are today and toward where they aspire to be.";
 
+// From the company profile (PDF, received 2026-11-04), verbatim.
+
+/** The profile's cover line. */
+export const tagline = "Strategy. Production. Conversion.";
+
+/** The profile's "About Meliel" paragraph. */
+export const aboutIntro =
+  "Meliel Digital Marketing P.L.C. is a digital marketing agency based in Addis Ababa, working with brands and institutions across a range of sectors.";
+
+/** Heading of the profile's sector list (the sectors themselves are in profile.ts). */
+export const sectorsTitle = "Sectors we have grown";
+
 /** Client headings end with a period ("Strategy & Planning."); display them without it. */
 export function headingText(title: string): string {
   return title.replace(/\.$/, "");

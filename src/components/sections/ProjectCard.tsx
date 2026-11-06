@@ -1,6 +1,7 @@
 import { Link } from "@/components/ui/Link";
 import { Icon } from "@/components/ui/Icon";
 import { MediaImage } from "@/components/ui/MediaImage";
+import { ProjectCover } from "./ProjectCover";
 import { Tag } from "@/components/ui/Tag";
 import { Value } from "@/components/ui/Value";
 import type { Project } from "@/lib/types";
@@ -20,12 +21,19 @@ export async function ProjectCard({
   return (
     <article className="group relative flex h-full flex-col">
       <div className="overflow-hidden rounded-sm">
-        <MediaImage
-          media={project.coverImage}
-          aspect="aspect-[4/3]"
-          sizes={sizes}
-          className="transition-transform duration-500 group-hover:scale-[1.02]"
-        />
+        {project.coverImage ? (
+          <MediaImage
+            media={project.coverImage}
+            aspect="aspect-[4/3]"
+            sizes={sizes}
+            className="transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+        ) : (
+          <ProjectCover
+            project={project}
+            className="aspect-[4/3] transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+        )}
       </div>
 
       <div className="flex flex-1 flex-col pt-5">

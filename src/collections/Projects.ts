@@ -107,8 +107,11 @@ export const Projects: CollectionConfig = {
               label: "Cover image",
               type: "upload",
               relationTo: "media",
-              required: true,
               filterOptions: isImage,
+              admin: {
+                description:
+                  "Optional. Without a photo, the site shows a branded cover with the client's name and first result.",
+              },
             },
             {
               name: "gallery",

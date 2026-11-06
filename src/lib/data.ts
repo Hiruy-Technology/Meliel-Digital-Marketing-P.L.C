@@ -23,6 +23,7 @@ import {
   teamMembers,
   testimonials,
 } from "@/content/seed";
+import { caseStudies, contact, sectors } from "@/content/profile";
 import { servicesAm } from "@/content/services-am";
 import type { Locale } from "@/i18n/config";
 import type {
@@ -137,10 +138,25 @@ function toService(doc: CmsService): Service | null {
 const seedService = (service: Service, locale: Locale): Service =>
   locale === "am" ? { ...service, ...servicesAm[service.slug] } : service;
 
-const placeholderProject = (project: Project, locale: Locale): Project => ({
-  ...project,
-  services: project.services.map((s) => seedService(s, locale)),
-});
+/** seed.ts projects, with the company profile's Amharic drafts on /am (client names stay as written). */
+function placeholderProject(project: Project, locale: Locale): Project {
+  const services = project.services.map((s) => seedService(s, locale));
+  const study = caseStudies.find((c) => c.slug === project.slug);
+  if (locale !== "am" || !study) return { ...project, services };
+  const sector = sectors.find((x) => x.slug === project.industry.slug);
+  return {
+    ...project,
+    services,
+    industry: sector
+      ? { ...project.industry, name: sector.nameAm }
+      : project.industry,
+    results: study.resultsAm,
+    resultHighlights: study.highlights.map(({ value, labelAm }) => ({
+      value,
+      label: labelAm,
+    })),
+  };
+}
 
 export const getServices = cache(async (locale: Locale): Promise<Service[]> => {
   const docs = await read(`services:${locale}`, async (payload) => {
@@ -202,11 +218,46 @@ function toVideo(
 }
 
 /** `null` when the project isn't ready in this language. */
-function toProject(doc: CmsProject, alts: Alts): Project | null {
+/**
+ * Linked industries and services, named in this language with no fallback. Payload fills in a
+ * project's linked documents with the English wording when the Amharic is missing, so the names
+ * come from these lists instead, and a project whose industry has no Amharic stays off /am.
+ */
+type Names = {
+  industries: Map<string, string>;
+  services: Map<string, Service>;
+};
+
+const linkedNames = cache(async (locale: Locale): Promise<Names> => {
+  const [industries, services] = await Promise.all([
+    read(`industries:${locale}`, async (payload) => {
+      const { docs } = await payload.find({
+        collection: "industries",
+        locale,
+        fallbackLocale: false,
+        pagination: false,
+        depth: 0,
+      });
+      return docs;
+    }),
+    getServices(locale),
+  ]);
+  return {
+    industries: new Map(
+      (industries ?? []).flatMap((doc) =>
+        doc.name ? [[String(doc.id), doc.name]] : [],
+      ),
+    ),
+    services: new Map(services.map((service) => [service.id, service])),
+  };
+});
+
+function toProject(doc: CmsProject, alts: Alts, names: Names): Project | null {
   const industry = doc.industry as CmsIndustry | number;
   const coverImage = toMedia(doc.coverImage, alts);
-  if (typeof industry === "number" || !industry.name) return null;
-  if (!doc.title || !doc.clientName || !doc.slug || !coverImage) return null;
+  if (typeof industry === "number") return null;
+  const industryName = names.industries.get(String(industry.id));
+  if (!industryName || !doc.title || !doc.clientName || !doc.slug) return null;
   return {
     id: String(doc.id),
     title: doc.title,
@@ -214,11 +265,11 @@ function toProject(doc: CmsProject, alts: Alts): Project | null {
     clientName: doc.clientName,
     industry: {
       id: String(industry.id),
-      name: industry.name,
+      name: industryName,
       slug: industry.slug ?? "",
     },
     services: doc.services
-      .map((s) => (typeof s === "number" ? null : toService(s)))
+      .map((s) => names.services.get(String(typeof s === "number" ? s : s.id)))
       .filter(isPresent),
     featured: Boolean(doc.featured),
     sortOrder: doc.sortOrder,
@@ -242,7 +293,7 @@ function toProject(doc: CmsProject, alts: Alts): Project | null {
 
 /** Published projects in this language, in the order Meliel set. */
 const published = cache(async (locale: Locale): Promise<Project[]> => {
-  const alts = await englishAlts();
+  const [alts, names] = await Promise.all([englishAlts(), linkedNames(locale)]);
   const docs = await read(`projects:${locale}`, async (payload) => {
     const { docs } = await payload.find({
       collection: "projects",
@@ -255,7 +306,7 @@ const published = cache(async (locale: Locale): Promise<Project[]> => {
       // The private notes never leave the admin.
       select: { aiNotes: false },
     });
-    return docs.map((doc) => toProject(doc as CmsProject, alts));
+    return docs.map((doc) => toProject(doc as CmsProject, alts, names));
   });
   return orPlaceholders(docs?.filter(isPresent) ?? null, () =>
     projects
@@ -326,8 +377,11 @@ export async function getIndustries(locale: Locale): Promise<Industry[]> {
   const found = new Map(
     (await published(locale)).map((p) => [p.industry.slug, p.industry]),
   );
-  const seedOrder = industries.filter((i) => found.has(i.slug));
-  return seedOrder.length ? seedOrder : [...found.values()];
+  // The sectors in the profile's order, with each project's own wording; any others after them.
+  const order = industries.map((i) => i.slug);
+  const rank = (slug: string) =>
+    order.includes(slug) ? order.indexOf(slug) : order.length;
+  return [...found.values()].sort((a, b) => rank(a.slug) - rank(b.slug));
 }
 
 // --- Testimonials, logos, team ---------------------------------------------
@@ -424,7 +478,10 @@ export const getTeamMembers = cache(
           sortOrder: doc.sortOrder,
         }));
     });
-    return orPlaceholders(docs, () => [...teamMembers].sort(bySortOrder));
+    // seed.ts has no Amharic spellings of the names, so the team stays off /am, as in the database.
+    return orPlaceholders(docs, () =>
+      locale === "am" ? [] : [...teamMembers].sort(bySortOrder),
+    );
   },
 );
 
@@ -459,7 +516,10 @@ export async function getSiteSettings(locale: Locale): Promise<SiteSettings> {
       doc?.telegramUsername,
       siteSettings.telegramUsername,
     ),
-    address: text(doc?.address, siteSettings.address),
+    address: text(
+      doc?.address,
+      locale === "am" ? contact.addressAm : siteSettings.address,
+    ),
     officeHours: text(doc?.officeHours, siteSettings.officeHours),
     mapEmbedUrl: doc?.mapEmbedUrl || null,
     socialLinks: list(

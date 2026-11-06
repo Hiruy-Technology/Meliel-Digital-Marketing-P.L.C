@@ -5,8 +5,8 @@ import { Value } from "@/components/ui/Value";
 import { pendingCopy } from "@/content/seed";
 import { getI18n } from "@/i18n";
 
-// Company story: still missing from the client, so these are placeholders from seed.ts.
-// Once it arrives, the text moves to copy.ts.
+// Company story. The profile's "About Meliel" paragraph opens it; how and why Meliel started is
+// still missing from the client, so the rest are placeholders from seed.ts until it arrives.
 export async function Story() {
   const { t } = await getI18n();
   return (
@@ -23,6 +23,7 @@ export async function Story() {
           </p>
         </Rise>
         <Rise className="space-y-5 text-lg text-ink-soft lg:col-span-8">
+          <p>{t.copy.aboutIntro}</p>
           {pendingCopy.companyStory.map((paragraph) => (
             <p key={paragraph}>
               <Value value={paragraph} />

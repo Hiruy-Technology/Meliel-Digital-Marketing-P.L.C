@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { ProcessLadder } from "@/components/sections/ProcessLadder";
+import { Sectors } from "@/components/sections/Sectors";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { ClientLogos } from "@/components/sections/home/ClientLogos";
 import { FeaturedWork } from "@/components/sections/home/FeaturedWork";
@@ -43,6 +44,7 @@ export default async function HomePage() {
       <Hero />
       <ClientLogos logos={logos} />
       <Stats stats={settings.homepageStats} />
+      <Sectors />
       <ServicesOverview services={services} />
       <FeaturedWork projects={featured} />
       <ProcessLadder />

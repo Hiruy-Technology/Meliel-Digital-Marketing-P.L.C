@@ -260,7 +260,10 @@ export interface Project {
         id?: string | null;
       }[]
     | null;
-  coverImage: number | Media;
+  /**
+   * Optional. Without a photo, the site shows a branded cover with the client's name and first result.
+   */
+  coverImage?: (number | null) | Media;
   gallery?: (number | Media)[] | null;
   videos?:
     | {

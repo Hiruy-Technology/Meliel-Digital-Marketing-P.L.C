@@ -28,6 +28,9 @@ const { services } = await import(
 const { servicesAm } = await import(
   pathToFileURL(`${root}src/content/services-am.ts`).href
 );
+const profile = await import(
+  pathToFileURL(`${root}src/content/profile.ts`).href
+);
 
 // Fine to stay in Latin letters: brand names used as labels.
 const LATIN_OK = new Set(["WhatsApp", "Telegram"]);
@@ -80,6 +83,27 @@ for (const service of services) {
   }
   service.includes.forEach((item, i) =>
     add(section, `${key}.includes.${i}`, item, draft?.includes[i]),
+  );
+}
+
+// The company profile: sectors, team roles and case-study results (client and personal names stay as written).
+const p = "company profile (data)";
+add(p, "contact.address", profile.contact.address, profile.contact.addressAm);
+for (const s of profile.sectors) add(p, `sector.${s.slug}`, s.name, s.nameAm);
+for (const m of profile.team) add(p, `team.${m.name}`, m.role, m.roleAm);
+for (const c of profile.caseStudies) {
+  c.highlights.forEach((h, i) =>
+    add(
+      p,
+      `${c.slug}.highlight.${i}`,
+      `${h.value} ${h.label}`,
+      `${h.value} ${h.labelAm}`,
+    ),
+  );
+  if (c.results.length !== c.resultsAm.length)
+    problems.push(`${c.slug}: results and resultsAm differ in length`);
+  c.results.forEach((line, i) =>
+    add(p, `${c.slug}.result.${i}`, line, c.resultsAm[i]),
   );
 }
 

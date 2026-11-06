@@ -8,6 +8,7 @@ import { VideoFacade } from "@/components/sections/work/VideoFacade";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/Icon";
 import { MediaImage } from "@/components/ui/MediaImage";
+import { ProjectCover } from "@/components/sections/ProjectCover";
 import { Rise } from "@/components/ui/Rise";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -174,13 +175,21 @@ export default async function ProjectPage({
             </ul>
           </div>
 
-          <MediaImage
-            media={project.coverImage}
-            aspect="aspect-video"
-            sizes="(min-width: 1280px) 1216px, 100vw"
-            preload
-            className="mt-10"
-          />
+          {project.coverImage ? (
+            <MediaImage
+              media={project.coverImage}
+              aspect="aspect-video"
+              sizes="(min-width: 1280px) 1216px, 100vw"
+              preload
+              className="mt-10"
+            />
+          ) : (
+            <ProjectCover
+              project={project}
+              size="large"
+              className="mt-10 aspect-video"
+            />
+          )}
         </Container>
       </section>
 

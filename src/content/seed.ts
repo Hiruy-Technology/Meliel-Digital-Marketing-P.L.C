@@ -1,6 +1,7 @@
 // SEED DATA: the single home of every placeholder on the site.
 //
-// - Real content from Meliel (the 5 services) is verbatim from docs/02-meliel-content.md.
+// - Real content from Meliel is verbatim: the 5 services from docs/02-meliel-content.md, and the
+//   company profile's contact details, sectors, team and case studies from ./profile.ts.
 // - Everything else is "[PLACEHOLDER: …]" until the client sends it (docs/04-open-items.md).
 //   Never replace a placeholder with invented clients, numbers, quotes, people or contact details.
 // - List every remaining placeholder with: pnpm placeholders
@@ -19,6 +20,13 @@ import type {
   TeamMember,
   Testimonial,
 } from "@/lib/types";
+import {
+  caseStudies,
+  contact,
+  sectors,
+  team,
+  type CaseStudy,
+} from "@/content/profile";
 
 function image(alt: string, width = 1600, height = 900): Media {
   return { url: null, alt, width, height };
@@ -94,19 +102,19 @@ export const services: Service[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// Industries (pending: will come from the client's portfolio projects)
+// Industries (real, from the company profile)
 // ---------------------------------------------------------------------------
 
-export const industries: Industry[] = [
-  { id: "ind-a", name: "[PLACEHOLDER: industry A]", slug: "industry-a" },
-  { id: "ind-b", name: "[PLACEHOLDER: industry B]", slug: "industry-b" },
-  { id: "ind-c", name: "[PLACEHOLDER: industry C]", slug: "industry-c" },
-  { id: "ind-d", name: "[PLACEHOLDER: industry D]", slug: "industry-d" },
-];
+// The sectors from Meliel's company profile (src/content/profile.ts).
+export const industries: Industry[] = sectors.map((s) => ({
+  id: `ind-${s.slug}`,
+  name: s.name,
+  slug: s.slug,
+}));
 
 // ---------------------------------------------------------------------------
-// Portfolio projects (pending: client is sending 6 to 12, numbered by priority)
-// The service/industry combinations below only exist to exercise the filters.
+// Portfolio projects: the 8 case studies from the company profile. Challenge, what Meliel
+// delivered, photos and videos are still to come (docs/07-content-request.md).
 // ---------------------------------------------------------------------------
 
 function service(slug: ServiceSlug): Service {
@@ -181,43 +189,32 @@ function placeholderProject(
   };
 }
 
+const caseStudy = (c: CaseStudy, i: number): Project => ({
+  id: `prj-${c.slug}`,
+  title: c.client,
+  slug: c.slug,
+  clientName: c.client,
+  industry: industry(c.sector),
+  services: c.services.map(service),
+  featured: c.featured,
+  sortOrder: i + 1,
+  status: "published",
+  // No photos yet: the site shows a branded cover (ProjectCover).
+  coverImage: null,
+  gallery: [],
+  videos: [],
+  challenge: [],
+  delivered: [],
+  results: c.results,
+  resultHighlights: c.highlights.map(({ value, label }) => ({ value, label })),
+  publishedAt: "2026-11-04T00:00:00.000Z",
+});
+
 export const projects: Project[] = [
-  placeholderProject(1, {
-    industry: "industry-a",
-    services: ["branding", "digital-marketing"],
-    featured: true,
-    videos: 2,
-  }),
-  placeholderProject(2, {
-    industry: "industry-b",
-    services: ["digital-marketing"],
-    featured: true,
-  }),
-  placeholderProject(3, {
-    industry: "industry-c",
-    services: ["websites", "branding"],
-    featured: true,
-    videos: 0,
-  }),
-  placeholderProject(4, {
-    industry: "industry-a",
-    services: ["event-production"],
-    featured: false,
-  }),
-  placeholderProject(5, {
-    industry: "industry-d",
-    services: ["market-analysis", "digital-marketing"],
-    featured: false,
-    videos: 0,
-  }),
-  placeholderProject(6, {
-    industry: "industry-b",
-    services: ["websites"],
-    featured: false,
-  }),
+  ...caseStudies.map(caseStudy),
   // A draft, to prove unpublished projects never appear on the site.
-  placeholderProject(7, {
-    industry: "industry-c",
+  placeholderProject(99, {
+    industry: "healthcare",
     services: ["branding"],
     featured: true,
     status: "draft",
@@ -245,14 +242,13 @@ export const clientLogos: ClientLogo[] = [1, 2, 3, 4, 5, 6].map((n) => ({
   sortOrder: n,
 }));
 
-// Optional section: shown only if the client sends team details.
-export const teamMembers: TeamMember[] = [1, 2, 3, 4].map((n) => ({
-  id: `team-${n}`,
-  name: `[PLACEHOLDER: team member ${n} name]`,
-  role: `[PLACEHOLDER: team member ${n} role]`,
-  photo: image(`[PLACEHOLDER: team member ${n} photo]`, 800, 1000),
-  bio: `[PLACEHOLDER: team member ${n} short bio]`,
-  sortOrder: n,
+// From the company profile. Photos and short bios are still to come.
+export const teamMembers: TeamMember[] = team.map((m, i) => ({
+  id: `team-${i + 1}`,
+  name: m.name,
+  role: m.role,
+  bio: "",
+  sortOrder: i + 1,
 }));
 
 // ---------------------------------------------------------------------------
@@ -260,11 +256,11 @@ export const teamMembers: TeamMember[] = [1, 2, 3, 4].map((n) => ({
 // ---------------------------------------------------------------------------
 
 export const siteSettings: SiteSettings = {
-  phones: ["[PLACEHOLDER: phone number]"],
-  email: "[PLACEHOLDER: email address]",
+  phones: contact.phones,
+  email: contact.email,
   whatsappNumber: "[PLACEHOLDER: WhatsApp number]",
   telegramUsername: "[PLACEHOLDER: Telegram username]",
-  address: "[PLACEHOLDER: office address, Addis Ababa]",
+  address: contact.address,
   officeHours: "[PLACEHOLDER: office hours]",
   mapEmbedUrl: null,
   socialLinks: [
@@ -318,9 +314,10 @@ export const pendingCopy = {
   ],
   foundingYear: "[PLACEHOLDER: founding year]",
   /** Privacy Policy details (docs/04-open-items.md). */
-  legalEntityName: "[PLACEHOLDER: legal entity name, e.g. as registered]",
-  legalAddress: "[PLACEHOLDER: registered address]",
-  dataContactEmail: "[PLACEHOLDER: privacy/data contact email]",
+  // From the company profile. Address and email are the contact details: to confirm for legal use.
+  legalEntityName: contact.legalName,
+  legalAddress: contact.address,
+  dataContactEmail: contact.email,
   retentionPeriod: "[PLACEHOLDER: how long inquiries are kept]",
   policyDate: "[PLACEHOLDER: date this policy takes effect]",
   /** Shown where the map goes until settings.mapEmbedUrl is set. */

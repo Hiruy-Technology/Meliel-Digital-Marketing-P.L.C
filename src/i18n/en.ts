@@ -17,6 +17,9 @@ export const en = {
     valueStatement: copy.valueStatement,
     meaningShort: copy.meaningShort,
     pathwaysStatement: copy.pathwaysStatement,
+    tagline: copy.tagline,
+    aboutIntro: copy.aboutIntro,
+    sectorsTitle: copy.sectorsTitle,
   },
 
   common: {

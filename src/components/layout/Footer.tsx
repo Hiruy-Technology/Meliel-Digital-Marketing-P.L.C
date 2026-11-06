@@ -73,7 +73,10 @@ export async function Footer() {
             tagline={t.common.digitalMarketing}
             className="h-10 text-xl"
           />
-          <p className="mt-6 max-w-sm text-navy-200">{t.copy.brandLine}</p>
+          <p className="mt-6 font-display font-semibold text-orange-500">
+            {t.copy.tagline}
+          </p>
+          <p className="mt-3 max-w-sm text-navy-200">{t.copy.brandLine}</p>
           <Button href={cta.href} className="mt-8">
             {cta.label}
           </Button>

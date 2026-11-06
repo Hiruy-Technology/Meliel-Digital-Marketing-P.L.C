@@ -62,7 +62,7 @@ export function projectLd(
   description: string | undefined,
 ) {
   if (!real(project.title) || !real(project.clientName)) return null;
-  const image = project.coverImage.url;
+  const image = project.coverImage?.url;
   return {
     "@context": "https://schema.org",
     "@type": "CreativeWork",

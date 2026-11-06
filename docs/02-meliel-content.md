@@ -105,3 +105,24 @@ Professional event photography, videography, and live coverage.
 ## Not yet provided (use placeholders)
 
 See `docs/04-open-items.md`: portfolio projects, client logos, testimonials, homepage numbers, team, contact details, social links, inquiry form budget and timeline options.
+
+---
+
+## From the company profile (PDF, received 2026-11-04)
+
+Used word for word through `src/content/profile.ts` and `src/content/copy.ts`. The PDF itself is in `docs/reference/` (not committed).
+
+- **Tagline:** Strategy. Production. Conversion.
+- **About Meliel:** Meliel Digital Marketing P.L.C. is a digital marketing agency based in Addis Ababa, working with brands and institutions across a range of sectors.
+- **Sectors we have grown:** Healthcare, Hospitality, Travel, Consultancy, Faith-based education
+- **Team:** Eyasu Mesfin (General Manager), Yeaymrokal Kebede (Production Manager), Kiya Habtamu (Creative and Digital Operations Manager), Dr. Yadeni Gedefa (Medical Lead and Digital Strategist); Cinematographers: Leul Merid, Abhem Welde; Creative and Graphics Designers: Bisrat Mebratu, Selome Tesfaye; Video Editors: Eleni Abera, Kaleab Abayneh
+- **Proven results:** TZNA General Hospital, Tuari Home Based Healthcare Service, Mael Medcontour Clinic, Dr. Nejat Dental Clinic, SoSIDa Gelateria & Restaurant, Ahaty Tour and Travel, Maraki Consultancy, Merahut (numbers and result lines in `src/content/profile.ts`)
+- **Our clients:** Mayfair Dermatology, Eastgate Import and Export, Dejochesh Ayzegu Media, Mado Real Estate, Betedokimas Event Planners, Ermiyas Mosaic Art (shown as "Private client")
+- **Contact:** Tel 0923 150 109 | 0936 976 251; amikalkebede@gmail.com; Summit Giorgis, Addis Ababa
+- **Legal:** Meliel Digital Marketing P.L.C., TIN 0106923390
+
+**Differences from the content above (the content above wins until Meliel confirms):**
+- The profile's Advanced Digital Marketing list has 6 items and leaves out "Social media management (SMM)", which the content above includes.
+- The profile writes "enquiries" (values); the site uses "inquiries" (American spelling).
+
+**In the profile but not on the site** (optional, for Meliel to decide): the Basic, Standard and Premium packages table, the production equipment list, the monthly report outline, and the "How is your marketing operating?" comparison.
