@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
       "./src/fonts/og/**",
     ],
   },
+  // Each build gets its own CMS data cache (src/lib/data.ts). Next.js keeps the cache between
+  // builds, so without this a new build could serve content cached by the previous one.
+  env: { CMS_CACHE_VERSION: String(Date.now()) },
   // Serve photos as AVIF (smallest) with WebP fallback: many visitors are on slow mobile data.
   images: {
     formats: ["image/avif", "image/webp"],

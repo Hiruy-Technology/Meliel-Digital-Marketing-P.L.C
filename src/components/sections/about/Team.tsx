@@ -6,6 +6,17 @@ import { Value } from "@/components/ui/Value";
 import type { TeamMember } from "@/lib/types";
 import { getI18n } from "@/i18n";
 
+/** "Dr. Yadeni Gedefa" becomes "YG": titles like "Dr." are skipped. */
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter((word) => !/\.$/.test(word))
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+}
+
 // Optional section: hidden entirely if the client doesn't send team details.
 export async function Team({ members }: { members: TeamMember[] }) {
   if (members.length === 0) return null;
@@ -23,12 +34,20 @@ export async function Team({ members }: { members: TeamMember[] }) {
         {members.map((member) => (
           <li key={member.id}>
             <Rise>
-              {member.photo && (
+              {member.photo ? (
                 <MediaImage
                   media={member.photo}
                   aspect="aspect-[4/5]"
                   sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                 />
+              ) : (
+                // Until a photo is added: the person's initials, in the brand colors.
+                <span
+                  aria-hidden
+                  className="flex size-16 items-center justify-center rounded-full bg-band font-display text-xl font-bold text-orange-500"
+                >
+                  {initials(member.name)}
+                </span>
               )}
               <h3 className="mt-4 font-display text-lg font-semibold">
                 <Value value={member.name} />

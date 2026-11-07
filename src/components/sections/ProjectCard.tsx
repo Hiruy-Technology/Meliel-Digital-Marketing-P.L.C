@@ -18,6 +18,10 @@ export async function ProjectCard({
 }) {
   const { t } = await getI18n();
   const highlight = project.resultHighlights[0];
+  // The branded cover already shows the client and the headline number, so the card doesn't repeat
+  // them; with a photo, the card carries them itself.
+  const branded = !project.coverImage;
+  const sameName = project.clientName === project.title;
   return (
     <article className="group relative flex h-full flex-col">
       <div className="overflow-hidden rounded-sm">
@@ -37,10 +41,12 @@ export async function ProjectCard({
       </div>
 
       <div className="flex flex-1 flex-col pt-5">
-        <p className="text-sm font-medium text-ink-muted">
-          <Value value={project.clientName} />
-        </p>
-        <h3 className="mt-2 font-display text-xl font-semibold">
+        {!sameName && (
+          <p className="mb-2 text-sm font-medium text-ink-muted">
+            <Value value={project.clientName} />
+          </p>
+        )}
+        <h3 className="font-display text-xl font-semibold">
           <Link
             href={`/work/${project.slug}`}
             className="rounded-sm group-hover:text-ink-soft after:absolute after:inset-0"
@@ -60,23 +66,27 @@ export async function ProjectCard({
           ))}
         </ul>
 
-        {highlight && (
-          // mt-auto pins the result to the bottom so cards in a row line up.
-          <div className="mt-auto pt-6">
-            <div className="flex items-end justify-between gap-4 border-t border-line pt-4">
+        {/* mt-auto pins this to the bottom so cards in a row line up. */}
+        <div className="mt-auto pt-6">
+          <div className="flex items-end justify-between gap-4 border-t border-line pt-4">
+            {highlight && !branded ? (
               <p className="text-sm text-ink-soft">
                 <span className="block font-display text-lg font-bold text-ink">
                   <Value value={highlight.value} />
                 </span>
                 <Value value={highlight.label} />
               </p>
-              <Icon
-                name="arrow-right"
-                className="size-5 text-ink-muted transition-transform group-hover:translate-x-1 group-hover:text-ink"
-              />
-            </div>
+            ) : (
+              <p className="font-display text-sm font-semibold text-ink">
+                {t.work.viewCase}
+              </p>
+            )}
+            <Icon
+              name="arrow-right"
+              className="size-5 text-ink-muted transition-transform group-hover:translate-x-1 group-hover:text-ink"
+            />
           </div>
-        )}
+        </div>
       </div>
     </article>
   );

@@ -6,6 +6,7 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { ClientLogos } from "@/components/sections/home/ClientLogos";
 import { FeaturedWork } from "@/components/sections/home/FeaturedWork";
 import { Hero } from "@/components/sections/home/Hero";
+import { ProofStrip } from "@/components/sections/home/ProofStrip";
 import { ServicesOverview } from "@/components/sections/home/ServicesOverview";
 import { Stats } from "@/components/sections/home/Stats";
 import {
@@ -42,6 +43,7 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
+      <ProofStrip projects={featured} />
       <ClientLogos logos={logos} />
       <Stats stats={settings.homepageStats} />
       <Sectors />

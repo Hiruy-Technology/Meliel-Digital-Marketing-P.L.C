@@ -8,7 +8,6 @@ import { VideoFacade } from "@/components/sections/work/VideoFacade";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/Icon";
 import { MediaImage } from "@/components/ui/MediaImage";
-import { ProjectCover } from "@/components/sections/ProjectCover";
 import { Rise } from "@/components/ui/Rise";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -45,7 +44,7 @@ export async function generateMetadata({
   if (!project) return {};
   return {
     title: project.title,
-    description: plainText(project.challenge),
+    description: describe(project),
     alternates: alternates(`/work/${project.slug}`, locale),
   };
 }
@@ -84,7 +83,20 @@ function plainText(text: RichText): string | undefined {
   const plain = Array.isArray(text)
     ? text[0]
     : convertLexicalToPlaintext({ data: text });
-  return plain?.trim().slice(0, 160) || undefined;
+  return plain?.replace(/\s+/g, " ").trim().slice(0, 160) || undefined;
+}
+
+/**
+ * The page's search description: the challenge, or the results when there's no challenge yet (as
+ * with the case studies from Meliel's profile), or else the headline numbers.
+ */
+function describe(project: Project): string | undefined {
+  return (
+    plainText(project.challenge) ??
+    plainText(project.results) ??
+    (project.resultHighlights.map((h) => `${h.value} ${h.label}`).join(", ") ||
+      undefined)
+  );
 }
 
 function ProjectLink({
@@ -128,7 +140,7 @@ export default async function ProjectPage({
   if (!project) notFound();
   const { previous, next } = await getAdjacentProjects(slug, locale);
 
-  const structured = projectLd(locale, project, plainText(project.challenge));
+  const structured = projectLd(locale, project, describe(project));
 
   return (
     <>
@@ -149,10 +161,12 @@ export default async function ProjectPage({
           </Link>
 
           <div className="mt-6 max-w-4xl">
-            <p className="font-medium text-ink-soft">
-              <Value value={project.clientName} />
-            </p>
-            <h1 className="mt-3 font-display text-display font-bold">
+            {project.clientName !== project.title && (
+              <p className="mb-3 font-medium text-ink-soft">
+                <Value value={project.clientName} />
+              </p>
+            )}
+            <h1 className="font-display text-display font-bold">
               <Value
                 value={project.title}
                 placeholderClassName="text-2xl! font-normal"
@@ -183,13 +197,7 @@ export default async function ProjectPage({
               preload
               className="mt-10"
             />
-          ) : (
-            <ProjectCover
-              project={project}
-              size="large"
-              className="mt-10 aspect-video"
-            />
-          )}
+          ) : null}
         </Container>
       </section>
 

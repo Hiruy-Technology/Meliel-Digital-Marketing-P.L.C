@@ -63,7 +63,7 @@ async function read<T>(key: string, query: (payload: Payload) => Promise<T>) {
   try {
     const cached = unstable_cache(
       async () => query(await getPayload({ config })),
-      [key],
+      [process.env.CMS_CACHE_VERSION ?? "dev", key],
       { tags: [CMS_TAG], revalidate: 3600 },
     );
     return await cached();
