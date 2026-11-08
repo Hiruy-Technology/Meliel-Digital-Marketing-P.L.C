@@ -1,0 +1,354 @@
+/*
+ * Meliel's brand for the Portfolio Manager (/admin), loaded by src/admin/Providers.tsx.
+ *
+ * Payload draws every screen from one gray scale (--color-base-0 to 1000) and flips it for dark
+ * mode on its own. Redefining that scale in the brand's navy turns the whole admin on-brand in both
+ * themes, so most of the work is this one block. The rest are targeted touches.
+ *
+ * These rules are outside Payload's `payload-default` layer on purpose, so they win over its rules
+ * without !important. Because of that, where a rule changes a state (hover, disabled), the other
+ * states are restated here too. `pnpm contrast` checks the text colors this scale produces.
+ */
+
+:root {
+  /* Navy-tinted scale, from white to the darkest brand navy. Payload's light theme uses it as is;
+     its dark theme reads it backwards (page = 900, cards = 850, text = 100). */
+  --color-base-0: #ffffff;
+  --color-base-50: #f6f8fc;
+  --color-base-100: #edf2f9;
+  --color-base-150: #e1e9f4;
+  --color-base-200: #d2deee;
+  --color-base-250: #c1d0e5;
+  --color-base-300: #aec0da;
+  --color-base-350: #9bb0ce;
+  --color-base-400: #879fc1;
+  --color-base-450: #748eb3;
+  --color-base-500: #6481a8;
+  --color-base-550: #55739b;
+  --color-base-600: #476795;
+  --color-base-650: #3d5c88;
+  --color-base-700: #33517b;
+  --color-base-750: #2a456b;
+  --color-base-800: #1b3354;
+  --color-base-850: #142946;
+  --color-base-900: #0f2038;
+  --color-base-950: #0a1729;
+  --color-base-1000: #050e1c;
+
+  /* Brand colors fixed in both themes. */
+  --meliel-orange: #faa91a;
+  --meliel-orange-hover: #feb853;
+  --meliel-navy: #1b3354;
+  --meliel-band: #1b3354;
+
+  /* Rounder corners than Payload's 3-4px, closer to the website's cards and fields. */
+  --style-radius-s: 6px;
+  --style-radius-m: 8px;
+  --style-radius-l: 12px;
+
+  /* Keyboard focus: navy on light backgrounds (orange would be too faint on white). */
+  --accessibility-outline: 2px solid var(--meliel-navy);
+  --accessibility-outline-offset: 2px;
+}
+
+html[data-theme="dark"] {
+  --meliel-band: #0a1729;
+  /* Orange reads clearly on dark navy, so dark mode focuses in the brand color. */
+  --accessibility-outline: 2px solid var(--meliel-orange);
+}
+
+/* Type: Inter for text (Payload's --font-body is set in Providers.tsx), Sora for headings. */
+h1,
+h2,
+h3,
+h4,
+.doc-header__title,
+.collection-list__header h1 {
+  font-family: var(--meliel-font-display, var(--font-body));
+  letter-spacing: -0.01em;
+}
+
+/* Payload's field help text is a light gray that fails contrast (about 2.8:1 on white). */
+.field-description {
+  color: var(--theme-elevation-600);
+}
+
+/* --- Buttons --------------------------------------------------------------------------------- */
+
+/* The main action in the brand orange with navy text, as on the website (6.9:1). */
+.btn--style-primary {
+  --color: var(--meliel-navy);
+  --bg-color: var(--meliel-orange);
+  --hover-bg: var(--meliel-orange-hover);
+  --hover-color: var(--meliel-navy);
+  font-weight: 600;
+}
+.btn--style-primary.btn--disabled {
+  --bg-color: var(--theme-elevation-150);
+  --color: var(--theme-elevation-600);
+  --hover-bg: var(--bg-color);
+  --hover-color: var(--color);
+}
+
+/* --- Sign-in screens (login, first user, forgot and reset password) -------------------------- */
+
+/* Phones and tablets: the form centered, on a soft brand background. */
+.template-minimal {
+  background:
+    radial-gradient(
+      ellipse at top,
+      color-mix(in srgb, var(--meliel-orange) 10%, transparent),
+      transparent 60%
+    ),
+    var(--theme-bg);
+}
+
+.template-minimal__wrap {
+  background: var(--theme-elevation-0);
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-l);
+  box-shadow: 0 12px 32px -16px rgb(15 32 56 / 0.25);
+  padding: calc(var(--base) * 1.6);
+}
+html[data-theme="dark"] .template-minimal__wrap {
+  background: var(--theme-elevation-50);
+  box-shadow: none;
+}
+
+.login__brand {
+  justify-content: flex-start;
+  margin-bottom: calc(var(--base) * 1.2);
+}
+
+/* Desktop: a navy brand panel on the left, the form on the right. The panel is decoration only
+   (background images), so screen readers go straight to the form. */
+@media (min-width: 1024px) {
+  .template-minimal {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: center;
+    padding: 0;
+    min-height: 100vh;
+    background: var(--theme-bg);
+  }
+  .template-minimal::before {
+    content: "";
+    align-self: stretch;
+    min-height: 100vh;
+    background-color: var(--meliel-band);
+    background-image:
+      url("/brand/logo-white.svg"), url("/brand/ladder.svg"),
+      radial-gradient(
+        ellipse at 80% 100%,
+        rgb(255 255 255 / 0.07),
+        transparent 60%
+      );
+    background-repeat: no-repeat;
+    background-size:
+      132px auto,
+      auto 46%,
+      100% 100%;
+    background-position:
+      56px 56px,
+      right 72px bottom 72px,
+      center;
+  }
+  .template-minimal__wrap {
+    justify-self: center;
+    margin: 60px 48px;
+  }
+}
+
+/* The intro and footer around the login form (src/admin/LoginIntro.tsx, LoginFooter.tsx). */
+.meliel-login-intro {
+  margin-bottom: calc(var(--base) * 1.2);
+}
+.meliel-login-intro__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-600);
+}
+.meliel-login-intro__eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 3px;
+  border-radius: 1px;
+  background: var(--meliel-orange);
+}
+.meliel-login-intro__title {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 700;
+  color: var(--theme-elevation-1000);
+}
+.meliel-login-intro__text {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--theme-elevation-700);
+}
+
+.meliel-login-footer {
+  margin-top: calc(var(--base) * 1.2);
+  padding-top: calc(var(--base) * 0.8);
+  border-top: 1px solid var(--theme-elevation-100);
+  font-size: 13px;
+}
+.meliel-login-footer a {
+  color: var(--theme-elevation-700);
+  text-decoration: none;
+}
+.meliel-login-footer a:hover,
+.meliel-login-footer a:focus-visible {
+  color: var(--theme-elevation-1000);
+  text-decoration: underline;
+}
+
+/* --- Logo and nav icon (src/admin/Logo.tsx, Icon.tsx) ---------------------------------------- */
+
+.meliel-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--theme-elevation-1000);
+}
+.meliel-logo__mark {
+  height: 40px;
+  width: auto;
+}
+.meliel-logo__name {
+  display: flex;
+  flex-direction: column;
+  padding-left: 12px;
+  border-left: 1px solid var(--theme-elevation-200);
+  line-height: 1.1;
+}
+.meliel-logo__name strong {
+  font-family: var(--meliel-font-display, var(--font-body));
+  font-size: 19px;
+  font-weight: 700;
+}
+.meliel-logo__name span {
+  margin-top: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-600);
+}
+.meliel-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Navigation ------------------------------------------------------------------------------ */
+
+.nav {
+  background: var(--theme-elevation-50);
+  border-right-color: var(--theme-elevation-150);
+}
+
+/* Group headings as small labels, so the collections stand out. */
+.nav-group__toggle {
+  color: var(--theme-elevation-600);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.nav-group__toggle:hover,
+.nav-group__toggle:focus-visible {
+  color: var(--theme-elevation-1000);
+}
+
+.nav__link {
+  color: var(--theme-elevation-800);
+  border-radius: var(--style-radius-s);
+}
+.nav a.nav__link:hover,
+.nav a.nav__link:focus-visible {
+  color: var(--theme-elevation-1000);
+}
+/* The page you're on: an orange bar instead of Payload's thin gray line. */
+.nav__link-indicator {
+  width: 3px;
+  height: 18px;
+  background: var(--meliel-orange);
+}
+
+/* "View website" above the collections (src/admin/ViewSiteLink.tsx). */
+.meliel-view-site {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: calc(var(--base) * 1.2);
+  padding: 10px 12px;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+  background: var(--theme-elevation-0);
+  color: var(--theme-elevation-800);
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.15s;
+}
+.meliel-view-site:hover,
+.meliel-view-site:focus-visible {
+  border-color: var(--meliel-orange);
+  color: var(--theme-elevation-1000);
+}
+.meliel-view-site svg {
+  flex-shrink: 0;
+}
+
+/* --- Header ---------------------------------------------------------------------------------- */
+
+/* The content-language switcher decides which language is being edited, so it reads as a clear
+   pill rather than faint gray text. */
+.localizer-button {
+  padding-block: 4px;
+  padding-inline: 12px 6px;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: 999px;
+  background: var(--theme-elevation-50);
+}
+.localizer-button__label {
+  color: var(--theme-elevation-600);
+}
+@media (max-width: 768px) {
+  .localizer-button {
+    padding-inline: 8px 4px;
+  }
+}
+
+/* On phones, Payload's full-width nav header pokes out past the screen edge (about 33px), which
+   lets the whole page slide sideways. Clip, not hidden, so sticky headers keep working. */
+body {
+  overflow-x: clip;
+}
+
+/* Text for screen readers only. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meliel-view-site {
+    transition: none;
+  }
+}

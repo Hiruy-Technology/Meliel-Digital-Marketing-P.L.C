@@ -183,6 +183,73 @@ for (const [fg, bg, use] of forbidden) {
   );
 }
 
+// The Portfolio Manager (/admin). Payload draws it from one scale, --color-base-0 to 1000, which
+// src/admin/admin.css sets to the brand navy. Payload's light theme uses the scale as is; its dark
+// theme reads it backwards, by this map (from Payload's colors.scss).
+const adminCss = readFileSync(
+  new URL("../src/admin/admin.css", import.meta.url),
+  "utf8",
+);
+const base = Object.fromEntries(
+  [...adminCss.matchAll(/--color-base-(\d+):\s*(#[0-9a-fA-F]{6})\s*;/g)].map(
+    (m) => [m[1], m[2].toLowerCase()],
+  ),
+);
+const darkStep = {
+  0: 900,
+  50: 850,
+  100: 800,
+  150: 750,
+  200: 700,
+  250: 650,
+  300: 600,
+  350: 550,
+  400: 450,
+  450: 400,
+  500: 500,
+  550: 350,
+  600: 300,
+  650: 250,
+  700: 200,
+  750: 150,
+  800: 100,
+  850: 50,
+  900: 0,
+  950: 0,
+  1000: 0,
+};
+const brand = { orange: "#faa91a", navy: "#1b3354" };
+// [foreground, background, minimum, use]; numbers are Payload elevations, words are brand colors.
+const adminPairs = [
+  [800, 0, TEXT, "admin body text"],
+  [800, 50, TEXT, "admin text on cards and the nav"],
+  [1000, 0, TEXT, "admin headings"],
+  [700, 50, TEXT, "sign-in intro text"],
+  [600, 0, TEXT, "field help text, nav group labels"],
+  [600, 50, TEXT, "help text and the language label on cards"],
+  ["navy", "orange", TEXT, "primary button"],
+];
+const adminFocus = { light: ["navy", 0], dark: ["orange", 0] };
+for (const theme of ["light", "dark"]) {
+  console.log(`\nPortfolio Manager, ${theme} theme\n`);
+  const hex = (c) =>
+    typeof c === "string"
+      ? brand[c]
+      : base[theme === "light" ? c : darkStep[c]];
+  const label = (c) => (typeof c === "string" ? c : `elevation-${c}`);
+  for (const [fg, bg, min, use] of [
+    ...adminPairs,
+    [...adminFocus[theme], UI, "keyboard focus ring"],
+  ]) {
+    const r = ratio(hex(fg), hex(bg));
+    const ok = r >= min;
+    if (!ok) failures++;
+    console.log(
+      `${ok ? "PASS" : "FAIL"}  ${r.toFixed(2).padStart(5)}:1  (need ${min.toFixed(1)})  ${label(fg)} on ${label(bg)}  ${use}`,
+    );
+  }
+}
+
 console.log(
   failures ? `\n${failures} pair(s) fail.` : "\nAll required pairs pass.",
 );

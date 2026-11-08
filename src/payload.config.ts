@@ -32,7 +32,19 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
-    meta: { titleSuffix: " | Meliel Portfolio Manager" },
+    meta: {
+      titleSuffix: " | Meliel Portfolio Manager",
+      icons: [{ rel: "icon", type: "image/svg+xml", url: "/icon.svg" }],
+    },
+    // Meliel's brand on Payload's own screens (src/admin/). Paths are relative to src/; run
+    // `pnpm generate:importmap` after changing them.
+    components: {
+      providers: ["/admin/Providers"],
+      graphics: { Logo: "/admin/Logo", Icon: "/admin/Icon" },
+      beforeLogin: ["/admin/LoginIntro"],
+      afterLogin: ["/admin/LoginFooter"],
+      beforeNavLinks: ["/admin/ViewSiteLink"],
+    },
   },
   collections: [
     Inquiries,
