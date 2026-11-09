@@ -12,7 +12,8 @@ export const ClientLogos: CollectionConfig = {
     group: "Site content",
     useAsTitle: "name",
     defaultColumns: ["name", "sortOrder"],
-    description: "Only show clients who agreed to appear on the website.",
+    description:
+      "The client logos strip on the home page. Only show clients who agreed to appear on the website.",
   },
   defaultSort: "sortOrder",
   hooks: refreshHooks,
@@ -44,6 +45,7 @@ export const ClientLogos: CollectionConfig = {
     },
     {
       name: "sortOrder",
+      label: "Sort order",
       type: "number",
       required: true,
       defaultValue: 0,

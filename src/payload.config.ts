@@ -44,6 +44,7 @@ export default buildConfig({
       beforeLogin: ["/admin/LoginIntro"],
       afterLogin: ["/admin/LoginFooter"],
       beforeNavLinks: ["/admin/ViewSiteLink"],
+      beforeDashboard: ["/admin/Dashboard"],
     },
   },
   collections: [

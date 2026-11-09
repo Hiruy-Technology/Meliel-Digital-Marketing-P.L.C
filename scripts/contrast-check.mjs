@@ -218,24 +218,52 @@ const darkStep = {
   950: 0,
   1000: 0,
 };
-const brand = { orange: "#faa91a", navy: "#1b3354" };
-// [foreground, background, minimum, use]; numbers are Payload elevations, words are brand colors.
+// Fixed colors from admin.css. "band" (the dashboard's navy banner) is darker in dark mode.
+const brand = {
+  orange: "#faa91a",
+  navy: "#1b3354",
+  white: "#ffffff",
+  ice: "#99c3de",
+  "band-text": "#d5e2f5",
+  "good-text": "#1c6b3f",
+  "good-bg": "#e3f4ea",
+  "bad-text": "#a3261b",
+  "bad-bg": "#fbe5e3",
+  "warn-text": "#8e4d0e",
+  "warn-bg": "#fff0de",
+  "info-text": "#233f65",
+  "info-bg": "#e4eefc",
+};
+const band = { light: "#1b3354", dark: "#0a1729" };
+// [foreground, background, minimum, use]; numbers are Payload elevations, words are fixed colors.
 const adminPairs = [
   [800, 0, TEXT, "admin body text"],
   [800, 50, TEXT, "admin text on cards and the nav"],
   [1000, 0, TEXT, "admin headings"],
-  [700, 50, TEXT, "sign-in intro text"],
-  [600, 0, TEXT, "field help text, nav group labels"],
-  [600, 50, TEXT, "help text and the language label on cards"],
+  [700, 50, TEXT, "sign-in intro text, panel links"],
+  [600, 0, TEXT, "field help text, nav group labels, table headings"],
+  [600, 50, TEXT, "help text and stat labels on cards"],
+  [1000, 50, TEXT, "dashboard numbers"],
+  [700, 100, TEXT, "grey pill (email not set up, English)"],
+  [600, 0, TEXT, "rich text placeholder"],
   ["navy", "orange", TEXT, "primary button"],
+  ["white", "band", TEXT, "dashboard banner heading"],
+  ["band-text", "band", TEXT, "dashboard banner text"],
+  ["ice", "band", TEXT, "dashboard banner label"],
+  ["good-text", "good-bg", TEXT, "green pill (published, sent)"],
+  ["bad-text", "bad-bg", TEXT, "red pill (failed)"],
+  ["warn-text", "warn-bg", TEXT, "orange pill (draft, quote)"],
+  ["info-text", "info-bg", TEXT, "blue pill (general, Amharic)"],
 ];
 const adminFocus = { light: ["navy", 0], dark: ["orange", 0] };
 for (const theme of ["light", "dark"]) {
   console.log(`\nPortfolio Manager, ${theme} theme\n`);
   const hex = (c) =>
-    typeof c === "string"
-      ? brand[c]
-      : base[theme === "light" ? c : darkStep[c]];
+    c === "band"
+      ? band[theme]
+      : typeof c === "string"
+        ? brand[c]
+        : base[theme === "light" ? c : darkStep[c]];
   const label = (c) => (typeof c === "string" ? c : `elevation-${c}`);
   for (const [fg, bg, min, use] of [
     ...adminPairs,

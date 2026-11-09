@@ -9,6 +9,7 @@ export const TeamMembers: CollectionConfig = {
   slug: "team-members",
   labels: { singular: "Team member", plural: "Team" },
   admin: {
+    description: "The team section on the About page.",
     group: "Site content",
     useAsTitle: "name",
     defaultColumns: ["name", "role", "sortOrder"],
@@ -43,6 +44,7 @@ export const TeamMembers: CollectionConfig = {
     },
     {
       name: "sortOrder",
+      label: "Sort order",
       type: "number",
       required: true,
       defaultValue: 0,

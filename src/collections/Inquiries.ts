@@ -7,9 +7,18 @@ export const Inquiries: CollectionConfig = {
   slug: "inquiries",
   labels: { singular: "Inquiry", plural: "Inquiries" },
   admin: {
+    description:
+      "Every message sent through the website's contact and quote forms. Read-only: they're kept exactly as sent.",
     group: "Inbox",
     useAsTitle: "name",
-    defaultColumns: ["name", "type", "email", "locale", "createdAt"],
+    defaultColumns: [
+      "name",
+      "type",
+      "email",
+      "locale",
+      "emailStatus",
+      "createdAt",
+    ],
     listSearchableFields: ["name", "email", "company"],
   },
   defaultSort: "-createdAt",
@@ -28,6 +37,7 @@ export const Inquiries: CollectionConfig = {
         { label: "General inquiry", value: "general" },
         { label: "Quote request", value: "quote" },
       ],
+      admin: { components: { Cell: "/admin/cells#InquiryTypeCell" } },
     },
     {
       name: "locale",
@@ -39,7 +49,10 @@ export const Inquiries: CollectionConfig = {
         { label: "English", value: "en" },
         { label: "Amharic", value: "am" },
       ],
-      admin: { description: "The language the visitor used." },
+      admin: {
+        description: "The language the visitor used.",
+        components: { Cell: "/admin/cells#LanguageCell" },
+      },
     },
     { name: "name", type: "text", required: true },
     { name: "company", type: "text" },
@@ -70,7 +83,10 @@ export const Inquiries: CollectionConfig = {
         { label: "Failed (the inquiry is still saved)", value: "failed" },
         { label: "Email not set up", value: "not-configured" },
       ],
-      admin: { position: "sidebar" },
+      admin: {
+        position: "sidebar",
+        components: { Cell: "/admin/cells#EmailStatusCell" },
+      },
     },
   ],
 };

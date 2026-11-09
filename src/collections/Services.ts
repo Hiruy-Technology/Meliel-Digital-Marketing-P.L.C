@@ -9,6 +9,7 @@ import { adminOnly, signedIn } from "./access";
 export const Services: CollectionConfig = {
   slug: "services",
   admin: {
+    description: "The five services on the website, in both languages.",
     group: "Portfolio",
     useAsTitle: "name",
     defaultColumns: ["name", "slug", "sortOrder"],
@@ -79,6 +80,7 @@ export const Services: CollectionConfig = {
     },
     {
       name: "sortOrder",
+      label: "Sort order",
       type: "number",
       required: true,
       defaultValue: 0,

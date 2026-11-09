@@ -20,6 +20,8 @@ const videoLink: TextFieldSingleValidation = (value, { siblingData }) => {
 export const Projects: CollectionConfig = {
   slug: "projects",
   admin: {
+    description:
+      "The case studies on the Work page. Only published projects appear on the website.",
     group: "Portfolio",
     useAsTitle: "title",
     defaultColumns: ["title", "clientName", "status", "featured", "sortOrder"],
@@ -183,6 +185,7 @@ export const Projects: CollectionConfig = {
       admin: {
         position: "sidebar",
         description: "Only published projects appear on the website.",
+        components: { Cell: "/admin/cells#ProjectStatusCell" },
       },
     },
     {
@@ -204,10 +207,15 @@ export const Projects: CollectionConfig = {
       name: "featured",
       type: "checkbox",
       defaultValue: false,
-      admin: { position: "sidebar", description: "Show on the home page." },
+      admin: {
+        position: "sidebar",
+        description: "Show on the home page.",
+        components: { Cell: "/admin/cells#YesNoCell" },
+      },
     },
     {
       name: "sortOrder",
+      label: "Sort order",
       type: "number",
       required: true,
       defaultValue: 0,
@@ -215,6 +223,7 @@ export const Projects: CollectionConfig = {
     },
     {
       name: "publishedAt",
+      label: "Published on",
       type: "date",
       admin: {
         position: "sidebar",

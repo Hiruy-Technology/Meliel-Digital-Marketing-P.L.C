@@ -13,6 +13,8 @@ const adminOrSelf: Access = ({ req }) => {
 export const Users: CollectionConfig = {
   slug: "users",
   admin: {
+    description:
+      "People who can sign in here. Admins manage everything; editors manage content.",
     group: "Settings",
     useAsTitle: "email",
     defaultColumns: ["email", "role", "updatedAt"],

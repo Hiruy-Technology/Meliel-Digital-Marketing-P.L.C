@@ -8,6 +8,7 @@ export const Industries: CollectionConfig = {
   slug: "industries",
   labels: { singular: "Industry", plural: "Industries" },
   admin: {
+    description: "The sectors used to filter the Work page.",
     group: "Portfolio",
     useAsTitle: "name",
     defaultColumns: ["name", "slug"],

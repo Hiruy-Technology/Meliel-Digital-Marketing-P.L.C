@@ -7,6 +7,7 @@ import { isImage } from "./Media";
 export const Testimonials: CollectionConfig = {
   slug: "testimonials",
   admin: {
+    description: "Client quotes. Featured ones appear on the home page.",
     group: "Site content",
     useAsTitle: "name",
     defaultColumns: ["name", "company", "featured"],
@@ -39,7 +40,11 @@ export const Testimonials: CollectionConfig = {
       name: "featured",
       type: "checkbox",
       defaultValue: false,
-      admin: { position: "sidebar", description: "Show on the home page." },
+      admin: {
+        position: "sidebar",
+        description: "Show on the home page.",
+        components: { Cell: "/admin/cells#YesNoCell" },
+      },
     },
   ],
 };

@@ -329,7 +329,9 @@ html[data-theme="dark"] .template-minimal__wrap {
 }
 
 /* On phones, Payload's full-width nav header pokes out past the screen edge (about 33px), which
-   lets the whole page slide sideways. Clip, not hidden, so sticky headers keep working. */
+   lets the whole page slide sideways. Clipped at the root, because that header is positioned
+   against it; clip rather than hidden, so sticky headers keep working. */
+html,
 body {
   overflow-x: clip;
 }
@@ -347,8 +349,397 @@ body {
   border: 0;
 }
 
+/* --- Dashboard (src/admin/Dashboard.tsx) ----------------------------------------------------- */
+
+.meliel-dash {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--base) * 1.2);
+  margin-bottom: calc(var(--base) * 2);
+}
+
+.meliel-dash__hello {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--base);
+  padding: calc(var(--base) * 1.4);
+  border-radius: var(--style-radius-l);
+  background-color: var(--meliel-band);
+  background-image: radial-gradient(
+    ellipse at 100% 0%,
+    rgb(255 255 255 / 0.09),
+    transparent 65%
+  );
+  color: #ffffff;
+}
+.meliel-dash__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #99c3de;
+}
+.meliel-dash__eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 3px;
+  border-radius: 1px;
+  background: var(--meliel-orange);
+}
+.meliel-dash__title {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 700;
+  color: #ffffff;
+}
+.meliel-dash__user {
+  margin: 6px 0 0;
+  color: #d5e2f5;
+}
+.meliel-dash__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.meliel-dash__action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgb(255 255 255 / 0.35);
+  border-radius: var(--style-radius-m);
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+.meliel-dash__action:hover {
+  background: rgb(255 255 255 / 0.1);
+  border-color: #ffffff;
+}
+.meliel-dash__action--primary {
+  border-color: var(--meliel-orange);
+  background: var(--meliel-orange);
+  color: var(--meliel-navy);
+}
+.meliel-dash__action--primary:hover {
+  border-color: var(--meliel-orange-hover);
+  background: var(--meliel-orange-hover);
+}
+.meliel-dash__hello a:focus-visible {
+  outline: 2px solid var(--meliel-orange);
+  outline-offset: 2px;
+}
+
+.meliel-dash__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.meliel-dash__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+  padding: 16px 18px;
+  border: 1px solid var(--theme-elevation-150);
+  border-left: 3px solid var(--meliel-orange);
+  border-radius: var(--style-radius-m);
+  background: var(--theme-elevation-0);
+  color: var(--theme-elevation-800);
+  text-decoration: none;
+  transition: box-shadow 0.15s;
+}
+.meliel-dash__stat:hover {
+  box-shadow: 0 6px 16px -10px rgb(15 32 56 / 0.35);
+}
+.meliel-dash__stat--alert {
+  border-left-color: #d64534;
+}
+.meliel-dash__stat-value {
+  font-family: var(--meliel-font-display, var(--font-body));
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--theme-elevation-1000);
+}
+.meliel-dash__stat-label {
+  color: var(--theme-elevation-600);
+}
+
+.meliel-dash__panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px;
+}
+.meliel-dash__panel {
+  padding: 18px 20px;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-l);
+  background: var(--theme-elevation-0);
+}
+html[data-theme="dark"] .meliel-dash__stat,
+html[data-theme="dark"] .meliel-dash__panel {
+  background: var(--theme-elevation-50);
+}
+.meliel-dash__panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.meliel-dash__panel-head h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+.meliel-dash__panel-head a {
+  color: var(--theme-elevation-700);
+  font-weight: 600;
+}
+.meliel-dash__empty,
+.meliel-dash__note {
+  margin: 0;
+  color: var(--theme-elevation-600);
+}
+.meliel-dash__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.meliel-dash__list li + li {
+  border-top: 1px solid var(--theme-elevation-100);
+}
+.meliel-dash__list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 6px;
+  border-radius: var(--style-radius-s);
+  color: var(--theme-elevation-800);
+  text-decoration: none;
+}
+.meliel-dash__list a:hover {
+  background: var(--theme-elevation-50);
+}
+html[data-theme="dark"] .meliel-dash__list a:hover {
+  background: var(--theme-elevation-100);
+}
+.meliel-dash__list-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.meliel-dash__list-main strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.meliel-dash__list-main span {
+  color: var(--theme-elevation-600);
+  font-size: 12px;
+}
+.meliel-dash__checklist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.meliel-dash__checklist li {
+  padding: 4px 10px;
+  border: 1px dashed var(--theme-elevation-300);
+  border-radius: 999px;
+  color: var(--theme-elevation-800);
+  font-size: 12px;
+}
+
+@media (max-width: 1024px) {
+  .meliel-dash__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 768px) {
+  .meliel-dash__hello {
+    padding: var(--base);
+  }
+  .meliel-dash__title,
+  .meliel-dash__stat-value {
+    font-size: 24px;
+  }
+  .meliel-dash__panels {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* The collection cards under the panel. */
+.collections__label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-600);
+}
+.collections__card-list .card {
+  min-height: 64px;
+  background: var(--theme-elevation-0);
+  border-color: var(--theme-elevation-150);
+}
+.collections__card-list .card--has-onclick:hover {
+  background: var(--theme-elevation-0);
+  border-color: var(--meliel-orange);
+  box-shadow: 0 6px 16px -10px rgb(15 32 56 / 0.35);
+}
+html[data-theme="dark"] .collections__card-list .card {
+  background: var(--theme-elevation-50);
+}
+html[data-theme="dark"] .collections__card-list .card--has-onclick:hover {
+  background: var(--theme-elevation-100);
+}
+.card__title {
+  font-size: 14px;
+}
+
+/* --- Status pills (src/admin/cells.tsx, and the dashboard) ----------------------------------- */
+
+.meliel-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+}
+.meliel-pill::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+/* Fixed colors in both themes, checked by `pnpm contrast`. */
+.meliel-pill--good {
+  background: #e3f4ea;
+  color: #1c6b3f;
+}
+.meliel-pill--bad {
+  background: #fbe5e3;
+  color: #a3261b;
+}
+.meliel-pill--warn {
+  background: #fff0de;
+  color: #8e4d0e;
+}
+.meliel-pill--info {
+  background: #e4eefc;
+  color: #233f65;
+}
+.meliel-pill--muted {
+  background: var(--theme-elevation-100);
+  color: var(--theme-elevation-700);
+}
+
+/* --- List views ------------------------------------------------------------------------------ */
+
+/* Column headings: Payload's light gray fails contrast. */
+.table thead {
+  color: var(--theme-elevation-600);
+}
+.table thead th {
+  font-weight: 600;
+}
+.table tbody tr {
+  transition: background-color 0.1s;
+}
+.table tbody tr:hover {
+  background: color-mix(in srgb, var(--meliel-orange) 7%, transparent);
+}
+
+/* --- Edit screens ---------------------------------------------------------------------------- */
+
+/* Tabs: Payload fades the inactive ones to half opacity, which fails contrast (2.9:1). They get a
+   readable muted color instead, and the active tab is underlined in orange. */
+.tabs-field__tab-button {
+  opacity: 1;
+  color: var(--theme-elevation-600);
+}
+.tabs-field__tab-button:hover,
+.tabs-field__tab-button--active {
+  color: var(--theme-elevation-1000);
+}
+.tabs-field__tab-button:after {
+  background: var(--meliel-orange);
+}
+.tabs-field__tab-button--active:after {
+  height: 3px !important;
+}
+
+/* "Add row" under lists such as result highlights: Payload's light gray fails contrast (2.7:1). */
+.array-field__add-row.btn {
+  --btn-color: var(--theme-elevation-700);
+}
+.array-field__add-row.btn:hover:not(:disabled) {
+  --btn-color: var(--theme-elevation-1000);
+}
+.array-field__add-row.btn:disabled {
+  --btn-color: var(--theme-elevation-400);
+}
+
+/* Array rows (result highlights, videos, stats) and groups with rounder corners. */
+.collapsible {
+  border-radius: var(--style-radius-m);
+}
+.collapsible__toggle-wrap {
+  border-top-left-radius: var(--style-radius-m);
+  border-top-right-radius: var(--style-radius-m);
+}
+
+/* Rich text: one bordered box from the toolbar to the text, so editors see where to type, with the
+   placeholder in the body font rather than Payload's serif. */
+.rich-text-lexical .fixed-toolbar {
+  border-color: var(--theme-elevation-150);
+  border-radius: var(--style-radius-m) var(--style-radius-m) 0 0;
+}
+.rich-text-lexical .fixed-toolbar + .editor-container {
+  border: 1px solid var(--theme-elevation-150);
+  border-top: 0;
+  border-radius: 0 0 var(--style-radius-m) var(--style-radius-m);
+  background: var(--theme-input-bg);
+  padding-inline: 12px;
+}
+.LexicalEditorTheme__placeholder {
+  font-family: var(--font-body);
+  color: var(--theme-elevation-600);
+}
+
+/* The sidebar (status, industry, featured and so on) on a soft panel, apart from the main fields. */
+.document-fields__sidebar-wrap {
+  background: var(--theme-elevation-50);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .meliel-view-site {
+  .meliel-view-site,
+  .meliel-dash__action,
+  .meliel-dash__stat,
+  .table tbody tr {
     transition: none;
   }
 }

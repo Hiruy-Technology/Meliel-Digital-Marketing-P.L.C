@@ -138,6 +138,8 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Every message sent through the website's contact and quote forms. Read-only: they're kept exactly as sent.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "inquiries".
  */
@@ -162,6 +164,8 @@ export interface Inquiry {
   createdAt: string;
 }
 /**
+ * The five services on the website, in both languages.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "services".
  */
@@ -194,6 +198,8 @@ export interface Service {
   createdAt: string;
 }
 /**
+ * The case studies on the Work page. Only published projects appear on the website.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".
  */
@@ -301,6 +307,8 @@ export interface Project {
   createdAt: string;
 }
 /**
+ * Photos and videos used across the website. Every image needs a short description (alt text).
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
@@ -333,6 +341,8 @@ export interface Media {
   };
 }
 /**
+ * The sectors used to filter the Work page.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "industries".
  */
@@ -347,6 +357,8 @@ export interface Industry {
   createdAt: string;
 }
 /**
+ * Client quotes. Featured ones appear on the home page.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "testimonials".
  */
@@ -368,7 +380,7 @@ export interface Testimonial {
   createdAt: string;
 }
 /**
- * Only show clients who agreed to appear on the website.
+ * The client logos strip on the home page. Only show clients who agreed to appear on the website.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "client-logos".
@@ -386,6 +398,8 @@ export interface ClientLogo {
   createdAt: string;
 }
 /**
+ * The team section on the About page.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "team-members".
  */
@@ -403,6 +417,8 @@ export interface TeamMember {
   createdAt: string;
 }
 /**
+ * People who can sign in here. Admins manage everything; editors manage content.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */

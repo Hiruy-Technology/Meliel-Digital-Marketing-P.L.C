@@ -12,6 +12,8 @@ export const Media: CollectionConfig = {
   slug: "media",
   labels: { singular: "Media file", plural: "Media" },
   admin: {
+    description:
+      "Photos and videos used across the website. Every image needs a short description (alt text).",
     group: "Portfolio",
     useAsTitle: "alt",
     defaultColumns: ["filename", "alt", "updatedAt"],
